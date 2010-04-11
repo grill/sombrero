@@ -1,0 +1,11 @@
+<lift:Surround.choose>
+  <lift:Room.add form="POST" multipart="TRUE">
+    New Room name:<room:name/> <br/>
+    New Room image:<room:image/> <br/>
+    <room:submit/>
+  </lift:Room.add>
+  Remove Room: <br/>
+  <lift:Room.removeList form="POST">
+    <room:list/><br/>
+  </lift:Room.removeList>
+</lift:Surround.choose>
