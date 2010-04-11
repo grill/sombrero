@@ -1,0 +1,72 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" xmlns:lift="http://liftweb.net/">
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+	<title>Sombrero</title>
+	<link href="/classpath/layout_css/default/menu.css" rel="stylesheet" type="text/css" />
+	<link href="/classpath/layout_css/default/my_layout.css" rel="stylesheet" type="text/css" />
+	<!--[if lte IE 7]>
+		<link href="/classpath/css/logged-out/patch_my_layout.css" rel="stylesheet" type="text/css" />
+	<![endif]--> 
+	
+  	<script type="text/javascript" src="/classpath/framework_js/jquery-1.4.2.min.js"></script>
+  	
+    <link type="text/css" href="/classpath/widgettheme_css/sunny/jquery-ui-1.7.2.custom.css" rel="stylesheet" />
+  	<script type="text/javascript" src="/classpath/framework_js/jquery-ui-1.7.2.custom.min.js"></script>
+  	<script type="text/javascript" src="/classpath/plugin/js/draggable/jquery-collide.js"></script>
+  	
+  	
+  	<script type="text/javascript" src="/classpath/widget/js/ui.toolbox.js"></script>
+  	<script type="text/javascript" src="/classpath/widget/js/ui.favorites.js"></script>
+  	<script type="text/javascript" src="/classpath/widget/js/ui.unary.js"></script>
+  	<script type="text/javascript" src="/classpath/widget/js/ui.titlebar.js"></script>
+  	<script type="text/javascript" src="/classpath/widget/js/ui.binary.js"></script>
+  	<script type="text/javascript" src="/classpath/widget/js/ui.analog.js"></script>
+  	<script type="text/javascript" src="/classpath/widget/js/ui.ipod.js"></script>
+  	<script type="text/javascript" src="/classpath/widget/js/ui.protowidget.js"></script>
+	<link type="text/css" href="/classpath/widget/css/fg.menu.css" media="screen" rel="stylesheet" />
+  	
+	<script type="text/javascript" src="/classpath/plugin/js/fancybox/jquery.fancybox-1.3.0.pack.js"></script>
+	<script type="text/javascript" src="/classpath/plugin/js/fancybox/jquery.easing-1.3.pack.js"></script>
+	<script type="text/javascript" src="/classpath/plugin/js/fancybox/jquery.mousewheel-3.0.2.pack.js"></script>
+	<link type="text/css" href="/classpath/plugin/css/fancybox/jquery.fancybox-1.3.0.css" rel="stylesheet" />
+  	
+  	
+</head>
+<body>
+  <div class="page_margins">
+    <!-- start: skip link navigation -->
+    <!-- end: skip link navigation -->
+    <div class="page">
+      <div id="header">
+        <div id="topnav">
+     	  <lift:UserMenu >
+     	  	<menu:link1 /> |
+     	  	<menu:link2 />
+     	  </lift:UserMenu>
+        </div>
+        <lift:LinkBuilder.build name="Home">	
+        	<img src="/images/logo.png" class="ui-widget-content ui-state-default"/>
+		</lift:LinkBuilder.build>
+        <h1>Control your Home</h1>
+      </div>
+      <div id="main">
+        <div id="col3">
+          <div id="col3_content" class="clearfix"  style="height:400px">
+            <!-- add your content here -->
+            <lift:bind name="content" />
+          </div>
+          <!-- IE Column Clearing -->
+          <div id="ie_clearing"> &#160; </div>
+        </div>
+      </div>
+      <!-- begin: #footer -->
+      <div id="footer">Layout based on <a href="http://www.yaml.de/">YAML</a> by Gabriel Grill
+      </div>
+    </div>
+    <div id="border-bottom">
+      <div id="edge-bl"></div>
+      <div id="edge-br"></div>
+    </div>
+  </div>
+</body>
+</html>

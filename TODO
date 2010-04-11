@@ -1,0 +1,3 @@
+- clean out open_! Exceptions (ContainerWidget, Pos)
+- Database Max Size not checked
+- Database row check constraints
