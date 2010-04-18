@@ -32,5 +32,5 @@ object KNXGroup extends KNXGroup with LongKeyedMetaMapper[KNXGroup] {
     Matchers.knx.findPrefixMatchOf(in) != None
   
   def getWidgets(theAddress : String) : List[KNXWidget] =
-    KNXGroup.find(By(address, theAddress)).map(_.getWidgets) openOr KNXWidget.findAll(By(address, theAddress)) 
+    KNXGroup.find(By(address, theAddress)).map(_.getWidgets) openOr KNXWidget.findAll(By(KNXWidget.groupAddress, theAddress)) 
 }
