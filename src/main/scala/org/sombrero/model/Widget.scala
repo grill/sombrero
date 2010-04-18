@@ -77,10 +77,31 @@ class Widget extends LongKeyedMapper[Widget] with IdPK /*with LifecycleCallbacks
     <div id="widgetdata" >{data.map(_.toForm(Empty, redoSnippet, onSubmit)) openOr Text("")}</div>
   }
   
+  def aliasForm () : NodeSeq =
+    knx_? match {
+      case Full(w) =>
+        <table>
+          {KNXGroup.findAll().flatMap(g =>
+            <tr>
+              <td> {
+                checkbox(KNXAlias.exists_?(g, w), KNXAlias.set(g, w, _))
+              } </td>
+              <td> {
+                Text(g.name.is)
+              } </td>
+            </tr>
+          )}
+        </table>
+      case _ => Text("")
+    }
+  
   object room   extends MappedLongForeignKey(this, Room) {
     override def dbIndexed_? = true
     override def _toForm = Empty
   }
+  
+  def knx_? () : Box[KNXWidget] =
+    KNXWidget.find(By(KNXWidget.widget, id.is))
     
   def knx () : KNXWidget = { 
     val knxlst = KNXWidget.findAll(By(KNXWidget.widget, id.is))

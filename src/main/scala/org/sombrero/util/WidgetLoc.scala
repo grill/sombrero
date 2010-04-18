@@ -79,6 +79,7 @@ class WidgetLoc extends Loc[WidgetAccess] {
     */
     def realrender(ignore : NodeSeq) : NodeSeq = {
       w.toForm(Empty, realrender _, _.save) ++ w.dataForm(realrender _, _.save) ++
+      w.aliasForm ++
       submit("Save Widget", () => S.redirectTo(w.room.obj.map("/room/" + _.id.is) openOr "/"))
     }
     realrender(ignore)
