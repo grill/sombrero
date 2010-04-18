@@ -4,6 +4,8 @@ import net.liftweb.util.Empty
 import net.liftweb.util.Log
 import _root_.net.liftweb.http.RequestVar
 
+//Positions of the widgets get stored here.
+//Users have seperate widget positions.
 class Position extends LongKeyedMapper[Position] with IdPK {
   def getSingleton = Position
   
@@ -18,7 +20,7 @@ class Position extends LongKeyedMapper[Position] with IdPK {
   }
   object height extends MappedInt(this) {
     override def defaultValue = 160
-  }   
+  }
   
   object widget extends MappedLongForeignKey(this, Widget) {
     override def dbIndexed_? = true

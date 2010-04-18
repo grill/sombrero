@@ -4,6 +4,8 @@ import net.liftweb.mapper._
 import net.liftweb.util._
 import _root_.net.liftweb.http.RequestVar
 
+//Saves Room data, including image.
+//Null parent foreign key means this is a root room.
 class Room extends LongKeyedMapper[Room] with IdPK /*with LifecycleCallbacks*/ {
   def getSingleton = Room
    
@@ -13,7 +15,7 @@ class Room extends LongKeyedMapper[Room] with IdPK /*with LifecycleCallbacks*/ {
    
   object parent extends MappedLongForeignKey(this, Room) {
     override def dbIndexed_? = true
-  }                  
+  } 
   
   object image extends MappedBinary(this)
   object imageMime extends MappedString(this,100)
@@ -23,10 +25,9 @@ class Room extends LongKeyedMapper[Room] with IdPK /*with LifecycleCallbacks*/ {
   
   override def delete_! = { Widget.bulkDelete_!! (By(Widget.room, this.id)); super.delete_! }
 }  
-   
+ 
 object Room extends Room with LongKeyedMetaMapper[Room] {
   def roots = Room.findAll(By(Room.parent, Empty))
   object currentVar extends RequestVar[Box[Room]](Empty)
   def current = currentVar.is
 }
- 

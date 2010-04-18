@@ -4,6 +4,7 @@ import net.liftweb.mapper._
 import net.liftweb.util.Empty
 import scala.xml._
 
+//Just another random MegaProtoUser implementation.
 class User extends MegaProtoUser[User] {
   override def getSingleton = User
     
@@ -12,14 +13,18 @@ class User extends MegaProtoUser[User] {
 
 object User extends User with MetaMegaProtoUser[User] {
   override def signupFields =
-    List(firstName, lastName, email, password, superUser)
+    if(User.superUser_? || findAll(By(superUser, false)) == Nil)
+      List(firstName, lastName, email, password, superUser)
+    else
+      List(firstName, lastName, email, password)
+      
   override def skipEmailValidation = true
   
   override def loginXhtml =
     <lift:surround with="default" at="content">
       { super.loginXhtml }
     </lift:surround>
-     
+  
   override def signupXhtml (user : User) =
     <lift:surround with="default" at="content">
       { super.signupXhtml(user) }
@@ -42,7 +47,7 @@ object User extends User with MetaMegaProtoUser[User] {
     <lift:surround with="default-user" at="content">
       { super.passwordResetXhtml }
     </lift:surround>
-      
+   
   override def editXhtml (user : User) = {
     def chooseTemplate() = if (User.superUser_?) "default-admin" else "default-user"
     

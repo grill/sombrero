@@ -3,6 +3,8 @@ import _root_.net.liftweb.mapper._
 import _root_.net.liftweb.util._
 import _root_.net.liftweb.util.Helpers._   
 
+//Every User can have an arbitrary number of favorite Widgets.
+//This is essentially an m:n relation.
 class Fav extends LongKeyedMapper[Fav] with IdPK{
   def getSingleton = Fav
   
@@ -12,7 +14,7 @@ class Fav extends LongKeyedMapper[Fav] with IdPK{
   object widget extends MappedLongForeignKey(this, Widget) {
     override def dbIndexed_? = true
   } 
-}     
+}  
      
 object Fav extends Fav with LongKeyedMetaMapper[Fav] {
   val htmlid = "Fav"

@@ -53,10 +53,8 @@ class Boot {
      Menu( Loc("DBtools", List("db"), "DBtools")) ::
      Menu( Loc("RoomFoo", List("roomadd"), "Add/Remove")) ::
      Menu( Loc("Discovery", List("discovery"), "Router Discovery")) ::
-     Menu( Loc("Userlist", List("userlist"), "User List", Loc.If(User.superUser_? _, NotFoundResponse))) ::
      Menu( new RoomLoc()) ::
-     Menu( new WidgetLoc()) ::
-     Menu( new UserLoc()) :: Nil
+     Menu( new WidgetLoc()) :: Nil
     LiftRules.setSiteMap(SiteMap((entries ::: User.sitemap):_*))
     
   //Custom Dispatch for Room Images

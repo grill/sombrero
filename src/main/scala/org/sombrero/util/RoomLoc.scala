@@ -1,6 +1,7 @@
 package org.sombrero.util
  
 import _root_.net.liftweb.util._
+import org.sombrero.snippet._
 import _root_.net.liftweb.http._
 import _root_.net.liftweb.sitemap._
 import _root_.net.liftweb.sitemap.Loc._
@@ -9,16 +10,18 @@ import net.liftweb.http.js.jquery._
 import _root_.net.liftweb.mapper._
 import _root_.java.sql._
 import _root_.scala.xml._
+import org.sombrero.util._;
+import org.sombrero.widget._;
+import org.sombrero.widget.knx._;
 
-import org.sombrero.model._
-import org.sombrero.util._
-import org.sombrero.widget._
-import org.sombrero.widget.knx._
- 
+import org.sombrero.model.Room
+
+import org.sombrero.util.WidgetList;
+
 abstract class RoomAccess 
-case object NoSuchRoom extends RoomAccess 
+case object NoSuchRoom extends RoomAccess
 case class FullRoomAccess(room : Room) extends RoomAccess
- 
+
 class RoomLoc extends Loc[RoomAccess] {
 
   def response(path : List[String]) = new RewriteResponse(ParsePath(path, "", true, false), Map.empty, true)
@@ -61,7 +64,7 @@ class RoomLoc extends Loc[RoomAccess] {
   })
       
   def roomRender(room : Room) = (ignore : NodeSeq) => {
-    Room.currentVar(Full(room)) 
+    Room.currentVar(Full(room))
     var l : List[widget.Widget] = room.widgets.map((w : model.Widget) => w match {
     /*
       case w if(w.wclass.is == "Lamp") => Lamp(w)
@@ -77,8 +80,8 @@ class RoomLoc extends Loc[RoomAccess] {
              //else /* if (w.wclass.is == "Temperature")*/ new Temperature(w)
     }).filter(_ != null)
     l.foldLeft[List[Node]](Nil)((l, n : widget.Widget) => l ::: n.render.toList) : NodeSeq
-  } 
-          
+  }
+   
   override def snippets = {
     case ("roomview", Full(FullRoomAccess(room))) => roomRender(room)
     case ("roomview", _) => { ignore : NodeSeq => Text("Room not found.") }

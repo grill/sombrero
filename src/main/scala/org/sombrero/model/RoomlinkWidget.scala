@@ -8,6 +8,7 @@ import _root_.net.liftweb.util._
 import Helpers._
 import _root_.scala.xml._ 
 
+//Data for widgets that refer to other rooms gets stored here.
 class RoomlinkWidget extends WidgetData[RoomlinkWidget] with IdPK{
   def getSingleton = RoomlinkWidget 
   
@@ -27,7 +28,7 @@ class RoomlinkWidget extends WidgetData[RoomlinkWidget] with IdPK{
         case _ => {
           error = true
         }
-        } 
+      }
       }
       is match {
         case null => Full(Text("add: ") ++ SHtml.fileUpload(callback _))
@@ -43,7 +44,7 @@ class RoomlinkWidget extends WidgetData[RoomlinkWidget] with IdPK{
       } else {
         //Log.info("valid!")
         List[FieldError]()
-      }  
+      }
     }
     
     override def validations = {(data : Array[Byte]) => onlyImageMime(data)} :: Nil
