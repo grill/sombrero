@@ -28,6 +28,15 @@ object KNXAlias extends KNXAlias with LongKeyedMetaMapper[KNXAlias] {
     KNXAlias.find(By(alias, theAlias), By(target, theTarget)) match {
       case Full(w) => w.delete_!
       case Empty => create.alias(theAlias).target(theTarget).save
+      case _ =>
+    }
+  }
+  
+  def set(theAlias : KNXGroup, theTarget : KNXWidget, is : boolean) {
+    KNXAlias.find(By(alias, theAlias), By(target, theTarget)) match {
+      case Full(w) => if(! is) w.delete_!
+      case Empty => if(is) create.alias(theAlias).target(theTarget).save
+      case _ =>
     }
   }
 }

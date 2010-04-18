@@ -45,7 +45,7 @@ class Boot {
     		() => RedirectResponse("/login"))
      
     //Create Tables
-    Schemifier.schemify(true, Log.infoF _, Room, User, Position, Widget, KNXWidget, RoomlinkWidget, ContainerWidget, Fav)
+    Schemifier.schemify(true, Log.infoF _, Room, User, Position, Widget, KNXWidget, RoomlinkWidget, Fav, KNXGroup, KNXAlias)
     
     // Build SiteMap
    val entries = Menu(Loc("Home", List("index"), "Home")) ::
@@ -54,6 +54,7 @@ class Boot {
      Menu( Loc("RoomFoo", List("roomadd"), "Add/Remove")) ::
      Menu( Loc("Discovery", List("discovery"), "Router Discovery")) ::
      Menu( Loc("Userlist", List("userlist"), "User List", Loc.If(User.superUser_? _, NotFoundResponse))) ::
+     Menu( Loc("Grouplist", List("knxgroups"), "Group List", Loc.If(User.superUser_? _, NotFoundResponse))) ::
      Menu( new RoomLoc()) ::
      Menu( new WidgetLoc()) ::
      Menu( new UserLoc()) :: Nil
