@@ -15,6 +15,7 @@ import org.sombrero.widget._;
 import org.sombrero.widget.knx._;
 
 import org.sombrero.model.Room
+import org.sombrero.model.User
 
 import org.sombrero.util.WidgetList;
 
@@ -61,6 +62,7 @@ class RoomLoc extends Loc[RoomAccess] {
        } catch { case e : NumberFormatException => (response("room" :: "display" :: Nil),
             NoSuchRoom) }
     }
+    
   })
       
   def roomRender(room : Room) = (ignore : NodeSeq) => {
@@ -83,10 +85,10 @@ class RoomLoc extends Loc[RoomAccess] {
   }
    
   override def snippets = {
-    case ("roomview", Full(FullRoomAccess(room))) => roomRender(room)
+    case ("roomview", Full(FullRoomAccess(room))) if User.loggedIn_? => roomRender(room)
     case ("roomview", _) => { ignore : NodeSeq => Text("Room not found.") }
-    case ("widgetadd", Full(FullRoomAccess(room))) => WidgetAdd.render(room)
-    case ("widgetadd", _) => { ignore : NodeSeq => Text("Room not found.") }
+    case ("widgetadd", Full(FullRoomAccess(room))) if User.superUser_? => WidgetAdd.render(room)
+    case ("widgetadd", _) => { ignore : NodeSeq => Text("") }
   }
   
   override def defaultParams = Empty

@@ -11,6 +11,13 @@ class KNXGroup extends LongKeyedMapper[KNXGroup] with IdPK {
   
   object name extends MappedString(this, 20) {
     override def dbIndexed_? = true
+    
+   def notEmpty(in : String) : List[FieldError] = in match {
+     case "" => List(FieldError(this, Text("KNX group needs a name!")))
+     case _ => List[FieldError]()
+   }
+   
+    override def validations = notEmpty _ :: Nil
   }
   
   object address extends MappedString(this, 15) {

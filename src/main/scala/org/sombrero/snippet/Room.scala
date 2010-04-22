@@ -9,14 +9,20 @@ import _root_.net.liftweb.http.js.{JE,JsCmd,JsCmds}
 import JsCmds._ // For implicits
 import _root_.scala.xml._
 import _root_.net.liftweb.mapper._
-  
+
 class Room {
-  def add( xhtml : NodeSeq ) : NodeSeq = {
+  
+  object redoSnippet extends RequestVar[Box[(NodeSeq) => NodeSeq]](Empty) 
+
+  def add( xhtml : NodeSeq ) : NodeSeq = 
+    redoSnippet.is.map(_(xhtml)) openOr {
     var newname = ""
     var parent = model.Room.current
     var fileHolder : Box[FileParamHolder] = Empty
     
+    def realrender(xhtml : NodeSeq) : NodeSeq = {
     def newRoom() {
+      if(newname != "") {
       val room = model.Room.create.name(newname).parent(parent)
     
       fileHolder match {
@@ -31,12 +37,18 @@ class Room {
         }
 
       room.save
+      } else {
+        S.error("Room needs a name!"); redoSnippet(Full(realrender _))
+      }
     }
     
     bind("room", xhtml,
       "name" -> text(newname, newname = _),
       "image" -> fileUpload((f : FileParamHolder) => fileHolder = Full(f)),
       "submit" -> submit("Create Room", newRoom _) )
+    }
+    
+    realrender(xhtml)
   }
   
   def remove( xhtml : NodeSeq ) : NodeSeq = {

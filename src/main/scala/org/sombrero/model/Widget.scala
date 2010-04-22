@@ -13,6 +13,7 @@ import _root_.scala.xml._
 import org.sombrero.comet._
 
 import org.sombrero.util._
+import WidgetList.WidgetClass
 
 //Stores widget data that is common to all widgets.
 class Widget extends LongKeyedMapper[Widget] with IdPK /*with LifecycleCallbacks*/ {
@@ -23,6 +24,13 @@ class Widget extends LongKeyedMapper[Widget] with IdPK /*with LifecycleCallbacks
      Distributor ! TitleMessage(id.is, s)
      super.apply(s)
    }
+   
+   def notEmpty(in : String) : List[FieldError] = in match {
+     case "" => List(FieldError(this, Text("Widget needs a name!")))
+     case _ => List[FieldError]()
+   }
+   
+   override def validations = notEmpty _ :: Nil
   }
   
   def pos : Position = Position(User.currentUser open_!, this)
@@ -45,26 +53,39 @@ class Widget extends LongKeyedMapper[Widget] with IdPK /*with LifecycleCallbacks
   var dataToForm : ((Box[String], (NodeSeq) => NodeSeq, (Any) => Unit) => NodeSeq) => NodeSeq = null
     
   object wclass extends MappedString(this, 32) {
+    private var realfilter : Box[WidgetMetaData[_]] = Empty
+    def filter_=(newFilter : Box[WidgetMetaData[_]]) = {realfilter = newFilter; this}
+    override def defaultValue = realfilter.map((f) => WidgetList.map.filter(_._2.data == f).values.next.id) openOr WidgetList.default.id
+    
     override def _toForm = {
       def callback(newVal : String) = {
+        val oldVal = is
         this(newVal)
         if(dataToForm != null)
-          SetHtml("widgetdata", dataToForm(WidgetList.map(newVal).data.create.toForm _))
+        {
+          val oldtype = WidgetList.map(oldVal).data
+          val newtype = WidgetList.map(newVal).data
+          if(oldtype != newtype)
+            SetHtml("widgetdata", dataToForm(newtype.create.toForm _))
+          else
+            Noop
+        }
         else
           Noop
       }
     
       if (saved_?) Empty else
-      //Full(SHtml.select(("Lamp", "Lamp") :: ("Temperature", "Temperature") :: ("Room", "Roomlink") :: Nil,
-      //    Full(is), this(_)))
-      Full(SHtml.ajaxSelect(WidgetList.map.map((wct) => (wct._2.name, wct._2.id)).toSeq, Full(is), callback _))
+      Full(SHtml.ajaxSelect(
+          WidgetList.map.filter(
+             realfilter.map((f:(WidgetMetaData[_])) => (wct:(String, WidgetClass[_])) => wct._2.data == f).openOr((_) => true))
+          .map((wct) => (wct._2.name, wct._2.id)).toSeq, Full(is), callback _))
     }
   }
   
   def dataForm (redoSnippet : (NodeSeq) => NodeSeq, onSuccess : (WidgetData[_]) => Unit) : NodeSeq = {
     def onSubmit(something : Any) {
       something match {
-        case wd : WidgetData[AnyRef] =>
+        case wd : WidgetData[_] =>
           wd.widget(this)
           onSuccess(wd)
         case _ => ;
@@ -73,7 +94,7 @@ class Widget extends LongKeyedMapper[Widget] with IdPK /*with LifecycleCallbacks
     
     dataToForm = (fu : (Box[String], (NodeSeq) => NodeSeq, (Any) => Unit) => NodeSeq) => fu(Empty, redoSnippet, onSubmit)
   
-    if (! saved_?) <div id="widgetdata" /> else
+    if (! saved_?) <div id="widgetdata" >{dataToForm(WidgetList.map(wclass.is).data.create.toForm _)}</div> else
     <div id="widgetdata" >{data.map(_.toForm(Empty, redoSnippet, onSubmit)) openOr Text("")}</div>
   }
   
