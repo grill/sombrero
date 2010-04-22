@@ -1,4 +1,6 @@
 <lift:surround with="default-admin" at="content">
+
+<lift:UserList form="POST">
 <table>  <tr>
     <td>
       User (click to edit)
@@ -10,7 +12,7 @@
       delte user
     </td>
   </tr>
-<lift:UserList form="POST">
+  <userlist:entries>
   <tr>
     <td>
       <user:link />
@@ -28,7 +30,8 @@
       <user:delete />
     </td>
   </tr>
-</lift:UserList>
+  </userlist:entries>
 </table>
+</lift:UserList>
 </lift:surround>
 

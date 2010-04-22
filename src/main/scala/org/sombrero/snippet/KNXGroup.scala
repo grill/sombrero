@@ -47,4 +47,9 @@ class KNXGroup {
     
     realrender(xhtml)
   }
+  
+  def render(xhtml : NodeSeq) : NodeSeq =
+    bind("knxgroups", xhtml,
+        "add" -> ((inhtml:NodeSeq) => add(inhtml)),
+        "list" -> ((inhtml:NodeSeq) => list(inhtml)))
 }

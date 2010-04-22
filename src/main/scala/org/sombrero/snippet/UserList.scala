@@ -36,12 +36,13 @@ class UserList {
           user.delete_!
       }
     
-      bind("user", xhtml,
+      bind("userlist", xhtml, "entries" -> ((insidexhtml) =>
+      bind("user", insidexhtml,
            "link" -> link("/useredit/" + user.id.is, () => Empty, Text(user.email.is)),
            "newPw" -> password_*("", LFuncHolder(newPasswd = _)),
            "submit" -> submit("Set Password", testAndSet _),
            "delete" -> submit("Delete User", testAndDelete _)
-         )
+         )))
     }
     
     User.findAll().flatMap(entry(_))

@@ -1,4 +1,5 @@
 <lift:Surround.choose>
+    <lift:KNXGroup form="POST">
   <table>
     <tr>
       <td>
@@ -10,7 +11,7 @@
       <td>
       </td>
     </tr>
-    <lift:KNXGroup.list form="POST">
+    <knxgroups:list >
       <tr>
         <td>
           <knxgroup:name/>
@@ -22,9 +23,9 @@
           <knxgroup:delete/>
         </td>
       </tr>
-    </lift:KNXGroup.list>
+    </knxgroups:list>
       <tr>
-    <lift:KNXGroup.add form="POST">
+    <knxgroups:add>
         <td>
           <knxgroup:name/>
         </td>
@@ -34,7 +35,9 @@
         <td>
           <knxgroup:add/>
         </td>
-    </lift:KNXGroup.add>
+    </knxgroups:add>
       </tr>
   </table>
+  
+    </lift:KNXGroup>
 </lift:Surround.choose>
