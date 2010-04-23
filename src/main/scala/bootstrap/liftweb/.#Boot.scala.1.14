@@ -1,0 +1,71 @@
+package bootstrap.liftweb
+
+import _root_.net.liftweb.util._
+import _root_.net.liftweb.http._
+import _root_.net.liftweb.sitemap._
+import _root_.net.liftweb.sitemap.Loc._
+import Helpers._
+import net.liftweb.http.js.jquery._
+import _root_.net.liftweb.mapper._
+import _root_.java.sql._
+
+import org.sombrero.snippet.DButil
+import org.sombrero.model._
+import org.sombrero.util._ 
+
+
+/**
+  * A class that's instantiated early and run.  It allows the application
+  * to modify lift's environment
+  */
+class Boot {
+  def boot {
+    // set up database connection
+    if (!DB.jndiJdbcConnAvailable_?) DB.defineConnectionManager (DefaultConnectionIdentifier, DBVendor)
+  
+    // where to search snippet
+    LiftRules.addToPackages("org.sombrero")
+    LiftRules.jsArtifacts = JQueryArtifacts
+
+    //Connection.createConnection("172.19.0.7")
+    
+    //Add new Resources
+    ResourceServer.allow {
+      case "themes" :: _ => true
+      case "ui" :: _ => true
+      case "external" :: _ => true 
+      case "addons" :: _ => true
+      case "css" :: _ => true
+      case "widgets" :: _ => true
+      case "min" :: _ => true 
+    }
+    val loggedIn = If(() => User.loggedIn_?,
+    		() => RedirectResponse("/login"))
+    
+    //Create Tables
+    Schemifier.schemify(true, Log.infoF _, Room, User, Position, Widget, KNXWidget, RoomlinkWidget, ContainerWidget)
+     
+    // Build SiteMap
+   val entries = Menu(Loc("Home", List("index"), "Home")) ::
+     Menu(Loc("KNX", ("KNXWidgetForm" :: Nil) -> true, "KNXWidgetForm", Hidden, If(() => true, null)) ) ::
+     Menu( Loc("DBtools", List("db"), "DBtools")) ::
+     Menu( Loc("RoomFoo", List("roomadd"), "Add/Remove")) ::
+     Menu( new RoomLoc()) :: Nil
+    LiftRules.setSiteMap(SiteMap((entries ::: User.sitemap):_*))
+  }  
+}  
+
+object DBVendor extends ConnectionManager {
+  def newConnection(name: ConnectionIdentifier): Box[Connection] = {
+    try {
+
+      Class.forName("org.h2.Driver")
+      val dm = DriverManager.getConnection("jdbc:h2:sombrero")
+      Full(dm)
+    } catch {
+      case e : Exception => e.printStackTrace; Empty
+    }
+  }
+  def releaseConnection(conn: Connection) = conn.close
+}
+

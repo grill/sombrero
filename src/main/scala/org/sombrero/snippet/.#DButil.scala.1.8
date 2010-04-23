@@ -1,0 +1,53 @@
+package org.sombrero.snippet
+
+import org.sombrero.util._
+import org.sombrero.model._
+import _root_.net.liftweb.http._
+import S._
+import _root_.net.liftweb.util._
+import Helpers._
+import _root_.scala.xml._
+import _root_.net.liftweb.http.js.{JE,JsCmd,JsCmds}
+import JsCmds._ // For implicits
+import JE.{JsRaw,Str}
+import _root_.net.liftweb.http.SHtml._
+import _root_.net.liftweb.util.Log
+import java.net._
+import _root_.net.liftweb.mapper._
+     
+object DButil {
+    def realcreate() : Unit = {
+      Schemifier.schemify(true, Log.infoF _, Room, User, Widget, KNXWidget)
+      Schemifier.destroyTables_!!(Log.infoF _, Room, User, Widget, KNXWidget)
+      Schemifier.schemify(true, Log.infoF _, Room, User, Widget, KNXWidget)
+      Log.info("tables created!")
+    }
+}
+
+class DButil {
+  def create() : NodeSeq = {
+    def realcreate() : Unit = {
+      Schemifier.schemify(true, Log.infoF _, Room, User, Widget, KNXWidget)
+      Schemifier.destroyTables_!!(Log.infoF _, Room, User, Widget, KNXWidget)
+      Schemifier.schemify(true, Log.infoF _, Room, User, Widget, KNXWidget)
+      Log.info("tables created!")
+    }
+    link("/db", () => realcreate, Text("create the tables!"))
+  }
+  
+  
+  def insert() : NodeSeq = {
+    def realinsert() : Unit = {
+      var r = Room.create.name("living room").saveMe
+      Widget.create.left(0).top(0).wclass("Lamp").room(r).saveMe.knx.groupAddress("1/1/1").remoteHost("172.19.0.7").save
+      Widget.create.left(0).top(0).wclass("Temperature").room(r).saveMe.knx.save
+      Widget.create.left(0).top(0).wclass("SwitchOn").room(r).saveMe.knx.groupAddress("0/0/1").remoteHost("192.168.0.100").save
+      Widget.create.left(0).top(0).wclass("SwitchOff").room(r).saveMe.knx.groupAddress("0/0/2").remoteHost("192.168.0.100").save
+      r = Room.create.name("kitchen").saveMe
+      Widget.create.left(0).top(0).wclass("Lamp").room(r).saveMe.knx.groupAddress("1/1/1").remoteHost("172.19.0.7").save
+      Widget.create.left(0).top(0).wclass("Switch").room(r).saveMe.knx.groupAddress("0/0/3").remoteHost("192.168.0.100").save
+      Log.info("test data inserted!")
+    }
+    link("/db", () => realinsert, Text("insert testdata!"))
+  }
+}

@@ -1,0 +1,2 @@
+Command to start sombrero:
+mvn jetty:run
