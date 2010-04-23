@@ -28,19 +28,31 @@ $.widget("ui.binary", {
 		.attr("src", img)
 		.click(function (){
 			if(!that.element.protowidget('option', 'isDragged'))
+<<<<<<< HEAD:src/main/resources/toserve/widget/js/ui.binary.js
 				that._getData('change')();
+=======
+				that._getData('click')();
+>>>>>>> origin/master:src/main/resources/toserve/widget/js/ui.binary.js
 			else
 				that.element.protowidget('option', 'isDragged', false);
 		})
 		.appendTo(this.element);
 		
 	},
+<<<<<<< HEAD:src/main/resources/toserve/widget/js/ui.binary.js
 	update_value: function(newValue){
 		if(newValue)
 			this.img.attr("src", this._getData('imgOn'));
 		else
 			this.img.attr("src", this._getData('imgOff'));
 		this._setData('value', newValue);
+=======
+	updateStatus: function(){
+		if(this._getData('value'))
+			this.img.attr("src", this._getData('imgOn'));
+		else
+			this.img.attr("src", this._getData('imgOff'));
+>>>>>>> origin/master:src/main/resources/toserve/widget/js/ui.binary.js
 	}
 });
 
@@ -51,6 +63,10 @@ $.extend($.ui.binary, {
 	    left: 0,							//left value of the widget
 		height: 160,						//height value of the widget
 		width: 160,							//width value of the widget
+<<<<<<< HEAD:src/main/resources/toserve/widget/js/ui.binary.js
+=======
+	    value: true,						//true -> on - false -> off
+>>>>>>> origin/master:src/main/resources/toserve/widget/js/ui.binary.js
 		imgOn: "/images/lightbulb1.png",		//img in widget when value = true
 		imgOff: "/images/lightbulb1off.png",  //img in widget when value = false
 		click: function(){},				//callback is called on click
@@ -75,9 +91,13 @@ $.extend($.ui.binary, {
 		admin_url: 		[ "",
 		           		  "" ],
 		in_toolbox:		function(){},
+<<<<<<< HEAD:src/main/resources/toserve/widget/js/ui.binary.js
 		out_toolbox:	function(){},
 	    value: 			true,				//true -> on - false -> off
 		change:			function(){}
+=======
+		out_toolbox:	function(){}
+>>>>>>> origin/master:src/main/resources/toserve/widget/js/ui.binary.js
 	}
 });
 })(jQuery);

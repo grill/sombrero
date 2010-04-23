@@ -1,0 +1,37 @@
+<lift:surround with="default-admin" at="content">
+
+<lift:UserList form="POST">
+<table>  <tr>
+    <td>
+      User (click to edit)
+    </td>
+    <td colspan="3">
+      set password
+    </td>
+    <td>
+      delte user
+    </td>
+  </tr>
+  <userlist:entries>
+  <tr>
+    <td>
+      <user:link />
+    </td>
+    <td>
+      <user:newPw />
+    </td>
+    <td>
+      <user:newPw />
+    </td>
+    <td>
+      <user:submit />
+    </td>
+    <td>
+      <user:delete />
+    </td>
+  </tr>
+  </userlist:entries>
+</table>
+</lift:UserList>
+</lift:surround>
+

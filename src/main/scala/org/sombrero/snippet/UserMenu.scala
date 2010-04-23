@@ -15,9 +15,13 @@ class UserMenu {
 	  "link1" -> {
 	    <lift:UserMenu.build name="EditUser">Edit User</lift:UserMenu.build>},
 	  "link2" -> {
+<<<<<<< HEAD:src/main/scala/org/sombrero/snippet/UserMenu.scala
 	    <lift:UserMenu.build name="ChangePassword">Change Password</lift:UserMenu.build>},
 	  "link3" -> {
 	  	<lift:UserMenu.build name="Logout">LogOut</lift:UserMenu.build>})
+=======
+	    <lift:UserMenu.build name="ChangePassword">Change Password</lift:UserMenu.build>})
+>>>>>>> origin/master:src/main/scala/org/sombrero/snippet/UserMenu.scala
 	} else {
 	  	  bind("menu", xhtml, 
 	  "link1" -> {

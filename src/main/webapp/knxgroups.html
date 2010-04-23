@@ -1,0 +1,43 @@
+<lift:Surround.choose>
+    <lift:KNXGroup form="POST">
+  <table>
+    <tr>
+      <td>
+        Name
+      </td>
+      <td>
+        Address
+      </td>
+      <td>
+      </td>
+    </tr>
+    <knxgroups:list >
+      <tr>
+        <td>
+          <knxgroup:name/>
+        </td>
+        <td>
+          <knxgroup:address/>
+        </td>
+        <td>
+          <knxgroup:delete/>
+        </td>
+      </tr>
+    </knxgroups:list>
+      <tr>
+    <knxgroups:add>
+        <td>
+          <knxgroup:name/>
+        </td>
+        <td>
+          <knxgroup:address/>
+        </td>
+        <td>
+          <knxgroup:add/>
+        </td>
+    </knxgroups:add>
+      </tr>
+  </table>
+  
+    </lift:KNXGroup>
+</lift:Surround.choose>

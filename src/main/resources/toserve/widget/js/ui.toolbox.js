@@ -18,8 +18,13 @@ $.widget("ui.toolbox", {
 			position: 	'absolute',
 			width:	  	'22px',
 			height:		height,
+<<<<<<< HEAD:src/main/resources/toserve/widget/js/ui.toolbox.js
 			top:		this._getData('pheight')-height-4 + 'px', //-1 fuer vorher
 			left:		this._getData('pwidth')-24  + 'px',//+ 5 fuer drausen
+=======
+			top:		this._getData('pheight')-height-1 + 'px', //-1 fuer vorher
+			left:		this._getData('pwidth')+5  + 'px',//+ 5 fuer drausen
+>>>>>>> origin/master:src/main/resources/toserve/widget/js/ui.toolbox.js
 			"z-index":	1000
 		})
 		.attr("class", "ui-widget-header ui-corner-all")

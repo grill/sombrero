@@ -1,3 +1,7 @@
 target/**/*
-target
+target/
 *.db
+*~
+.classpath
+.project
+.settings/**

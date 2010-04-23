@@ -9,6 +9,7 @@ import _root_.net.liftweb.http.js.{JE,JsCmd,JsCmds}
 import JsCmds._ // For implicits
 import _root_.scala.xml._
 import _root_.net.liftweb.mapper._
+<<<<<<< HEAD:src/main/scala/org/sombrero/snippet/Room.scala
   
 class Room {
   def add( xhtml : NodeSeq ) : NodeSeq = {
@@ -17,6 +18,22 @@ class Room {
     var fileHolder : Box[FileParamHolder] = Empty
     
     def newRoom() {
+=======
+
+class Room {
+  
+  object redoSnippet extends RequestVar[Box[(NodeSeq) => NodeSeq]](Empty) 
+
+  def add( xhtml : NodeSeq ) : NodeSeq = 
+    redoSnippet.is.map(_(xhtml)) openOr {
+    var newname = ""
+    var parent = model.Room.current
+    var fileHolder : Box[FileParamHolder] = Empty
+    
+    def realrender(xhtml : NodeSeq) : NodeSeq = {
+    def newRoom() {
+      if(newname != "") {
+>>>>>>> origin/master:src/main/scala/org/sombrero/snippet/Room.scala
       val room = model.Room.create.name(newname).parent(parent)
     
       fileHolder match {
@@ -30,13 +47,27 @@ class Room {
         case _ => true
         }
 
+<<<<<<< HEAD:src/main/scala/org/sombrero/snippet/Room.scala
       room.save
+=======
+      room.save
+      } else {
+        S.error("Room needs a name!"); redoSnippet(Full(realrender _))
+      }
+>>>>>>> origin/master:src/main/scala/org/sombrero/snippet/Room.scala
     }
     
     bind("room", xhtml,
       "name" -> text(newname, newname = _),
       "image" -> fileUpload((f : FileParamHolder) => fileHolder = Full(f)),
+<<<<<<< HEAD:src/main/scala/org/sombrero/snippet/Room.scala
       "submit" -> submit("Create Room", newRoom _) )
+=======
+      "submit" -> submit("Create Room", newRoom _) )
+    }
+    
+    realrender(xhtml)
+>>>>>>> origin/master:src/main/scala/org/sombrero/snippet/Room.scala
   }
   
   def remove( xhtml : NodeSeq ) : NodeSeq = {

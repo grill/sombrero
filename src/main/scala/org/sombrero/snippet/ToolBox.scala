@@ -4,8 +4,12 @@ import org.sombrero.util._
 import org.sombrero.model._
 import _root_.scala.xml._
 import _root_.net.liftweb.util._
+<<<<<<< HEAD:src/main/scala/org/sombrero/snippet/ToolBox.scala
 import org.sombrero.widget.knx._
 import org.sombrero.widget._
+=======
+import org.sombrero.widget.knx._ 
+>>>>>>> origin/master:src/main/scala/org/sombrero/snippet/ToolBox.scala
 
 class ToolBox {
 
@@ -27,6 +31,7 @@ class ToolBox {
      
 	  if(l != Nil)
 	    l.map((w : model.Widget) => w match {
+<<<<<<< HEAD:src/main/scala/org/sombrero/snippet/ToolBox.scala
 	    	case w if(w.wclass.is == "Lamp") => new Lamp(w) with AdminSideBar
 	    	case w if(w.wclass.is == "Temperature") => new Temperature(w) with AdminSideBar
 	    	case w if(w.wclass.is == "SwitchOn") => new SwitchOn(w) with AdminSideBar
@@ -34,6 +39,15 @@ class ToolBox {
 	    	case w if(w.wclass.is == "Switch") => new Switch(w)  with AdminSideBar
 	    	case w if(w.wclass.is == "Dimmer") => new Dimmer(w) with AdminSideBar
 	    	case w if(w.wclass.is == "Rollo") => new Rollo(w) with AdminSideBar
+=======
+	    	case w if(w.wclass.is == "Lamp") => LampAdmCopy(w)
+	    	case w if(w.wclass.is == "Temperature") => TemperatureAdmCopy(w)
+	    	case w if(w.wclass.is == "SwitchOn") => SwitchOnAdmCopy(w)
+	    	case w if(w.wclass.is == "SwitchOff") => SwitchOffAdmCopy(w)
+	    	case w if(w.wclass.is == "Switch") => SwitchAdmCopy(w) 
+	    	case w if(w.wclass.is == "Dimmer") => DimmerAdmCopy(w)
+	    	case w if(w.wclass.is == "Rollo") => RolloAdmCopy(w)
+>>>>>>> origin/master:src/main/scala/org/sombrero/snippet/ToolBox.scala
 	    	case _ => null
             //else /* if (w.wclass.is == "Temperature")*/ new Temperature(w)
 	    })
