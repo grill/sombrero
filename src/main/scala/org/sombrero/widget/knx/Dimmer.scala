@@ -19,55 +19,20 @@ import org.sombrero.util._
 import org.sombrero.model._
 import org.sombrero.snippet._
 
-<<<<<<< HEAD:src/main/scala/org/sombrero/widget/knx/Dimmer.scala
 class Dimmer(data: org.sombrero.model.Widget) extends StateWidget(data, "analog"){
   val knx = KNXDimmer(data.knx().groupAddress.is)
- //val change = "function(){" + SHtml.ajaxCall(getTempJsExp, setTemp _)._2 + "}"
    properties ++ Map(
-//	   "change" -> change,
 	   "frontImg" -> "\"/images/dim0drag.png\"",
 	   "backgroundImg" -> "\"/images/dim0.png\"",
 	   "slideRect" -> "[19, 90, 122, 42]",
 	   "opacity" -> "\"/images/dim0light.png\""
-    ) 
-=======
-case class DimmerAdmCopy(data: org.sombrero.model.Widget) extends ProtoDimmer(data, "Fav_Dimmer",Container.htmlid) {
-	properties = ("admin_img", """["ui-icon-help",
-		                  "ui-icon-wrench",
-			              "ui-icon-trash",
-			              "ui-icon-plus"]""") :: properties
-}  
-case class DimmerFavCopy(data: org.sombrero.model.Widget) extends ProtoDimmer(data, "Dimmer",Fav.htmlid)
-case class Dimmer(data: org.sombrero.model.Widget) extends ProtoDimmer(data, "Adm_Dimmer",Container.htmlid)
-  
-class ProtoDimmer(data: org.sombrero.model.Widget, prefix: String, parent: String) extends StateWidget(data, prefix, "analog", parent){
-  val knx = KNXDimmer(data.knx().groupAddress.is)
-  
-   var properties = List(
-	   ("change", "function(){" + SHtml.ajaxCall(getTempJsExp, setTemp _)._2 + "}"),
-	   ("frontImg", '"' + "/images/dim0drag.png" + '"'),
-	   ("backgroundImg", '"' + "/images/dim0.png" + '"'),
-	   ("slideRect", "[19, 90, 122, 42]"),
-	   ("opacity", "\"/images/dim0light.png\"")
-   )
->>>>>>> origin/master:src/main/scala/org/sombrero/widget/knx/Dimmer.scala
-
-   def setTemp(value: String): JsCmd = {
-     println("From " + id + " getTemp recieved")
-     println("Value: " + value)
-     JsRaw(";").cmd
-   }
-     
-   def getTempJsExp(): JsExp = getOption("temp")
+    )
    
    def translate(value: Array[Byte]): String = knx.translate(knx.translate(value)).toString
-<<<<<<< HEAD:src/main/scala/org/sombrero/widget/knx/Dimmer.scala
    def translate(value: String): String = {
       Log.info("I'm a Dimmer tell me what to do");
       value
    }
-=======
->>>>>>> origin/master:src/main/scala/org/sombrero/widget/knx/Dimmer.scala
 }
 
 case class KNXDimmer(destAddress:String)  

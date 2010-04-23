@@ -3,7 +3,6 @@
 <head>
 <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
 <title>Sombrero - Admin</title>
-<<<<<<< HEAD:src/main/webapp/templates-hidden/default-admin.html
 
 	<link href="/classpath/layout_css/default-user/menu.css" rel="stylesheet" type="text/css" />
 	<link href="/classpath/layout_css/default-user/my_layout.css" rel="stylesheet" type="text/css" />
@@ -11,14 +10,6 @@
 		<link href="/classpath/css/default/patch_my_layout.css" rel="stylesheet" type="text/css" />
 	<![endif]-->
 	
-=======
-	<link href="/classpath/layout_css/default-admin/my_layout.css" rel="stylesheet" type="text/css" />
-	<link href="/classpath/layout_css/default-admin/menu.css" rel="stylesheet" type="text/css" />
-	<!--[if lte IE 7]>
-		<link href="/classpath/css/admin/patch_my_layout.css" rel="stylesheet" type="text/css" />
-	<![endif]-->
-
->>>>>>> origin/master:src/main/webapp/templates-hidden/default-admin.html
 	<link type="text/css" href="/classpath/widgettheme_css/sunny/jquery-ui-1.7.2.custom.css" rel="stylesheet" />
   	<script type="text/javascript" src="/classpath/framework_js/jquery-1.4.2.min.js"></script>
   	<script type="text/javascript" src="/classpath/framework_js/jquery-ui-1.7.2.custom.min.js"></script>
@@ -34,47 +25,66 @@
   	<script type="text/javascript" src="/classpath/widget/js/ui.protowidget.js"></script>
 	<link type="text/css" href="/classpath/widget/css/fg.menu.css" media="screen" rel="stylesheet" />
   	
-	<script type="text/javascript" src="/classpath/plugin/js/fancybox/jquery.fancybox-1.3.0.pack.js"></script>
-	<script type="text/javascript" src="/classpath/plugin/js/fancybox/jquery.easing-1.3.pack.js"></script>
-	<script type="text/javascript" src="/classpath/plugin/js/fancybox/jquery.mousewheel-3.0.2.pack.js"></script>
-	<link type="text/css" href="/classpath/plugin/css/fancybox/jquery.fancybox-1.3.0.css" rel="stylesheet" />
+	<script type="text/javascript" src="/classpath/plugin/fancybox/jquery.fancybox-1.3.0.pack.js"></script>
+	<script type="text/javascript" src="/classpath/plugin/fancybox/jquery.easing-1.3.pack.js"></script>
+	<script type="text/javascript" src="/classpath/plugin/fancybox/jquery.mousewheel-3.0.2.pack.js"></script>
+	<link type="text/css" href="/classpath/plugin/fancybox/jquery.fancybox-1.3.0.css" rel="stylesheet" />
 	
-<<<<<<< HEAD:src/main/webapp/templates-hidden/default-admin.html
 	
-	<script type="text/javascript" src="/classpath/plugin/js/sidebar/jquery.sidebar.js"></script>
-	<link type="text/css" href="/classpath/plugin/css/sidebar/red-glass/sidebar.css" rel="stylesheet" />
+	<script type="text/javascript" src="/classpath/plugin/sidebar/jquery.sidebar.js"></script>
+	<link type="text/css" href="/classpath/plugin/sidebar/red-glass/sidebar.css" rel="stylesheet" />
+	
+	<!-- <script type="text/javascript" src="/classpath/plugin/niceforms/niceforms.js"></script>
+	<link type="text/css" href="/classpath/plugin/niceforms/niceforms-default.css" rel="stylesheet" />-->
+	
+	<script type="text/javascript" src="/classpath/plugin/jquery-message/jquery.message.js"></script>
+	<link type="text/css" href="/classpath/plugin/jquery-message/jquery.message.css" rel="stylesheet" />
+	
+	<script type="text/javascript" src="/classpath/plugin/jNice/jNice.js"></script>
+	<link type="text/css" href="/classpath/plugin/jNice/jNice.css" rel="stylesheet" />
+	
+	<script type="text/javascript" src="/classpath/plugin/uniform/jquery.uniform.js"></script>
+	<link type="text/css" href="/classpath/plugin/uniform/css/uniform.default.css" rel="stylesheet" />
 	<script type="text/javascript">
     	$(document.body).ready(function(){
             $("#col2_content").sidebar({
-				height: 600,
+				height: 300,
 				width: 400,
+				top: 40,
 				position: "right",
-				injectWidth: 50
+				injectWidth: 40
 			});
+            $("#AdminSideBar").sidebar({
+				height: 350,
+				width: 400,
+				top: 360,
+				position: "right",
+				injectWidth: 40
+			});
+            $("select, input:checkbox, input:radio, input:file").uniform();
         });
     </script>
-=======
->>>>>>> origin/master:src/main/webapp/templates-hidden/default-admin.html
+    
+	<style type="text/css">
+		tr > td:first-child {
+			width: 120px;
+		}
+	</style>
 </head> 
 <body>
+
   <div class="page_margins">
     <div id="border-top">
       <div id="edge-tl"></div>
       <div id="edge-tr"></div>
     </div>
+    
     <div class="page">
       <div id="header" style="height:260px">
         <div id="topnav">
      	  <lift:UserMenu >
-     	  	<menu:link1 /> |
-<<<<<<< HEAD:src/main/webapp/templates-hidden/default-admin.html
-     	  	<menu:link2 /> |
-     	  	<menu:link3 />
-=======
-     	  	<menu:link2 />
->>>>>>> origin/master:src/main/webapp/templates-hidden/default-admin.html
-     	  </lift:UserMenu> | 
-		  <lift:Connection>
+     	  	<menu:link1 /> | <menu:link2 /> |<menu:link3 />
+     	  </lift:UserMenu> | <lift:Connection>
                			<cn:create /> |
                			<cn:destroy /> 
           </lift:Connection>
@@ -85,48 +95,53 @@
         <h1>Control your Home</h1>
         <lift:Favorites />
       </div>
+      
       <div id="teaser">
       </div>
+      
       <div id="main">
         <div id="col1" style="min-width: 250px;height:800px;">
           <div id="col1_content" class="clearfix">
+           <h2><lift:Room.name/></h2>
            <lift:TreeView />
           </div>
-        </div>
+        </div>  
+        
         <div id="col2">
-          <div id="col2_content" class="clearfix">
-            <!-- add your content here -->
-               <lift:Room.name/> 
-               <lift:Room.add form="POST">
-                 New Room name: <br /><room:name/> <br />
-    			New Room image:<room:image/> <br/>
-                 <br/>
-                 <room:submit/>
-               </lift:Room.add>
-               <lift:Room.remove form="POST">
-                 <room:current/>
-               </lift:Room.remove>
+          <div id="col2_content" style="left:25px;" class="clearfix">
   			   <table>
-  				<lift:widgetadd form="POST" multipart="TRUE" />
+               	<lift:Room.add form="POST">
+                	<tr><td>New Room name:</td> <td><room:name/></td></tr>
+    				<tr><td style="position:absolute;top:40px;">New Room image:</td> <td><room:image/></td></tr>
+                 	<tr><td><room:submit/></td></tr>
+               	</lift:Room.add>
+               	<lift:Room.remove form="POST">
+                 	<tr><td><room:current/></td></tr>
+               	</lift:Room.remove>
+  			   	<lift:widgetadd form="POST" multipart="TRUE" />
   			   </table>
-  			   <lift:ToolBox />
           </div>
+  		  <div id="AdminSideBar">
+  	         <lift:ToolBox />
+  	 	  </div>
         </div>
+        
         <div id="col3">
           <div id="col3_content" class="clearfix">
-            <!-- add your content here -->
             <lift:bind name="content" />
             <lift:msgs/>
-            
           </div>
           <!-- IE Column Clearing -->
           <div id="ie_clearing"> &#160; </div>
         </div>
+        
+        
       </div>
       <!-- begin: #footer -->
       <div id="footer">Layout based on <a href="http://www.yaml.de/">YAML</a> by Gabriel Grill
       </div>
     </div>
+    
     <div id="border-bottom">
       <div id="edge-bl"></div>
       <div id="edge-br"></div>

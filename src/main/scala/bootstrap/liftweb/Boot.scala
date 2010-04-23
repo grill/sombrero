@@ -45,29 +45,20 @@ class Boot {
     		() => RedirectResponse("/login"))
      
     //Create Tables
-<<<<<<< HEAD:src/main/scala/bootstrap/liftweb/Boot.scala
-    Schemifier.schemify(true, Log.infoF _, Room, User, Position, Widget, KNXWidget, RoomlinkWidget, ContainerWidget, Fav)
-=======
     Schemifier.schemify(true, Log.infoF _, Room, User, Position, Widget, KNXWidget, RoomlinkWidget, Fav, KNXGroup, KNXAlias)
->>>>>>> origin/master:src/main/scala/bootstrap/liftweb/Boot.scala
     
     // Build SiteMap
    val entries = Menu(Loc("Home", List("index"), "Home")) ::
      Menu(Loc("KNX", ("KNXWidgetForm" :: Nil) -> true, "KNXWidgetForm", Hidden, If(() => true, null)) ) ::
      Menu( Loc("DBtools", List("db"), "DBtools")) ::
      Menu( Loc("RoomFoo", List("roomadd"), "Add/Remove")) ::
-<<<<<<< HEAD:src/main/scala/bootstrap/liftweb/Boot.scala
-     Menu( Loc("Discovery", List("discovery"), "Router Discovery")) ::
-     Menu( new RoomLoc()) ::
-     Menu( new WidgetLoc()) :: Nil
-=======
      Menu( Loc("Discovery", List("discovery"), "Router Discovery")) ::
      Menu( Loc("Userlist", List("userlist"), "User List", Loc.If(User.superUser_? _, NotFoundResponse))) ::
      Menu( Loc("Grouplist", List("knxgroups"), "Group List", Loc.If(User.superUser_? _, NotFoundResponse))) ::
      Menu( new RoomLoc()) ::
      Menu( new WidgetLoc()) ::
      Menu( new UserLoc()) :: Nil
->>>>>>> origin/master:src/main/scala/bootstrap/liftweb/Boot.scala
+   
     LiftRules.setSiteMap(SiteMap((entries ::: User.sitemap):_*))
     
   //Custom Dispatch for Room Images

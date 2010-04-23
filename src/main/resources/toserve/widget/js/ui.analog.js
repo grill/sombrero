@@ -26,19 +26,11 @@ $.widget("ui.analog", {
 			}
 		}));
 		
-<<<<<<< HEAD:src/main/resources/toserve/widget/js/ui.analog.js
 		this.backimg = $("<div></div>")
 		.css({
 			position: 	"absolute",
 			//height:  	height + "px",
 			//width: 		width + "px", 
-=======
-		var backimg = $("<div></div>")
-		.css({
-			position: 	"absolute",
-			height:  	height + "px",
-			width: 		width + "px", 
->>>>>>> origin/master:src/main/resources/toserve/widget/js/ui.analog.js
 			top: 		hoff + "px",
 			left: 		"0px"})
 		.css("z-index", "2")
@@ -46,11 +38,7 @@ $.widget("ui.analog", {
 		.html('<img src="' + this._getData('backgroundImg') + '" />')
 		.appendTo(this.element);
 		
-<<<<<<< HEAD:src/main/resources/toserve/widget/js/ui.analog.js
 		this.frontimg = $("<div></div>")
-=======
-		var frontimg = $("<div></div>")
->>>>>>> origin/master:src/main/resources/toserve/widget/js/ui.analog.js
 		.css({
 			position: 	"absolute",
 			height:  	height + "px",
@@ -63,11 +51,7 @@ $.widget("ui.analog", {
 		.appendTo(this.element);
 		
 		if(this._getData('opacity') != ""){
-<<<<<<< HEAD:src/main/resources/toserve/widget/js/ui.analog.js
 			this.optimg = $("<div></div>")
-=======
-			var optimg = $("<div></div>")
->>>>>>> origin/master:src/main/resources/toserve/widget/js/ui.analog.js
 			.css({
 				position: 	"absolute",
 				height:  	height + "px",
@@ -92,31 +76,9 @@ $.widget("ui.analog", {
 		.attr("id", this._getData('prefix') + "mid")
 		.text(" ")
 		.mousedown(function(e){
-<<<<<<< HEAD:src/main/resources/toserve/widget/js/ui.analog.js
 			var y = /*slide_rect[0] +*/ (e.pageY- that.element.offset().top)-hoff;//(e.pageY- this.offsetTop);
 		
 			that.update_value(y);
-=======
-			//alert(slide_rect[0]);
-			
-			var x = /*slide_rect[1] +*/ (e.pageX- that.element.offset().left);//(e.pageX- this.offsetLeft);
-			var y = /*slide_rect[0] +*/ (e.pageY- that.element.offset().top)-hoff;//(e.pageY- this.offsetTop);
-		
-			if(that._getData('clip_front'))
-				if(that._getData('reverse'))
-					backimg.css("clip", "rect(0px, " + width + "px, " + y + "px, 0px)");
-				else
-					backimg.css("clip", "rect(" + y + "px, " + width + "px, " + height + "px, 0px)");
-			else
-				if(that._getData('reverse'))
-					frontimg.css("clip", "rect(0px, " + width + "px, " + y + "px, 0px)");
-				else
-					frontimg.css("clip", "rect(" + y + "px, " + width + "px, " + height + "px, 0px)");
-			
-			if(that._getData('opacity') != ""){
-				optimg.css("opacity", ((y-slide_rect[0])/slide_rect[2]-1)*-1);
-			}	
->>>>>>> origin/master:src/main/resources/toserve/widget/js/ui.analog.js
 			inRange = true;
 		})
 		.appendTo(this.element);
@@ -124,53 +86,24 @@ $.widget("ui.analog", {
 		$('html')
 		.mousemove(function(e){
 			if(inRange){
-<<<<<<< HEAD:src/main/resources/toserve/widget/js/ui.analog.js
 				var y = /*slide_rect[0] +*/ (e.pageY-that.element.offset().top)-hoff;//(e.pageY- this.offsetTop);
 				
 				that.update_value(y);
-=======
-				var x = /*slide_rect[1] +*/ (e.pageX-that.element.offset().left);//(e.pageX- this.offsetLeft);
-				var y = /*slide_rect[0] +*/ (e.pageY-that.element.offset().top)-hoff;//(e.pageY- this.offsetTop);
-				
-				if(that._getData('clip_front'))
-					if(that._getData('reverse'))
-						backimg.css("clip", "rect(0px, " + width + "px, " + y + "px, 0px)");
-					else
-						backimg.css("clip", "rect(" + y + "px, " + width + "px, " + height + "px, 0px)");
-				else
-					if(that._getData('reverse'))
-						frontimg.css("clip", "rect(0px, " + width + "px, " + y + "px, 0px)");
-					else
-						frontimg.css("clip", "rect(" + y + "px, " + width + "px, " + height + "px, 0px)");
-				if(that._getData('opacity') != ""){
-					optimg.css("opacity", ((y-slide_rect[0])/slide_rect[2]-1)*-1);
-				}
->>>>>>> origin/master:src/main/resources/toserve/widget/js/ui.analog.js
 			}
 		})
 		.mouseup(function(e){
 			var y = (e.pageY- that.element.offset().top)-hoff;
-<<<<<<< HEAD:src/main/resources/toserve/widget/js/ui.analog.js
 		
 			if(inRange){
 				inRange = false;
-				that._setData('value', ((y-slide_rect[0])/slide_rect[2]-1)*-1);
-=======
-			
-			if(inRange){
-				inRange = false;
 				that._setData('temp', ((y-slide_rect[0])/slide_rect[2]-1)*-1);
->>>>>>> origin/master:src/main/resources/toserve/widget/js/ui.analog.js
 				//alert(that._getData('temp'));
 				that._getData('change')();
 			}
 		});
 		
-<<<<<<< HEAD:src/main/resources/toserve/widget/js/ui.analog.js
 		this.update_value(this._getData('value'));
 		
-=======
->>>>>>> origin/master:src/main/resources/toserve/widget/js/ui.analog.js
 		this.element.titlebar({
 			top: 5,
 			left: 4,
@@ -180,7 +113,6 @@ $.widget("ui.analog", {
     	});
     	
 		this.element.disableSelection();
-<<<<<<< HEAD:src/main/resources/toserve/widget/js/ui.analog.js
 	},
 	update_value: function(y){
 		var slide_rect = this._getData('slideRect');
@@ -201,8 +133,6 @@ $.widget("ui.analog", {
 			this.optimg.css("opacity", ((y-slide_rect[0])/slide_rect[2]-1)*-1);
 		}
 		this._setData('value', y);
-=======
->>>>>>> origin/master:src/main/resources/toserve/widget/js/ui.analog.js
 	}
 });
 
@@ -216,10 +146,6 @@ $.extend($.ui.analog, {
 	    backgroundImg: "/images/temperatur0bg.png",
 	    frontImg: "/images/temperatur0fg.png",
 	    slideRect: [9, 59, 122, 42], 	//top left height width
-<<<<<<< HEAD:src/main/resources/toserve/widget/js/ui.analog.js
-=======
-	    change: function(){},
->>>>>>> origin/master:src/main/resources/toserve/widget/js/ui.analog.js
 	    stop: function(){},
 	    prefix: "",							//prefix for the id atribute
 	    imgId: "frontImg",
@@ -244,13 +170,9 @@ $.extend($.ui.analog, {
 		admin_url: 		[ "",
 		           		  "" ],
 		in_toolbox:		function(){},
-<<<<<<< HEAD:src/main/resources/toserve/widget/js/ui.analog.js
 		out_toolbox:	function(){},
 	    value: 			0,						//true -> on - false -> off
 		change:			function(){}
-=======
-		out_toolbox:	function(){}
->>>>>>> origin/master:src/main/resources/toserve/widget/js/ui.analog.js
 	}
 });
 

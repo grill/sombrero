@@ -3,17 +3,11 @@ package org.sombrero.widget
 import _root_.net.liftweb.http._
 import S._
 import _root_.scala.xml._
-<<<<<<< HEAD:src/main/scala/org/sombrero/widget/Widget.scala
 import _root_.net.liftweb.http.js.{JE,JsCmd,JsCmds, JsExp}
 import JsCmds._
 import JE.{JsRaw,Str}
 import _root_.net.liftweb.util._
 import _root_.scala.collection.mutable.Map
-=======
-import _root_.net.liftweb.http.js.{JE,JsCmd,JsCmds}
-import JE.{JsRaw,Str}
-import _root_.net.liftweb.util._
->>>>>>> origin/master:src/main/scala/org/sombrero/widget/Widget.scala
 
 import org.sombrero.util._
 import org.sombrero.snippet._
@@ -25,25 +19,25 @@ import tuwien.auto.calimero.link._
 import tuwien.auto.calimero.process._
 import tuwien.auto.calimero.link.medium._
 import tuwien.auto.calimero.datapoint._
-<<<<<<< HEAD:src/main/scala/org/sombrero/widget/Widget.scala
 import tuwien.auto.calimero.dptxlator._
 
-=======
-import tuwien.auto.calimero.dptxlator._  
->>>>>>> origin/master:src/main/scala/org/sombrero/widget/Widget.scala
 
 object Container {
 	val htmlid = "col3_content"
 }
-<<<<<<< HEAD:src/main/scala/org/sombrero/widget/Widget.scala
 
-trait AdminSideBar {
+trait FavParent {
+  this: Widget =>
+  val copy = "$(\"#FavCh_" + id + "\")"
+  if(isFav) properties ++ Map("copy" -> copy)
+}
+
+trait AdminSideBar extends FavParent{
   this: Widget =>
   properties ++ Map("admin_img" -> """["ui-icon-help",
                                        "ui-icon-wrench",
                                        "ui-icon-trash",
                                        "ui-icon-plus"]""")
-  id = "Adm_" + id
 }
 
 trait FavChild {
@@ -52,11 +46,7 @@ trait FavChild {
   parent = Fav.htmlid
 }
 
-trait FavParent {
-  this: Widget =>
-  val copy = "$(\"#FavCh_" + id + "\")"
-  if(isFav) properties ++ Map("copy" -> copy)
-}
+
 
 abstract class StateWidget(data: model.Widget, widgetType: String) 
 	extends CommandWidget(data, widgetType) {
@@ -106,26 +96,6 @@ abstract class Widget(data: model.Widget, widgetType: String) {
  
 	//Distributor ! Subscribe(data.id.is, com)     
 	def render(): NodeSeq = JavaScriptHelper.createWidget(id, widgetType, properties.toList :::
-=======
-  
-abstract class StateWidget(data: model.Widget, prefix: String, widgetType: String, parent: String) 
-	extends Widget(data, prefix, widgetType, parent) {
-  
- 	def setValue(value: Array[Byte]) = call("update_value", translate(value)).cmd
- 	def translate(value: Array[Byte]): String 
-}
-
-abstract class CommandWidget(data: model.Widget, prefix: String, widgetType: String, parent: String) 
-	extends Widget(data, prefix, widgetType, parent)
-
-abstract class Widget(data: model.Widget, prefix: String, widgetType: String, parent: String) {
-	var id = prefix + "_" + widgetType + "_" + data.id.is
-	var properties: List[(String, String)]
-	val com = new CometWidget(this)
- 
-	//Distributor ! Subscribe(data.id.is, com)     
-	def render(): NodeSeq = JavaScriptHelper.createWidget(id, widgetType, properties :::
->>>>>>> origin/master:src/main/scala/org/sombrero/widget/Widget.scala
 		List(	("top", data.top.is.toString),
 				("left", data.left.is.toString),
 				("text", '"' + data.name.is + '"'),
@@ -138,13 +108,8 @@ abstract class Widget(data: model.Widget, prefix: String, widgetType: String, pa
            		("out_toolbox", JavaScriptHelper.callback(delToolboxitem(Room.current)))
 		) ::: admin ::: parentTag ::: isActive,
 		content()
-<<<<<<< HEAD:src/main/scala/org/sombrero/widget/Widget.scala
 	)
  
-=======
-	)       
-	  
->>>>>>> origin/master:src/main/scala/org/sombrero/widget/Widget.scala
  	def newToolboxitem(): JsCmd = {
   		 System.out.println("newToolbox");
   		 data.room(Empty).save
@@ -196,42 +161,26 @@ abstract class Widget(data: model.Widget, prefix: String, widgetType: String, pa
     def admin = if (User.superUser_?) List(("admin", "$(\"#" + ToolBox.id + "\")"), 
                 ("admin_url", """[ "",
 		         "/widget/""" + data.id.is + """" ]""")) else Nil
-<<<<<<< HEAD:src/main/scala/org/sombrero/widget/Widget.scala
     def isActive = if(isFav) List(("is_active", "true")) else Nil
 }
 
 abstract class KNXWidget[T](destAddress:String, name:String, mainNumber:Int, dptID:String){
-=======
-    def isActive = if(Fav.isFav(data)) List(("is_active", "true")) else Nil
-}
-
-abstract class KNXWidget[T] (destAddress:String, name:String, mainNumber:Int, dptID:String){
->>>>>>> origin/master:src/main/scala/org/sombrero/widget/Widget.scala
 	System.out.println(destAddress);
     val destDevice = new GroupAddress(destAddress)
     val dptx: DPTXlator
     val dp: Datapoint
     
     def translate (value: T): String
-<<<<<<< HEAD:src/main/scala/org/sombrero/widget/Widget.scala
 	def write (status: T) = if(Connection.isConnected) Connection.knxComm.write(dp, translate(status))
 	def write (status: String) = if(Connection.isConnected) Connection.knxComm.write(dp, status)
 } 
   
 abstract class StateKNXWidget[T] (destAddress:String, name:String, mainNumber:Int, dptID:String)
 		 extends KNXWidget[T](destAddress, name, mainNumber, dptID){
-=======
-	def write (status: T) = Connection.knxComm.write(dp, translate(status))
-} 
-  
-abstract class StateKNXWidget[T] (destAddress:String, name:String, mainNumber:Int, dptID:String)
-		 extends KNXWidget [T] (destAddress, name, mainNumber, dptID){
->>>>>>> origin/master:src/main/scala/org/sombrero/widget/Widget.scala
     override val dp = new StateDP(destDevice, name, mainNumber, dptID)
     
     def translate (value: String): T
     def translate (value: Array[Byte]): String
-<<<<<<< HEAD:src/main/scala/org/sombrero/widget/Widget.scala
 	def getStatus (): Box[T] = {
 	  if(Connection.isConnected){
 		  Log.info(Connection.knxComm.toString)
@@ -243,16 +192,5 @@ abstract class StateKNXWidget[T] (destAddress:String, name:String, mainNumber:In
 
 abstract class CommandKNXWidget [T] (destAddress:String, name:String, mainNumber:Int, dptID:String)
 		 extends KNXWidget[T] (destAddress, name, mainNumber, dptID){
-=======
-	def getStatus (): T = {
-	  Log.info(Connection.knxComm.toString)
-	  translate(
-	    Connection.knxComm.read(dp)) 
-	}   
-}
-
-abstract class CommandKNXWidget [T] (destAddress:String, name:String, mainNumber:Int, dptID:String)
-		 extends KNXWidget [T](destAddress, name, mainNumber, dptID){
->>>>>>> origin/master:src/main/scala/org/sombrero/widget/Widget.scala
     override val dp = new CommandDP(destDevice, name, mainNumber, dptID)
 }

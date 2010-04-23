@@ -38,6 +38,8 @@ object JavaScriptHelper {
             "});" 
 	}
  
+ 	def error(mes: String): JsExp = JsRaw("$().message(\"Hello world!\")")
+ 
  	def call(id:String, widgetType:String, option:String, value:String) = 
  		JsRaw("$('#" + id + "')." + widgetType + "('" + option + "', " + value + ");")
  	def css(id:String, attr: String): JsExp = 
@@ -49,4 +51,13 @@ object JavaScriptHelper {
  		JsRaw("$('#" + id + "')." + widgetType + "('option', '" + option + "', " + value + "); " + "$('#" + id + "')." + widgetType + "('updateStatus')")
   
  	def callback(method: () => JsCmd) = "function(){" + SHtml.ajaxInvoke(method)._2 + ";}"
+  
+ 	def popup(id:String, title: String, content: NodeSeq): NodeSeq = <div id={id}>{content}</div>++onLoad(initWidget(id, "fancybox", Map(
+		    		"width"				-> "\"75%\"",
+		    		"height"			-> "\"75%\"",
+		            "autoScale"     	-> "false",
+		            "transitionIn"		-> "\"none\"",
+		    		"transitionOut"		-> "\"none\"",
+		    		"title"				-> ("\"" + title + "\"")
+ 	).toList))
 }

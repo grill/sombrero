@@ -78,12 +78,8 @@ class WidgetLoc extends Loc[WidgetAccess] {
     realrender(ignore)
     */
     def realrender(ignore : NodeSeq) : NodeSeq = {
-<<<<<<< HEAD:src/main/scala/org/sombrero/util/WidgetLoc.scala
-      w.toForm(Empty, realrender _, _.save) ++ w.dataForm(realrender _, _.save) ++
-=======
       w.toForm(Empty, realrender _, _.save) ++ w.dataForm(realrender _, _.save) ++
       w.aliasForm ++
->>>>>>> origin/master:src/main/scala/org/sombrero/util/WidgetLoc.scala
       submit("Save Widget", () => S.redirectTo(w.room.obj.map("/room/" + _.id.is) openOr "/"))
     }
     realrender(ignore)

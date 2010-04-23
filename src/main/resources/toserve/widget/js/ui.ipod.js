@@ -163,17 +163,10 @@ $.widget("ui.ipod", {
 				}
 				// if the link is a leaf node (doesn't open a child menu)
 				else {
-<<<<<<< HEAD:src/main/resources/toserve/widget/js/ui.ipod.js
 					/*$(this).click(function(){
 						menu.chooseItem(this);
 						return false;
 					});*/
-=======
-					$(this).click(function(){
-						menu.chooseItem(this);
-						return false;
-					});
->>>>>>> origin/master:src/main/resources/toserve/widget/js/ui.ipod.js
 				};
 			});
 		}

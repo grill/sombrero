@@ -24,13 +24,11 @@ $.widget("ui.unary", {
 		.attr("src", this._getData('img'))
 		
 		.click(function (){
-			if(!that.element.protowidget('option', 'isDragged'))
-<<<<<<< HEAD:src/main/resources/toserve/widget/js/ui.unary.js
+			if(!that.element.protowidget('option', 'isDragged')){
+				alert("hi");
 				that._getData('change')();
-=======
-				that._getData('click')();
->>>>>>> origin/master:src/main/resources/toserve/widget/js/ui.unary.js
-			else
+				alert("hi");
+			}else
 				that.element.protowidget('option', 'isDragged', false);
 
 		})
@@ -71,13 +69,9 @@ $.extend($.ui.unary, {
 		           		  "" ],
 		hoveroff:		false,
 		in_toolbox:		function(){},
-<<<<<<< HEAD:src/main/resources/toserve/widget/js/ui.unary.js
 		out_toolbox:	function(){},
 	    value: 			true,				//true -> on - false -> off
 		change:			function(){}
-=======
-		out_toolbox:	function(){}
->>>>>>> origin/master:src/main/resources/toserve/widget/js/ui.unary.js
 	}
 });
 })(jQuery);
