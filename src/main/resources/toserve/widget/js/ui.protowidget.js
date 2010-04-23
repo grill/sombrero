@@ -130,6 +130,7 @@ $.widget("ui.protowidget", {
 						top: that._getData('top') + "px",
 						left: that._getData('left') + "px"
 					});
+					that.draggable();
 					//that.reactivate();
 					el
 					.removeClass('ui-icon-plus')

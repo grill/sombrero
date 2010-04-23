@@ -11,6 +11,7 @@ $.ui.plugin.add("draggable", "collide", {
     drag: function(event, ui) {
         var $t = $(this), widget = $t.data("draggable");
         if (widget.mode == 'flag') $t.removeClass('ui-draggable-overlapping');
+        var that = this;
 
        $(widget.peers).each(function (i, peer) {
             var $p = $(peer);
@@ -18,7 +19,6 @@ $.ui.plugin.add("draggable", "collide", {
             var iy1 = ui.position.top, iy2 = iy1 + $t.height();
             var px1 = $p.position().left, px2 = px1 + $p.width();
             var py1 = $p.position().top, py2 = py1 + $p.height();
-            
             // Test for overlap
             if (((ix1 <= px1 && ix2 >= px1) || (ix1 <= px2 && ix2 >= px2)) &&
                 ((iy1 <= py1 && iy2 >= py1) || (iy1 <= py2 && iy2 >= py2))) {
@@ -29,7 +29,6 @@ $.ui.plugin.add("draggable", "collide", {
                 } else if (widget.mode == 'block') {
                 	var left = ui.position.left;
                 	var top = ui.position.top;
-                	var that = $(this);
                 	var hel;
                 	
                 	var contains = function(t, l){
@@ -50,6 +49,9 @@ $.ui.plugin.add("draggable", "collide", {
                             
                 			ret = ret || (((l <= px1 && l+$t.width() >= px1) || (l <= px2 && l+$t.width() >= px2)) &&
                                     ((t <= py1 && t+$t.height() >= py1) || (t <= py2 && t+$t.height() >= py2)));
+                			
+                			/*(((l <= px1 && l+$t.width() >= px1) || (l <= px2 && l+$t.width() >= px2)) &&
+                                    ((t <= py1 && t+$t.height() >= py1) || (t <= py2 && t+$t.height() >= py2)));*/
                 		});
                 		return ret;
                 		/*
@@ -57,17 +59,18 @@ $.ui.plugin.add("draggable", "collide", {
                 				t+$t.height() <= py2 ||
                         		l+$t.width() <= px2;*/
                 	};
+                	ui.position.left = widget.oldLeft;
+                	ui.position.top = widget.oldTop;
                 	
-                	if(collision(iy1, ix1) || !contains(iy1, ix1)){
-                		ui.position.left = widget.oldLeft;
-                		ui.position.top = widget.oldTop;
-                	}else{
-                		if(collision(iy1, widget.oldLeft) || !contains(iy1, widget.oldLeft))
-                			widget.oldLeft = ui.position.left;
-                		if(collision(widget.oldTop, ix1) || !contains(widget.oldTop, ix1))
-                			widget.oldTop = ui.position.top;
-                	}
-              
+                	//if(collision(iy1, ix1) /*|| !contains(iy1, ix1)*/){
+                	//	ui.position.left = that.oldLeft;
+                	//	ui.position.top = that.oldTop;
+                	//}else{
+                	//	if(!collision(iy1, that.oldLeft) /*&& contains(iy1, widget.oldLeft)*/)
+                	//		that.oldTop = ui.position.top;
+                	//	if(!collision(that.oldTop, ix1) /*&& contains(widget.oldTop, ix1)*/)
+                	//		that.oldLeft = ui.position.left;
+                	//}
                     // Calculate a ratio of the overlap to decide which face to slide along
                     /*overlapx = Math.min(ix2, px2) - Math.max(ix1, px1);
                     overlapy = Math.min(iy2, py2) - Math.max(iy1, py1);
@@ -119,5 +122,7 @@ $.ui.plugin.add("draggable", "collide", {
                 }
             }
         });
+   	widget.oldTop = ui.position.top;
+	widget.oldLeft = ui.position.left;
     }
 });

@@ -19,6 +19,7 @@
 				position: "left",
 				width: 100,
 				height: 200,
+				pheight: 400,
 				injectWidth: 50,
 				top: null,
 				liMouseOver: {
@@ -27,24 +28,29 @@
 				liMouseOut: {
 					marginLeft: "0px"
 				},
-				open : "mouseenter",
-				close : "mouseleave"
+				open : "click",
+				close : "click"
 			}, options);
 			var m;
+			var pcss = {
+	                height: options.pheight,
+	                width: options.width
+			};
 			var icss;
             var ccss = {
                 height: options.height,
-                width: options.width
+                width: options.injectWidth+5
             };
 			if(options.position == "left" || options.position == "right") {
-                m = options.width - options.injectWidth;
+                m = options.injectWidth;
 				icss = {
 					height: options.height,
 					width: options.injectWidth
 				};
-				if(options.top != null)
+				if(options.top != null){
+					pcss.top = options.top;
 					ccss.top = options.top;
-				else
+				}else
 					ccss.top = ($(window).height()/2) - (options.height/2) + "px";
 				
 			} else {
@@ -61,29 +67,61 @@
 			};
 			var e = {};
 			var l = {};
+			var pe = {};
+			var pl = {};
 			
-			ccss[options.position] = "-" + m + "px";
+			ccss[options.position] =  "-" + 5 + "px";
+			pcss[options.position] =  "-" + options.width + "px";
 			icss[options.position] = m + "px";
-			e[options.position] = 0;
-			l[options.position] = "-" + m;
+			e[options.position] = options.width-15;
+			pe[options.position] = -5;
+			l[options.position] = 0;
+			pl[options.position] = "-" + options.width + "px";
 			
+			var p = $("<div><div/>").attr("id", "jquerySideBar" + new Date().getTime()).addClass("sidebar-container-" + options.position).css(pcss).css({"z-index": "9999"});
 			//container
-			var c = $("<div><div/>").attr("id", "jquerySideBar" + new Date().getTime()).addClass("sidebar-container-" + options.position).css(ccss);
+			var c = $("<div><div/>").attr("id", "jquerySideBar" + new Date().getTime()).addClass("sidebar-container-" + options.position).css(ccss).css({"z-index": "9998"});
 			
 			//inject
-			var i = $("<div><div/>").addClass("sidebar-inject-" + options.position).css(icss);
+			var i = $("<div><div/>").addClass("sidebar-inject-" + options.position).css(icss).css({"z-index": "9999"});
 			
 			//body
 			var b = $("<div><div/>").addClass("sidebar-body").css(bcss)/*.hide()*/;
 			
 			//menu events
             var isEnter;
-			$(this).addClass("sidebar-menu").find("li,li *").mouseenter(function(){
-                if (!isEnter) return;
-				$(this).animate(options.liMouseOver, 250);
-			}).mouseleave(function(){
-				$(this).animate(options.liMouseOut, 250);
-			});
+            var isOut = false;
+			c.addClass("sidebar-menu").find("li,li *").click(function(){
+                if (!isEnter || isOut) return;
+                if(!isOut){
+                	isOut = true;
+                	$(this).animate(options.liMouseOver, 250);
+                }else{
+                	isOut = false;
+                	$(this).animate(options.liMouseOut, 250);
+                }
+            });
+			
+			/*$("body").click(function(){
+				if(!isEnter) return;
+				if(isProcessing) return;
+				isProcessing = true;
+				c.animate(l, {
+					duration: 200,
+					complete: function(){
+						//b.hide("clip", 200, function(){
+							i.fadeIn(200, function(){
+                                isEnter = false;
+								isProcessing = false;
+							});
+						//});
+					}
+				});				
+				p.animate(pl, {
+					duration: 200,
+					complete: function(){}
+				});
+			});*/
 			
 			//container events
 			var isProcessing;
@@ -92,6 +130,11 @@
 				if (isProcessing) return;
 				isEnter = true;
                 isProcessing = true;
+				p.animate(pe, {
+					duration: 200,
+					complete: function(){
+					}
+				});
 				c.animate(e, {
 					duration: 200,
 					complete: function(){
@@ -117,21 +160,26 @@
 							});
 						//});
 					}
+				});				
+				p.animate(pl, {
+					duration: 200,
+					complete: function(){}
 				});
 			});
 			
 			//append to body
 			b.append(this);
-			c.append(b);
+			p.append(b);
 			c.append(i);
 			$(document.body).append(c);
-			$(window).resize(function(){
+			$(document.body).append(p);
+			/*$(window).resize(function(){
 	            if(options.position == "left" || options.position == "right") {
 					c.css({top:($(this).height()/2) - (options.height/2) + "px"});
 	            } else {
 	                c.css({left:($(this).width()/2) - (options.width/2) + "px"});
 	            }
-			});
+			});*/
 		});
 	}
 })(jQuery);

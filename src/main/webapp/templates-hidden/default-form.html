@@ -10,14 +10,54 @@
   	<script type="text/javascript" src="/classpath/framework_js/jquery-1.4.2.min.js"></script>
   	<script type="text/javascript" src="/classpath/framework_js/jquery-ui-1.7.2.custom.min.js"></script>
 		
-	<script type="text/javascript" src="/classpath/plugin/jNice/jNice.js"></script>
-	<link type="text/css" href="/classpath/plugin/jNice/jNice.css" rel="stylesheet" />
+	<!-- <script type="text/javascript" src="/classpath/plugin/jNice/jNice.js"></script>
+	<link type="text/css" href="/classpath/plugin/jNice/jNice.css" rel="stylesheet" />-->
 	
 	<style type="text/css">
 		tr > td:first-child {
-			align: right;
 			width: 200px;
 		}
+	body{
+		font-family:"Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif; 
+		font-size:12px;
+	}
+	p, h1, form, button {border:0; margin:0; padding:0;}
+	#spacer{clear:both; height:1px;}
+	#stylized{
+		border:solid 2px #b7ddf2;
+		background:#ebf4fb;
+		margin:0 auto;
+		width:400px;
+		padding:14px;
+	}
+	#stylized h1 {
+		font-size:14px;
+		font-weight:bold;
+		margin-bottom:8px;
+	}
+	#stylized p{
+		font-size:11px;
+		color:#666666;
+		margin-bottom:20px;
+		border-bottom:solid 1px #b7ddf2;
+		padding-bottom:10px;
+	}
+	#stylized label{
+		display:block;
+		font-weight:bold;
+		text-align:right;
+		width:140px;
+		float:left;
+	}
+	#stylized input{
+		float:left;
+		font-size:12px;
+		padding:4px 2px;
+		border:solid 1px #aacfe4;
+		width:200px;
+		margin:2px 0 20px 10px;
+	}
+	
 	</style>
 	</head>
 	<body>
@@ -25,6 +65,7 @@
          <tr>
             <td style="width:10%; vertical-align:top">
             	<lift:bind name="content" />
+            	<div id="spacer"></div>
             </td>
          </tr>
       </table>

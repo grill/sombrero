@@ -25,9 +25,7 @@ $.widget("ui.unary", {
 		
 		.click(function (){
 			if(!that.element.protowidget('option', 'isDragged')){
-				alert("hi");
 				that._getData('change')();
-				alert("hi");
 			}else
 				that.element.protowidget('option', 'isDragged', false);
 
