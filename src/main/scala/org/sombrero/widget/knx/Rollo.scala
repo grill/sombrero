@@ -23,24 +23,17 @@ import org.sombrero.snippet._
 
 import tuwien.auto.calimero.dptxlator._
 
-
-case class RolloAdmCopy(data: org.sombrero.model.Widget) extends ProtoRollo(data, "Rollo", Container.htmlid)  {
-	properties = ("admin_img", """["ui-icon-help",
-		                  "ui-icon-wrench",
-			              "ui-icon-trash",
-			              "ui-icon-plus"]""") :: properties
-}  
-case class RolloFavCopy(data: org.sombrero.model.Widget) extends ProtoRollo(data, "Fav_Rollo", Fav.htmlid)
-case class Rollo(data: org.sombrero.model.Widget) extends ProtoRollo(data, "Adm_Rollo", Container.htmlid)
-
-class ProtoRollo (data: org.sombrero.model.Widget, prefix:String, parent: String) extends StateWidget(data, prefix, "analog", parent){
+class Rollo (data: org.sombrero.model.Widget) extends StateWidget(data, "analog"){
   val knx = KNXRollo(data.knx().groupAddress.is)
-   var properties = List(
-	   ("change", "function(){" + SHtml.ajaxCall(getTempJsExp, setTemp _)._2 + "}"),
-	   ("frontImg", '"' + "/images/rollo0zu.png" + '"'),
-	   ("backgroundImg", '"' + "/images/rollo0.png" + '"'),
-	   ("slideRect", "[19, 19, 122, 122]"),
-	   ("reverse", "true")
+ // val change = "function(){" + SHtml.ajaxCall(getTempJsExp, setTemp _)._2 + "}"
+  
+//	   "change" -> change,
+  
+   properties ++ Map(
+	   "frontImg" -> "\"/images/rollo0zu.png\"",
+	   "backgroundImg" -> "\"/images/rollo0.png\"",
+	   "slideRect" -> "[19, 19, 122, 122]",
+	   "reverse" -> "true"
    )
 
    def setTemp(value: String): JsCmd = {
@@ -51,6 +44,10 @@ class ProtoRollo (data: org.sombrero.model.Widget, prefix:String, parent: String
    
    def getTempJsExp(): JsExp = getOption("temp")
    def translate(value: Array[Byte]): String = knx.translate(knx.translate(value)).toString
+   def translate(value: String): String = {
+      Log.info("I'm a Rollo tell me what to do");
+      value
+   }
 }
 
 case class KNXRollo(destAddress:String)  

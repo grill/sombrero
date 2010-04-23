@@ -23,14 +23,15 @@ import tuwien.auto.calimero.exception.KNXException._
 import tuwien.auto.calimero.link._
  
 
-class Unary (data: org.sombrero.model.Widget, name:String, parent: String) extends widget.Widget(data, name, "unary", parent){
-   val device = new KNXSwitch(data.knx.groupAddress.is)
+class Unary (data: org.sombrero.model.Widget) extends CommandWidget(data, "unary"){
+   val knx = new KNXSwitch(data.knx.groupAddress.is)
    var status = false//!device.getStatus
-   var properties = List(
-        ("click", JavaScriptHelper.callback(change))
+   properties ++ Map(
+//        "click" -> JavaScriptHelper.callback(change),
+        "img" -> "\"/images/Toggle.png\""
    )
    
-   def change(): JsCmd = {
+/*   def change(): JsCmd = {
      println("From " + id + " change recieved")
      try{
     	 device.write(status)
@@ -40,43 +41,21 @@ class Unary (data: org.sombrero.model.Widget, name:String, parent: String) exten
      status = !status
      JsRaw(";").cmd
    }
+*/   
+   def translate(value: String): String = {
+      Log.info("I'm a Switch tell me what to do");
+      value
+   }
 }
 
-case class SwitchAdmCopy(data: org.sombrero.model.Widget) extends ProtoSwitch(data, "", Container.htmlid)  {
-	properties = ("admin_img", """["ui-icon-help",
-		                  "ui-icon-wrench",
-			              "ui-icon-trash",
-			              "ui-icon-plus"]""") :: properties
-}  
-case class SwitchFavCopy(data: org.sombrero.model.Widget) extends ProtoSwitch(data, "Fav", Fav.htmlid)
-case class Switch(data: org.sombrero.model.Widget) extends ProtoSwitch(data, "Adm", Container.htmlid)
+class Switch (data: model.Widget) extends Unary(data)
 
-class ProtoSwitch (data: model.Widget, prefix: String, parent:String) extends Unary(data, prefix + "_Switch", parent)
-
-case class SwitchOffAdmCopy(data: org.sombrero.model.Widget) extends ProtoSwitchOff(data, "Adm", Container.htmlid)  {
-	properties = ("admin_img", """["ui-icon-help",
-		                  "ui-icon-wrench",
-			              "ui-icon-trash",
-			              "ui-icon-plus"]""") :: properties
-}  
-case class SwitchOffFavCopy(data: org.sombrero.model.Widget) extends ProtoSwitchOff(data, "Fav", Fav.htmlid)
-case class SwitchOff(data: org.sombrero.model.Widget) extends ProtoSwitchOff(data, "", Container.htmlid)
-
-class ProtoSwitchOff (data: org.sombrero.model.Widget, prefix:String, parent: String) extends Unary(data, prefix + "_SwitchOff", parent){  
-  properties ::= ("img", "\"/images/ButtonOff.png\"")
+class SwitchOff (data: org.sombrero.model.Widget) extends Unary(data){  
+  properties ++ Map("img" -> "\"/images/ButtonOff.png\"")
 }
  
-case class SwitchOnAdmCopy(data: org.sombrero.model.Widget) extends ProtoSwitchOn(data, "Adm", Container.htmlid)  {
-	properties = ("admin_img", """["ui-icon-help",
-		                  "ui-icon-wrench",
-			              "ui-icon-trash",
-			              "ui-icon-plus"]""") :: properties
-}  
-case class SwitchOnFavCopy(data: org.sombrero.model.Widget) extends ProtoSwitchOn(data, "Fav", Fav.htmlid)
-case class SwitchOn(data: org.sombrero.model.Widget) extends ProtoSwitchOn(data, "", Container.htmlid)
-
-class ProtoSwitchOn (data: org.sombrero.model.Widget, prefix:String, parent:String) extends Unary(data, prefix + "_SwitchOn", parent){ 
-  properties ::= ("img", "\"/images/ButtonOff.png\"")  
+class SwitchOn (data: org.sombrero.model.Widget) extends Unary(data){ 
+  properties ++ Map("img" -> "\"/images/ButtonOn.png\"")  
 }
   
 class KNXSwitch(destAddress:String)  

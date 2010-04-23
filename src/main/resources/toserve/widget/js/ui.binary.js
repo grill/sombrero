@@ -28,18 +28,19 @@ $.widget("ui.binary", {
 		.attr("src", img)
 		.click(function (){
 			if(!that.element.protowidget('option', 'isDragged'))
-				that._getData('click')();
+				that._getData('change')();
 			else
 				that.element.protowidget('option', 'isDragged', false);
 		})
 		.appendTo(this.element);
 		
 	},
-	updateStatus: function(){
-		if(this._getData('value'))
+	update_value: function(newValue){
+		if(newValue)
 			this.img.attr("src", this._getData('imgOn'));
 		else
 			this.img.attr("src", this._getData('imgOff'));
+		this._setData('value', newValue);
 	}
 });
 
@@ -50,7 +51,6 @@ $.extend($.ui.binary, {
 	    left: 0,							//left value of the widget
 		height: 160,						//height value of the widget
 		width: 160,							//width value of the widget
-	    value: true,						//true -> on - false -> off
 		imgOn: "/images/lightbulb1.png",		//img in widget when value = true
 		imgOff: "/images/lightbulb1off.png",  //img in widget when value = false
 		click: function(){},				//callback is called on click
@@ -75,7 +75,9 @@ $.extend($.ui.binary, {
 		admin_url: 		[ "",
 		           		  "" ],
 		in_toolbox:		function(){},
-		out_toolbox:	function(){}
+		out_toolbox:	function(){},
+	    value: 			true,				//true -> on - false -> off
+		change:			function(){}
 	}
 });
 })(jQuery);

@@ -18,23 +18,12 @@ import org.sombrero.snippet._
 import org.sombrero.util._
 import org.sombrero.model._
 import _root_.scala.xml._
-  
-case class RoomLinkAdmCopy(data: org.sombrero.model.Widget) extends ProtoRoomLink(data, ToolBox.id) {
-	properties ::= ("admin_img", """["ui-icon-help",
-		                  "ui-icon-wrench",
-			              "ui-icon-trash",
-			              "ui-icon-plus"]""") 
-}   
-case class RoomLinkFavCopy(data: org.sombrero.model.Widget) extends ProtoRoomLink(data, Fav.htmlid) {
-	properties ::= ("is_active", "true")
-}
-case class RoomLink(data: org.sombrero.model.Widget) extends ProtoRoomLink(data, Container.htmlid)
 
-class ProtoRoomLink(data: org.sombrero.model.Widget, parent:String) extends Widget(data, "RoomLink", "unary", parent){
-   var properties = List(  
-        ("click", JavaScriptHelper.callback(change)),
-        ("img",  "\"/images/roomlink.png\""), 
-        ("hoveroff", "true")
+class RoomLink(data: org.sombrero.model.Widget) extends widget.Widget(data, "unary") {
+   properties ++ Map(
+        "change" -> JavaScriptHelper.callback(change),
+        "img" ->  "\"/images/roomlink.png\"", 
+        "hoveroff" -> "true"
    )
         
    def change(): JsCmd = {

@@ -25,7 +25,7 @@ $.widget("ui.unary", {
 		
 		.click(function (){
 			if(!that.element.protowidget('option', 'isDragged'))
-				that._getData('click')();
+				that._getData('change')();
 			else
 				that.element.protowidget('option', 'isDragged', false);
 
@@ -67,7 +67,9 @@ $.extend($.ui.unary, {
 		           		  "" ],
 		hoveroff:		false,
 		in_toolbox:		function(){},
-		out_toolbox:	function(){}
+		out_toolbox:	function(){},
+	    value: 			true,				//true -> on - false -> off
+		change:			function(){}
 	}
 });
 })(jQuery);

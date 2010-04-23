@@ -1,8 +1,13 @@
 package org.sombrero.widget.knx
 
+
 import _root_.net.liftweb.http._
-import _root_.net.liftweb.http.js.{JE,JsCmd,JsCmds}
+import S._
+import _root_.scala.xml._
+import _root_.net.liftweb.http.js.{JE,JsCmd,JsCmds, JsExp}
+import JsCmds._
 import JE.{JsRaw,Str}
+import _root_.net.liftweb.util._
 
 import org.sombrero.util._
 import org.sombrero.model._
@@ -10,26 +15,15 @@ import org.sombrero.snippet._
  
 import tuwien.auto.calimero.dptxlator._
 
- 
-case class LampAdmCopy(data: org.sombrero.model.Widget) extends ProtoLamp(data, "Lamp", Container.htmlid)  {
-	properties = ("admin_img", """["ui-icon-help",
-		                            "ui-icon-wrench",
-		           		          	"ui-icon-trash",
-		           		            "ui-icon-plus"]""") ::
-    properties
-}  
-case class LampFavCopy(data: org.sombrero.model.Widget) extends ProtoLamp(data, "Fav_Lamp", Fav.htmlid)
-case class Lamp(data: org.sombrero.model.Widget) extends ProtoLamp(data, "Adm_Lamp", Container.htmlid)
-
-class ProtoLamp (data: org.sombrero.model.Widget, prefix:String, parent: String) extends StateWidget(data, prefix, "binary", parent){
+class Lamp (data: org.sombrero.model.Widget) extends StateWidget(data, "binary"){
    val knx = new KNXLamp(data.knx().groupAddress.is)
    var status:Boolean = false//knx.getStatus 
   
-   var properties = List(
-     	("value", status.toString),
-        ("click", JavaScriptHelper.callback(change))
+   properties ++ Map(
+     	"value" -> status.toString//,
+ //       "click" -> JavaScriptHelper.callback(change)
    )  
-  
+  /*
    def change(): JsCmd = {
      status = !status
      println("From " + id + " change recieved")
@@ -38,8 +32,13 @@ class ProtoLamp (data: org.sombrero.model.Widget, prefix:String, parent: String)
      //knx.write(!knx.getStatus)
      //status = !device.getStatus
      setOption("value", knx.getStatus.toString()).cmd
-   }
+   }*/
+   
    def translate(value: Array[Byte]): String = knx.translate(knx.translate(value)).toString
+   def translate(value: String): String = {
+      Log.info("I'm a Lamp tell me what to do");
+      value
+   }
 }
 
 class KNXLamp (destAddress:String)  

@@ -163,10 +163,10 @@ $.widget("ui.ipod", {
 				}
 				// if the link is a leaf node (doesn't open a child menu)
 				else {
-					$(this).click(function(){
+					/*$(this).click(function(){
 						menu.chooseItem(this);
 						return false;
-					});
+					});*/
 				};
 			});
 		}

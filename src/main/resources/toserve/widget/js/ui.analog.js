@@ -26,11 +26,11 @@ $.widget("ui.analog", {
 			}
 		}));
 		
-		var backimg = $("<div></div>")
+		this.backimg = $("<div></div>")
 		.css({
 			position: 	"absolute",
-			height:  	height + "px",
-			width: 		width + "px", 
+			//height:  	height + "px",
+			//width: 		width + "px", 
 			top: 		hoff + "px",
 			left: 		"0px"})
 		.css("z-index", "2")
@@ -38,7 +38,7 @@ $.widget("ui.analog", {
 		.html('<img src="' + this._getData('backgroundImg') + '" />')
 		.appendTo(this.element);
 		
-		var frontimg = $("<div></div>")
+		this.frontimg = $("<div></div>")
 		.css({
 			position: 	"absolute",
 			height:  	height + "px",
@@ -51,7 +51,7 @@ $.widget("ui.analog", {
 		.appendTo(this.element);
 		
 		if(this._getData('opacity') != ""){
-			var optimg = $("<div></div>")
+			this.optimg = $("<div></div>")
 			.css({
 				position: 	"absolute",
 				height:  	height + "px",
@@ -76,25 +76,9 @@ $.widget("ui.analog", {
 		.attr("id", this._getData('prefix') + "mid")
 		.text(" ")
 		.mousedown(function(e){
-			//alert(slide_rect[0]);
-			
-			var x = /*slide_rect[1] +*/ (e.pageX- that.element.offset().left);//(e.pageX- this.offsetLeft);
 			var y = /*slide_rect[0] +*/ (e.pageY- that.element.offset().top)-hoff;//(e.pageY- this.offsetTop);
 		
-			if(that._getData('clip_front'))
-				if(that._getData('reverse'))
-					backimg.css("clip", "rect(0px, " + width + "px, " + y + "px, 0px)");
-				else
-					backimg.css("clip", "rect(" + y + "px, " + width + "px, " + height + "px, 0px)");
-			else
-				if(that._getData('reverse'))
-					frontimg.css("clip", "rect(0px, " + width + "px, " + y + "px, 0px)");
-				else
-					frontimg.css("clip", "rect(" + y + "px, " + width + "px, " + height + "px, 0px)");
-			
-			if(that._getData('opacity') != ""){
-				optimg.css("opacity", ((y-slide_rect[0])/slide_rect[2]-1)*-1);
-			}	
+			that.update_value(y);
 			inRange = true;
 		})
 		.appendTo(this.element);
@@ -102,34 +86,23 @@ $.widget("ui.analog", {
 		$('html')
 		.mousemove(function(e){
 			if(inRange){
-				var x = /*slide_rect[1] +*/ (e.pageX-that.element.offset().left);//(e.pageX- this.offsetLeft);
 				var y = /*slide_rect[0] +*/ (e.pageY-that.element.offset().top)-hoff;//(e.pageY- this.offsetTop);
 				
-				if(that._getData('clip_front'))
-					if(that._getData('reverse'))
-						backimg.css("clip", "rect(0px, " + width + "px, " + y + "px, 0px)");
-					else
-						backimg.css("clip", "rect(" + y + "px, " + width + "px, " + height + "px, 0px)");
-				else
-					if(that._getData('reverse'))
-						frontimg.css("clip", "rect(0px, " + width + "px, " + y + "px, 0px)");
-					else
-						frontimg.css("clip", "rect(" + y + "px, " + width + "px, " + height + "px, 0px)");
-				if(that._getData('opacity') != ""){
-					optimg.css("opacity", ((y-slide_rect[0])/slide_rect[2]-1)*-1);
-				}
+				that.update_value(y);
 			}
 		})
 		.mouseup(function(e){
 			var y = (e.pageY- that.element.offset().top)-hoff;
-			
+		
 			if(inRange){
 				inRange = false;
-				that._setData('temp', ((y-slide_rect[0])/slide_rect[2]-1)*-1);
+				that._setData('value', ((y-slide_rect[0])/slide_rect[2]-1)*-1);
 				//alert(that._getData('temp'));
 				that._getData('change')();
 			}
 		});
+		
+		this.update_value(this._getData('value'));
 		
 		this.element.titlebar({
 			top: 5,
@@ -140,6 +113,26 @@ $.widget("ui.analog", {
     	});
     	
 		this.element.disableSelection();
+	},
+	update_value: function(y){
+		var slide_rect = this._getData('slideRect');
+		var height = this._getData('height');
+		var width = this._getData('width');
+		
+		if(this._getData('clip_front'))
+			if(this._getData('reverse'))
+				this.backimg.css("clip", "rect(0px, " + width + "px, " + y + "px, 0px)");
+			else
+				this.backimg.css("clip", "rect(" + y + "px, " + width + "px, " + height + "px, 0px)");
+		else
+			if(this._getData('reverse'))
+				this.frontimg.css("clip", "rect(0px, " + width + "px, " + y + "px, 0px)");
+			else
+				this.frontimg.css("clip", "rect(" + y + "px, " + width + "px, " + height + "px, 0px)");
+		if(this._getData('opacity') != ""){
+			this.optimg.css("opacity", ((y-slide_rect[0])/slide_rect[2]-1)*-1);
+		}
+		this._setData('value', y);
 	}
 });
 
@@ -153,7 +146,6 @@ $.extend($.ui.analog, {
 	    backgroundImg: "/images/temperatur0bg.png",
 	    frontImg: "/images/temperatur0fg.png",
 	    slideRect: [9, 59, 122, 42], 	//top left height width
-	    change: function(){},
 	    stop: function(){},
 	    prefix: "",							//prefix for the id atribute
 	    imgId: "frontImg",
@@ -178,7 +170,9 @@ $.extend($.ui.analog, {
 		admin_url: 		[ "",
 		           		  "" ],
 		in_toolbox:		function(){},
-		out_toolbox:	function(){}
+		out_toolbox:	function(){},
+	    value: 			0,						//true -> on - false -> off
+		change:			function(){}
 	}
 });
 
