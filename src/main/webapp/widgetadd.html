@@ -1,6 +1,7 @@
-<lift:Surround.choose>
-  foo!
-  <table>
-  <lift:widgetadd form="POST" multipart="TRUE" />
-  </table>
-</lift:Surround.choose>
+<lift:surround with="default-form" at="content">
+   <div id="stylized">
+   <h1>Add Widget</h1>
+	<p>This is a Form for adding a new widget.</p>
+  <lift:widgetadd.form form="POST" multipart="TRUE" />
+  </div>
+</lift:surround>
