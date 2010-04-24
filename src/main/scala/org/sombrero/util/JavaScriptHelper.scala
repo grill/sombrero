@@ -52,12 +52,16 @@ object JavaScriptHelper {
   
  	def callback(method: () => JsCmd) = "function(){" + SHtml.ajaxInvoke(method)._2 + ";}"
   
- 	def popup(id:String, title: String, content: NodeSeq): NodeSeq = <div id={id}>{content}</div>++onLoad(initWidget(id, "fancybox", Map(
+ 	/**
+ 	 * @param id the id-attribute of the link with the href of the iframe
+     */
+   	def popup(id:String, title: String, content: NodeSeq): NodeSeq = onLoad(initWidget(id, "fancybox", Map(
 		    		"width"				-> "\"75%\"",
 		    		"height"			-> "\"75%\"",
 		            "autoScale"     	-> "false",
 		            "transitionIn"		-> "\"none\"",
 		    		"transitionOut"		-> "\"none\"",
+		    		"\"type\""			-> "\"iframe\"",
 		    		"title"				-> ("\"" + title + "\"")
  	).toList))
 }
