@@ -49,40 +49,16 @@ class WidgetLoc extends Loc[WidgetAccess] {
   })
    
   def widgetForm(w : Widget) = (ignore : NodeSeq) => {
-  /*
-    var wok = false
-    var dataok = false
-    
-    def doSubmit {
-      w.save
-      w.wclass.is match {
-        case s if s == "Lamp" || s == "Temperature" => w.knx.save
-        case "Room" => w.roomlink.save
-      }
-      w.room.obj match {
-        case Full(room) => S.redirectTo("/room/" + room.id.is)
-        case _ => S.redirectTo("/")
-      }
-    }
-    
+    /*
     def realrender(ignore : NodeSeq) : NodeSeq = {
-      wok = false; dataok = false
-      w.toForm(Empty, realrender _, (_) => {Log.info("widget submit"); wok = true}) ++
-      (w.wclass.is match {
-        case s if s == "Lamp" || s == "Temperature" => w.knx.toForm(Empty, realrender _, (_) => {dataok = true})
-        case "Room" => w.roomlink.toForm(Empty, realrender _, (_) => {dataok = true})
-        case _ => Text("")
-      }) ++ submit("Save Widget", doSubmit _)
+      w.toForm(Empty, realrender _, _.save) ++ w.dataForm(realrender _, (d) => {d.save;  S.redirectTo(w.room.obj.map("/room/" + _.id.is) openOr "/")}) ++
+      w.aliasForm ++
+      submit("Save Widget", () => null)//() => S.redirectTo(w.room.obj.map("/room/" + _.id.is) openOr "/"))
     }
-    
     realrender(ignore)
     */
-    def realrender(ignore : NodeSeq) : NodeSeq = {
-      w.toForm(Empty, realrender _, _.save) ++ w.dataForm(realrender _, _.save) ++
-      w.aliasForm ++
-      submit("Save Widget", () => S.redirectTo(w.room.obj.map("/room/" + _.id.is) openOr "/"))
-    }
-    realrender(ignore)
+    var to : String = "/"
+    w.completeForm("Save Widget", (w, wd) => w.room.obj.map((r : model.Room) => to = "/room/" + r.id.is), to)
   } 
    
   override def snippets = {

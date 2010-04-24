@@ -55,6 +55,7 @@ class Boot {
      Menu( Loc("Discovery", List("discovery"), "Router Discovery")) ::
      Menu( Loc("Userlist", List("userlist"), "User List", Loc.If(User.superUser_? _, NotFoundResponse))) ::
      Menu( Loc("Grouplist", List("knxgroups"), "Group List", Loc.If(User.superUser_? _, NotFoundResponse))) ::
+     Menu( Loc("WidgetAdd", List("widgetadd"), "Widget Add", Loc.If(User.superUser_? _, NotFoundResponse))) ::
      Menu( new RoomLoc()) ::
      Menu( new WidgetLoc()) ::
      Menu( new UserLoc()) :: Nil

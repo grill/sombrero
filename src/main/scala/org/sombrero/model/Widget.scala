@@ -52,9 +52,11 @@ class Widget extends LongKeyedMapper[Widget] with IdPK /*with LifecycleCallbacks
   var dataToForm : ((Box[String], (NodeSeq) => NodeSeq, (Any) => Unit) => NodeSeq) => NodeSeq = null
     
   object wclass extends MappedString(this, 32) {
-    private var realfilter : Box[WidgetMetaData[_]] = Empty
-    def filter_=(newFilter : Box[WidgetMetaData[_]]) = {realfilter = newFilter; this}
-    override def defaultValue = realfilter.map((f) => WidgetList.map.filter(_._2.data == f).values.next.id) openOr WidgetList.default.id
+    //private lazy var realfilter : Box[WidgetMetaData[_]] = data.map(_.getSingleton)
+    //def filter(newFilter : Box[WidgetMetaData[_]]) = {realfilter = newFilter; this}
+    object filter extends RequestVar[Box[WidgetMetaData[_]]](Empty)
+    override def defaultValue = WidgetList.default.id
+    //realfilter.map((f) => WidgetList.map.filter(_._2.data == f).values.next.id) openOr 
     
     override def _toForm = {
       def callback(newVal : String) = {
@@ -72,11 +74,12 @@ class Widget extends LongKeyedMapper[Widget] with IdPK /*with LifecycleCallbacks
         else
           Noop
       }
+      
+      if (saved_?) filter(data.map(_.getSingleton))
     
-      if (saved_?) Empty else
       Full(SHtml.ajaxSelect(
           WidgetList.map.filter(
-             realfilter.map((f:(WidgetMetaData[_])) => (wct:(String, WidgetClass[_])) => wct._2.data == f).openOr((_) => true))
+             filter.is.map((f:(WidgetMetaData[_])) => (wct:(String, WidgetClass[_])) => wct._2.data == f).openOr((_) => true))
           .map((wct) => (wct._2.name, wct._2.id)).toSeq, Full(is), callback _))
     }
   }
@@ -97,10 +100,34 @@ class Widget extends LongKeyedMapper[Widget] with IdPK /*with LifecycleCallbacks
     <div id="widgetdata" >{data.map(_.toForm(Empty, redoSnippet, onSubmit)) openOr Text("")}</div>
   }
   
+  def dataForm[Data <: WidgetData[Data]] (initData : Data, redoSnippet : (NodeSeq) => NodeSeq, onSuccess : (Data) => Unit) : NodeSeq = {
+    def onSubmit(something : Any) {
+      something match {
+        case wd : Data =>
+          wd.widget(this)
+          onSuccess(wd)
+        case _ => ;
+      }
+    }
+    
+    wclass.filter(Full(initData.getSingleton))
+    
+    dataToForm = (fu : (Box[String], (NodeSeq) => NodeSeq, (Any) => Unit) => NodeSeq) => fu(Empty, redoSnippet, onSubmit)
+  
+    if (! saved_?) <div id="widgetdata" >{dataToForm(initData.toForm _)}</div> else
+    <div id="widgetdata" >{data.map(_.toForm(Empty, redoSnippet, onSubmit)) openOr Text("")}</div>
+  }
+  
   def aliasForm () : NodeSeq =
     knx_? match {
       case Full(w) =>
         <table>
+          <tr>
+          <td>
+            KNX Groups
+          </td>
+          <td>
+          <table>
           {KNXGroup.findAll().flatMap(g =>
             <tr>
               <td> {
@@ -111,9 +138,44 @@ class Widget extends LongKeyedMapper[Widget] with IdPK /*with LifecycleCallbacks
               } </td>
             </tr>
           )}
+          </table>
+          </td>
+          </tr>
         </table>
       case _ => Text("")
     }
+    
+  def completeForm(submitText : String, onSuccess : (Widget, WidgetData[_]) => Unit, successRedirect : String) : NodeSeq = {
+    def redo(ignore : NodeSeq) = completeForm(submitText, onSuccess, successRedirect)
+    var wb : Box[Widget] = Empty
+    var wdb : Box[WidgetData[_]] = Empty
+    
+    toForm(Empty, redo _, (nw : Widget) => wb = Full(nw)) ++
+    dataForm(redo _, (nwd : WidgetData[_]) => wdb = Full(nwd)) ++
+    aliasForm ++
+    submit(submitText, () =>
+      (wb, wdb) match {
+        case (Full(w), Full(wd)) => onSuccess(w, wd); w.save; wd.widget(this); wd.save; S.redirectTo(successRedirect)
+        case _ =>
+      })
+  }
+  
+  def completeForm[Data <: WidgetData[Data]] (initData : Data, submitText : String, onSuccess : (Widget, Data) => Unit, successRedirect : String) : NodeSeq = {
+    def redo(ignore : NodeSeq) = completeForm(initData, submitText, onSuccess, successRedirect)
+    var wb : Box[Widget] = Empty
+    var wdb : Box[Data] = Empty
+    
+    wclass.filter(Full(initData.getSingleton))
+    
+    toForm(Empty, redo _, (nw : Widget) => wb = Full(nw)) ++
+    dataForm[Data](initData, redo _, (nwd : Data) => wdb = Full(nwd)) ++
+    aliasForm ++
+    submit(submitText, () =>
+      (wb, wdb) match {
+        case (Full(w), Full(wd)) => onSuccess(w : Widget, wd : Data); w.save; wd.widget(this); wd.save; S.redirectTo(successRedirect)
+        case _ =>
+      })
+  }
   
   object room   extends MappedLongForeignKey(this, Room) {
     override def dbIndexed_? = true
@@ -140,7 +202,7 @@ class Widget extends LongKeyedMapper[Widget] with IdPK /*with LifecycleCallbacks
   }
   
   def data () : Box[WidgetData[_]] = {
-    WidgetList.map(wclass.is).data.find(By(WidgetList.map(wclass.is).data._widget, id.is))
+    if(! saved_?) Empty else WidgetList.map(wclass.is).data.find(By(WidgetList.map(wclass.is).data._widget, id.is))
   }
     
   def childs () : List[Widget] = {
@@ -158,9 +220,7 @@ class Widget extends LongKeyedMapper[Widget] with IdPK /*with LifecycleCallbacks
   }
   
   override def delete_! = {
-    val knxlst = KNXWidget.findAll(By(KNXWidget.id, id.is))
-    if (! knxlst.isEmpty)
-      knxlst.head.delete_!
+    data.map(_.delete!)
     super.delete_!
   }
 }

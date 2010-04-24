@@ -33,6 +33,7 @@ class RoomLoc extends Loc[RoomAccess] {
         val rid = aid.toLong
         Room.findAll(By(Room.id, rid)) match {
           case List(room) => {
+            Room.currentVar(Full(room))
             (response("room" :: "display" :: Nil),
             FullRoomAccess(room))
           }
@@ -44,6 +45,7 @@ class RoomLoc extends Loc[RoomAccess] {
        } catch { case e : NumberFormatException => (RewriteResponse("room" :: Nil),
             NoSuchRoom) }
     }
+    /*
     case RewriteRequest(ParsePath(List("room", aid, "widgetadd"), _, _, _), _, _) => {
       Log.info("rewrite called")
       try {
@@ -61,11 +63,10 @@ class RoomLoc extends Loc[RoomAccess] {
        } catch { case e : NumberFormatException => (response("room" :: "display" :: Nil),
             NoSuchRoom) }
     }
-    
+    */
   })
       
   def roomRender(room : Room) = (ignore : NodeSeq) => {
-    Room.currentVar(Full(room))
     var l : List[widget.Widget] = room.widgets.map((w : model.Widget) => w match {
     /*
       case w if(w.wclass.is == "Lamp") => Lamp(w)
@@ -86,8 +87,8 @@ class RoomLoc extends Loc[RoomAccess] {
   override def snippets = {
     case ("roomview", Full(FullRoomAccess(room))) if User.loggedIn_? => roomRender(room)
     case ("roomview", _) => { ignore : NodeSeq => Text("Room not found.") }
-    case ("widgetadd", Full(FullRoomAccess(room))) if User.superUser_? => WidgetAdd.render(room)
-    case ("widgetadd", _) => { ignore : NodeSeq => Text("") }
+    //case ("widgetadd", Full(FullRoomAccess(room))) if User.superUser_? => WidgetAdd.render(room)
+    //case ("widgetadd", _) => { ignore : NodeSeq => Text("") }
   }
   
   override def defaultParams = Empty
