@@ -49,16 +49,10 @@ class WidgetLoc extends Loc[WidgetAccess] {
   })
    
   def widgetForm(w : Widget) = (ignore : NodeSeq) => {
-    /*
-    def realrender(ignore : NodeSeq) : NodeSeq = {
-      w.toForm(Empty, realrender _, _.save) ++ w.dataForm(realrender _, (d) => {d.save;  S.redirectTo(w.room.obj.map("/room/" + _.id.is) openOr "/")}) ++
-      w.aliasForm ++
-      submit("Save Widget", () => null)//() => S.redirectTo(w.room.obj.map("/room/" + _.id.is) openOr "/"))
-    }
-    realrender(ignore)
-    */
-    var to : String = "/"
-    w.completeForm("Save Widget", (w, wd) => w.room.obj.map((r : model.Room) => to = "/room/" + r.id.is), to)
+    //var to : String = "/"
+    //w.completeForm("Save Widget", (w, wd) => w.room.obj.map((r : model.Room) => to = "/room/" + r.id.is), to)
+    
+    w.completeForm("Save Widget", (w, wd) => null, "/closeframe")
   } 
    
   override def snippets = {

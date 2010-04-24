@@ -10,4 +10,9 @@ class Widgetadd {
     case Full(room) => WidgetAdd.render(room)(ignore)
     case _ =>  WidgetAdd.render(ignore)
   }
+  
+  def frame(ignore : NodeSeq) : NodeSeq = model.Room.current match {
+    case Full(room) => WidgetAdd.render(room, ignore, true)
+    case _ =>  WidgetAdd.render(ignore, true)
+  }
 }

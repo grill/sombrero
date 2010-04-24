@@ -10,7 +10,9 @@ import _root_.scala.xml._
 import org.sombrero.model._
 
 object WidgetAdd {
-  def render(where : Room)(ignore : NodeSeq) : NodeSeq = {
+  def render(where : Room)(ignore : NodeSeq) : NodeSeq = render(where, ignore, false)
+
+  def render(where : Room, ignore : NodeSeq, inFrame : Boolean) : NodeSeq = {
     val w : Widget = Widget.create
     
     /*def realrender(ignore : NodeSeq) : NodeSeq = {
@@ -19,10 +21,12 @@ object WidgetAdd {
     }
     realrender(ignore)*/
     
-    w.completeForm("Save Widget", (w, wd) => w.room(where), "/room/" + where.id.is)
+    w.completeForm("Save Widget", (w, wd) => w.room(where), if(inFrame) "/closeframe" else "/room/" + where.id.is)
   }
   
-  def render(ignore : NodeSeq) : NodeSeq = {
+  def render(ignore : NodeSeq) : NodeSeq = render(ignore, false)
+  
+  def render(ignore : NodeSeq, inFrame : Boolean) : NodeSeq = {
     val w : Widget = Widget.create
     
     /*def realrender(ignore : NodeSeq) : NodeSeq = {
@@ -31,6 +35,6 @@ object WidgetAdd {
     }
     realrender(ignore)*/
     
-    w.completeForm("Save Widget", (w, wd) => null, "/")
+    w.completeForm("Save Widget", (w, wd) => null, if(inFrame) "/closeframe" else "/")
   }
 }

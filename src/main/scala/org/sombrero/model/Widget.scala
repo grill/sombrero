@@ -220,7 +220,7 @@ class Widget extends LongKeyedMapper[Widget] with IdPK /*with LifecycleCallbacks
   }
   
   override def delete_! = {
-    data.map(_.delete!)
+    data.map(_.delete_!)
     super.delete_!
   }
 }

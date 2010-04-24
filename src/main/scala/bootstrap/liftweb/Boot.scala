@@ -56,6 +56,7 @@ class Boot {
      Menu( Loc("Userlist", List("userlist"), "User List", Loc.If(User.superUser_? _, NotFoundResponse))) ::
      Menu( Loc("Grouplist", List("knxgroups"), "Group List", Loc.If(User.superUser_? _, NotFoundResponse))) ::
      Menu( Loc("WidgetAdd", List("widgetadd"), "Widget Add", Loc.If(User.superUser_? _, NotFoundResponse))) ::
+     Menu( Loc("CloseFrame", List("closeframe"), "Close Frame")) ::
      Menu( new RoomLoc()) ::
      Menu( new WidgetLoc()) ::
      Menu( new UserLoc()) :: Nil
