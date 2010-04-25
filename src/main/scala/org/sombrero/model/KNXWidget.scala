@@ -22,6 +22,7 @@ class KNXWidget extends WidgetData[KNXWidget] with IdPK{
     }
     override def validations = correctAddress _ :: Nil
   }
+  /*
   object remoteHost extends MappedString(this, 15) {
     def correctAddress(in : String) : List[FieldError] = {
       if(Matchers.ip.findPrefixMatchOf(in) == None) {
@@ -32,6 +33,7 @@ class KNXWidget extends WidgetData[KNXWidget] with IdPK{
     }
     override def validations = correctAddress _ :: Nil
   }  
+  */
 }  
 
 object KNXWidget extends KNXWidget with WidgetMetaData[KNXWidget] {}

@@ -15,7 +15,8 @@ import scala.concurrent.ops._
 class Discovery extends CometActor {
   override def defaultPrefix = Full("rtr")
   
-  def render = bind("entries" -> <table id="routerlist" />,
+  def render = bind("now" -> Text(model.KNXRouter.get_?.map(_.ip.is) openOr "Nothing!"),
+      "entries" -> <table id="routerlist" />,
       "button" ->  ajaxButton("Start discovery", () => {spawn{discover()}; Noop}))
       
   def discover() = {
@@ -28,7 +29,12 @@ class Discovery extends CometActor {
     this ! SetHtml("routerlist",
     <table id="routerlist">
       {d.getSearchResponses.foldLeft(Nil : NodeSeq)
-        {(a,b) => a ++ <tr><td>{b.getControlEndpoint.toString}</td></tr>}
+        {(a,b) => a ++
+          <tr>
+            <td>
+              {SHtml.link(".", () => model.KNXRouter.get.ip(b.getControlEndpoint.toString).save, Text(b.getControlEndpoint.toString))}
+            </td>
+          </tr>}
       }
     </table>
     )

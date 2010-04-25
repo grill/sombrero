@@ -1,6 +1,11 @@
 <lift:Surround.choose>
+    Router IP: <lift:KNXRouter.ip/> <br/>
   <lift:comet type="Discovery" name="something">
     <rtr:button/>
     <rtr:entries/>
   </lift:comet>
+  <lift:KNXRouter.set form="POST">
+    <knxrouter:ip/>
+    <knxrouter:set/>
+  </lift:KNXRouter.set>
 </lift:Surround.choose>

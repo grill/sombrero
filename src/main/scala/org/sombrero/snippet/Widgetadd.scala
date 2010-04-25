@@ -2,9 +2,9 @@ package org.sombrero.snippet
 
 import scala.xml._
 import org.sombrero.model
-import org.sombrero.util.WidgetAdd
 import net.liftweb.util._
 import net.liftweb.http.RequestVar
+import net.liftweb.http.S
 
 class Widgetadd {
   def render(ignore : NodeSeq) : NodeSeq = render(ignore, false)
@@ -33,7 +33,7 @@ class Widgetadd {
       )
   }
   
-  def form(ignore : NodeSeq) : NodeSeq = render(ignore, true)
+  def form(ignore : NodeSeq) : NodeSeq = {Log.info("widgetadd here: " + Widgetadd.newData.is); render(ignore, true)}
   /*
   model.Room.current match {
     case Full(room) => WidgetAdd.render(room, ignore, true)
@@ -43,5 +43,5 @@ class Widgetadd {
 }
 
 object Widgetadd {
-  object newData extends RequestVar[Box[model.KNXWidget]](Empty)
+  object newData extends RequestVar[Box[model.KNXWidget]](S.param("groupAddress").map((s) => model.KNXWidget.create.groupAddress(s)))
 }

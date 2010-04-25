@@ -14,12 +14,13 @@ import SHtml._
 import JsCmds._ // For implicits
 import scala.xml._
 import scala.concurrent.ops._
+import org.sombrero.snippet.Widgetadd
+import org.sombrero.util.JavaScriptHelper
 
-
+case object Clear
 
 class DeviceFinder extends ProcessListener with CometActor{
   override def defaultPrefix = Full("df")
-  Connection.knxComm.addProcessListener(this)
   
   var devs : Map[String, Int] = Map[String,Int]() withDefaultValue 0
 
@@ -28,19 +29,32 @@ class DeviceFinder extends ProcessListener with CometActor{
   
   override def detached(e : DetachEvent) : Unit = {}
   
-  def render = bind("results" -> <table id="dftable" />,
-    "button" -> ajaxButton("Start Device Finder", () => {devs = Map[String,Int]() withDefaultValue 0; Noop}))
+  def render = bind("entries" -> <table id="dftable" />,
+    "button" -> ajaxButton("Start Device Finder", () => {this ! Clear; Noop}))
     
   override def lowPriority : PartialFunction[Any, Unit] = {
   case dev : String => {
       devs = devs(dev) += 1
-      partialUpdate(SetHtml("dftable",
-          <table id="dftable">
-            <tr><td>Device</td><td>Count</td></tr>
-            {devs.foldLeft(Nil : NodeSeq)
-              {(a,b) => a ++ <tr><td>{b._1}</td><td>{b._2}</td></tr>}
-            }
-          </table>))
+      doUpdate
+    }
+    case Clear => {
+      devs = Map[String,Int]("1/2/3" -> 5) withDefaultValue 0
+      Connection.knxComm.addProcessListener(this)
+      doUpdate
     }
   }
+  
+  def doUpdate = partialUpdate(SetHtml("dftable",
+          <table id="dftable">
+            <tr><td>Device</td><td>Count</td></tr>
+            {devs.filter((a) => a._2 >= 3).foldLeft(Nil : NodeSeq)
+              {(a,b) => {
+                val newKNX = Full(KNXWidget.create.groupAddress(b._1))
+                a ++
+                <tr>
+                  <td><a href={"/widgetadd?groupAddress="+b._1} id={"knxaddr" + b._1}>{Text(b._1)}</a></td>
+                  <td>{b._2}</td>
+                </tr> ++ JavaScriptHelper.popup("knxaddr" + b._1, "Add Widget", Text("I have no idea where this will show up."))}
+            }}
+          </table>))
 }
