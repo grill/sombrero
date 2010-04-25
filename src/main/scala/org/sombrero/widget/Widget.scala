@@ -86,11 +86,11 @@ abstract class CommandWidget(data: model.Widget, widgetType: String)
     def translate(value: String): String
 }
 
-abstract class Widget(data: model.Widget, widgetType: String) {
+abstract class Widget(val data: model.Widget, widgetType: String) {
 	var id = widgetType + "_" + data.id.is
 	//var properties: List[(String, String)]
 	val properties: Map[String, String] = Map()
-	val com = new CometWidget(this)
+	//val com = new CometWidget(this)
 	var parent: String = Container.htmlid
 	val isFav = Fav.isFav(data)
  

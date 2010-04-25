@@ -19,10 +19,6 @@ class Widget extends LongKeyedMapper[Widget] with IdPK /*with LifecycleCallbacks
   def getSingleton = Widget
   
   object name extends MappedString(this, 32) {
-   override def apply(s: String) = {
-     Distributor ! TitleMessage(id.is, s)
-     super.apply(s)
-   }
    
    def notEmpty(in : String) : List[FieldError] = in match {
      case "" => List(FieldError(this, Text("Widget needs a name!")))
@@ -227,4 +223,8 @@ class Widget extends LongKeyedMapper[Widget] with IdPK /*with LifecycleCallbacks
   
 object Widget extends Widget with LongKeyedMetaMapper[Widget] {
   def roomless = findAll(By(room, Empty))
+  
+  override def afterSave = List(
+    (w) => Distributor ! DBMessage(w.id.is)
+  )
 }

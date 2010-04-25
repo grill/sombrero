@@ -11,19 +11,34 @@ import _root_.java.sql._
 import scala.actors.Actor
 import scala.actors.Actor._
 import org.sombrero.widget._
+import org.sombrero.model
+import org.sombrero.util.WidgetList
 import scala.xml._
+import net.liftweb.http.js.JE.JsRaw
 
-class CometWidget(parent: widget.Widget) extends CometActor {
+object CometWidget {
+  def render(w : model.Widget) = <lift:comet type="CometWidget" name={w.id.is.toString} />
+}
+
+class CometWidget extends CometActor {
   override def defaultPrefix = Full("cw")
-      
-  override def render = <lift:comet type="CometWidget" name={parent.id} />
+  
+  override def devMode = true
+  
+  var parent : widget.Widget = null
+  override def render = {
+    val w = parent.data.reload
+    parent = WidgetList.map(w.wclass.is).factory(w)
+    parent.render
+  }
   
   override def lowPriority : PartialFunction[Any, Unit] = {
     case TestMessage(id, text) => {
-      System.out.println("TestMessage recived from " + id + " " + text)
+      System.out.println("TestMessage recived for " + id + " " + text)
     }
     case DBMessage(_) => { 
-      
+      //reRender(true)
+      partialUpdate(JsRaw("location.reload()").cmd)
     }
     case TitleMessage(_, s) => {
     	partialUpdate(parent.setTitle(s)) 
@@ -34,5 +49,18 @@ class CometWidget(parent: widget.Widget) extends CometActor {
           case _ => {}
     	}
     }
+  }
+  
+  override def localSetup {
+    //open_! : if it has no name, it's not ours
+    model.Widget.find(By(model.Widget.id, name.open_!.toLong)).map((w) =>
+      parent = WidgetList.map(w.wclass.is).factory(w))
+    Distributor ! Subscribe(parent.data.id.is, this)
+    super.localSetup
+  }
+  
+  override def localShutdown {
+    Distributor ! Unsubscribe(this)
+    super.localShutdown
   }
 }

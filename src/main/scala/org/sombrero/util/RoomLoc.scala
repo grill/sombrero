@@ -16,6 +16,7 @@ import org.sombrero.widget.knx._;
 
 import org.sombrero.model.Room
 import org.sombrero.model.User
+import org.sombrero.comet.CometWidget
 
 
 abstract class RoomAccess 
@@ -66,29 +67,18 @@ class RoomLoc extends Loc[RoomAccess] {
     */
   })
       
-  def roomRender(room : Room) = (ignore : NodeSeq) => {
-    var l : List[widget.Widget] = room.widgets.map((w : model.Widget) => w match {
-    /*
-      case w if(w.wclass.is == "Lamp") => Lamp(w)
-      case w if(w.wclass.is == "Temperature") => Temperature(w)
-      case w if(w.wclass.is == "SwitchOn") => SwitchOn(w)
-      case w if(w.wclass.is == "SwitchOff") => SwitchOff(w) 
-      case w if(w.wclass.is == "Switch") => Switch(w) 
-      case w if(w.wclass.is == "Dimmer") => Dimmer(w)
-      case w if(w.wclass.is == "Rollo") => Rollo(w)
-      */
-      case w if(WidgetList.map.contains(w.wclass.is)) => WidgetList.map(w.wclass.is).factory(w)
-      case _ => null
-             //else /* if (w.wclass.is == "Temperature")*/ new Temperature(w)
-    }).filter(_ != null)
-    l.foldLeft[List[Node]](Nil)((l, n : widget.Widget) => l ::: n.render.toList) : NodeSeq
+  def roomRender(room : Room)(ignore : NodeSeq) : NodeSeq = {
+    /*var l : List[widget.Widget] =*/ room.widgets.map((w : model.Widget) => w match {
+      //case w if(WidgetList.map.contains(w.wclass.is)) => WidgetList.map(w.wclass.is).factory(w)
+      case w => CometWidget.render(w)
+      //case _ => null
+    })//.filter(_ != null)
+    //l.foldLeft[List[Node]](Nil)((l, n : widget.Widget) => l ::: n.render.toList) : NodeSeq
   }
    
   override def snippets = {
     case ("roomview", Full(FullRoomAccess(room))) if User.loggedIn_? => roomRender(room)
     case ("roomview", _) => { ignore : NodeSeq => Text("Room not found.") }
-    //case ("widgetadd", Full(FullRoomAccess(room))) if User.superUser_? => WidgetAdd.render(room)
-    //case ("widgetadd", _) => { ignore : NodeSeq => Text("") }
   }
   
   override def defaultParams = Empty
