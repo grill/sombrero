@@ -18,7 +18,7 @@ import _root_.net.liftweb.mapper._
 class UserList {
 
   def render(xhtml : NodeSeq) : NodeSeq = {
-    def entry(user : User) : NodeSeq = {
+    def entry(user : User, insidexhtml : NodeSeq) : NodeSeq = {
       var newPasswd : List[String] = Nil
       
       def testAndSet {
@@ -36,15 +36,15 @@ class UserList {
           user.delete_!
       }
     
-      bind("userlist", xhtml, "entries" -> ((insidexhtml) =>
       bind("user", insidexhtml,
            "link" -> link("/useredit/" + user.id.is, () => Empty, Text(user.email.is)),
            "newPw" -> password_*("", LFuncHolder(newPasswd = _)),
            "submit" -> submit("Set Password", testAndSet _),
            "delete" -> submit("Delete User", testAndDelete _)
-         )))
+         )
     }
     
-    User.findAll().flatMap(entry(_))
+    bind("userlist", xhtml, "entries" -> ((insidexhtml) =>
+    User.findAll().flatMap(entry(_, insidexhtml))))
   }
 }
