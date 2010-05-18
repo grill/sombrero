@@ -27,7 +27,7 @@ class CometWidget extends CometActor {
   
   var parent : widget.Widget = null
   override def render = {
-    val w = parent.data.reload
+    //val w = parent.data.reload
     parent = WidgetList.map(w.wclass.is).factory(w)
     parent.render
   }
@@ -37,8 +37,8 @@ class CometWidget extends CometActor {
       System.out.println("TestMessage recived for " + id + " " + text)
     }
     case DBMessage(_) => { 
-      reRender(true)
-      //partialUpdate(JsRaw("location.reload()").cmd)
+      //reRender(true)
+      partialUpdate(JsRaw("location.reload()").cmd)
     }
     case TitleMessage(_, s) => {
     	partialUpdate(parent.setTitle(s)) 
