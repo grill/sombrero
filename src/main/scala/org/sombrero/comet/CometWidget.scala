@@ -37,8 +37,8 @@ class CometWidget extends CometActor {
       System.out.println("TestMessage recived for " + id + " " + text)
     }
     case DBMessage(_) => { 
-      //reRender(true)
-      partialUpdate(JsRaw("location.reload()").cmd)
+      reRender(true)
+      //partialUpdate(JsRaw("location.reload()").cmd)
     }
     case TitleMessage(_, s) => {
     	partialUpdate(parent.setTitle(s)) 

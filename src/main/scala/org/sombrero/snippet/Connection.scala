@@ -22,7 +22,7 @@ import bootstrap._
 class Connection {
 	def render(xhtml:NodeSeq) = {
 		bind("cn", xhtml,
-        "create" -> link("/", () => util.Connection.createConnection("172.19.0.7"), Text("create Connection")),
-        "destroy" -> link("/", () => util.Connection.destroyConnection, Text("destroy Connection")))
+        "create" -> link("/", () => KNXRouter.getIP.map(ip => util.Connection.createConnection(ip)), Text("create Connection")),
+        "destroy" -> link("/", () => if(org.sombrero.util.Connection.isConnected) org.sombrero.util.Connection.destroyConnection, Text("destroy Connection")))
 	}
 }

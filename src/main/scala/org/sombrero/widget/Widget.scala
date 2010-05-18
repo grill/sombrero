@@ -132,6 +132,12 @@ abstract class Widget(val data: model.Widget, widgetType: String) {
  		 Fav.remove(data)
 		 JsRaw(";").cmd
 	}
+	
+	def delWidget() : JsCmd = {
+	  Log.info("delWidget")
+	  data.delete_!
+	  JsRaw(";").cmd
+	}
   
  	def setTitle(s:String) = callProto("update_title", s).cmd
 	def content(): NodeSeq = Nil
@@ -160,7 +166,11 @@ abstract class Widget(val data: model.Widget, widgetType: String) {
     def parentTag = List(("parentTag", "$(\"#" + parent +  "\")"))
     def admin = if (User.superUser_?) List(("admin", "$(\"#" + ToolBox.id + "\")"), 
                 ("admin_url", """[ "",
-		         "/widget/""" + data.id.is + """" ]""")) else Nil
+		         "/widget/""" + data.id.is + """" ]"""),
+		         ("admin_onClick", """[
+		            function(){}, function(){}, """ + JavaScriptHelper.callback(delWidget) + """,
+		            function(){}
+		         ]""")) else Nil
     def isActive = if(isFav) List(("is_active", "true")) else Nil
 }
 
