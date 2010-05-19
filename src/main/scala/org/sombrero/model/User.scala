@@ -13,7 +13,7 @@ class User extends MegaProtoUser[User] {
 
 object User extends User with MetaMegaProtoUser[User] {
   override def signupFields =
-    if(User.superUser_? || findAll(By(superUser, false)) == Nil)
+    if(User.superUser_? || findAll(By(superUser, true)) == Nil)
       List(firstName, lastName, email, password, superUser)
     else
       List(firstName, lastName, email, password)

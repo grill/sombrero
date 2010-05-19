@@ -57,7 +57,7 @@ class UserLoc extends Loc[UserAccess] {
       u.validate match {
         case Nil =>
           u.save
-          S.redirectTo("/") //user list!
+          S.redirectTo("/userlist") 
         case xs => S.error(xs); redoSnippet(Full(realrender _))
       }
     }
