@@ -22,6 +22,7 @@ class Lamp (data: org.sombrero.model.Widget, wp: WidgetPlace) extends StateWidge
    properties ++ Map(
      	"value" -> status.toString
    )  
+   helpUrl = "/helptext/lamp"
   
    def translate(value: Array[Byte]): String = knx.translate(knx.translate(value)).toString
    def translate(value: String): String = {

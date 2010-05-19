@@ -32,6 +32,7 @@ class Rollo (data: org.sombrero.model.Widget, wp: WidgetPlace) extends StateWidg
 	   "slideRect" -> "[19, 19, 122, 122]",
 	   "reverse" -> "true"
    )
+   helpUrl = "/helptext/rollo"
 
    def translate(value: Array[Byte]): String = knx.translate(knx.translate(value)).toString
    def translate(value: String): String = {

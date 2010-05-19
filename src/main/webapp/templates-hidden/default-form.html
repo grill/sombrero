@@ -10,9 +10,27 @@
   	<script type="text/javascript" src="/classpath/framework_js/jquery-1.4.2.min.js"></script>
   	<script type="text/javascript" src="/classpath/framework_js/jquery-ui-1.7.2.custom.min.js"></script>
 		
+	<script type="text/javascript" src="/classpath/plugin/uniform/jquery.uniform.js"></script>
+	<link type="text/css" href="/classpath/plugin/uniform/css/uniform.default.css" rel="stylesheet" />
+	
 	<!-- <script type="text/javascript" src="/classpath/plugin/jNice/jNice.js"></script>
 	<link type="text/css" href="/classpath/plugin/jNice/jNice.css" rel="stylesheet" />-->
-	
+	<script type="text/javascript">
+    	$(document.body).ready(function(){
+            $("input:file").uniform();
+            $("button, input:submit").addClass("ui-state-default ui-corner-all")
+            .hover(
+            		function(){ 
+            			$(this).addClass("ui-state-hover"); 
+            		},
+            		function(){ 
+            			$(this).removeClass("ui-state-hover"); 
+            		}
+            )
+            .attr("style", "outline: 0;margin:0 4px 0 0;padding: .4em 1em;text-decoration:none !important;" + 
+                    "cursor:pointer;position: relative;text-align: center;zoom: 1;");
+        });
+    </script>
 	<style type="text/css">
 		tr > td:first-child {
 			width: 200px;

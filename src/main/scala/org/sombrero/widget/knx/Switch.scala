@@ -29,6 +29,7 @@ class Unary (data: org.sombrero.model.Widget, wp: WidgetPlace) extends CommandWi
    properties ++ Map(
         "img" -> "\"/images/Toggle.png\""
    )
+   helpUrl = "/helptext/switch"
    
    def translate(value: String): String = {
       Log.info("I'm a Switch tell me what to do");

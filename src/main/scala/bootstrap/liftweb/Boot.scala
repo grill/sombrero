@@ -58,6 +58,7 @@ class Boot {
      Menu( Loc("WidgetAdd", List("widgetadd"), "Widget Add", Loc.If(User.superUser_? _, NotFoundResponse))) ::
      Menu( Loc("CloseFrame", List("closeframe"), "Close Frame")) ::
      Menu( Loc("DeviceFinder", List("devicefinder"), "DeviceFinder", Loc.If(User.superUser_? _, NotFoundResponse))) ::
+     Menu(Loc("Help", List("helptext") -> true, "Help")) ::
      Menu( new RoomLoc()) ::
      Menu( new WidgetLoc()) ::
      Menu( new UserLoc()) :: Nil

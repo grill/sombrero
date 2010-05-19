@@ -51,7 +51,7 @@
     
 	<script type="text/javascript">
     	$(document.body).ready(function(){
-            $("select, input:checkbox, input:radio, input:file").uniform();
+            $("input:file").uniform();
             $("button, input:submit").addClass("ui-state-default ui-corner-all")
             .hover(
             		function(){ 
@@ -63,6 +63,7 @@
             )
             .attr("style", "outline: 0;margin:0 4px 0 0;padding: .4em 1em;text-decoration:none !important;" + 
                     "cursor:pointer;position: relative;text-align: center;zoom: 1;");
+        });
     </script>
 	<style type="text/css">
 		tr > td:first-child {
@@ -72,6 +73,10 @@
 		#main a {
 			color: #000000;
 		}
+		h2 {
+			color: #000000;
+		}
+		
 	</style>
 </head> 
 <body>

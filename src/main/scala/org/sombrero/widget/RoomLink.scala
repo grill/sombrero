@@ -25,6 +25,8 @@ class RoomLink(data: org.sombrero.model.Widget, wp : WidgetPlace) extends widget
         if(data.roomlink.image.is != null) ("img" -> ("\"/roomlink/" + data.roomlink.id.is.toString + "\"")) else ("img" -> "\"/images/roomlink.png\""),
         "hoveroff" -> "true"
    )
+   
+   helpUrl = "/helptext/roomlink"
         
    def change(): JsCmd = {
      println("From " + id + " change recieved")

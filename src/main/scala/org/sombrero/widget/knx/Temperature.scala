@@ -28,6 +28,7 @@ class Temperature (data: org.sombrero.model.Widget, wp: WidgetPlace) extends Sta
 //	   "change" -> "function(){" + SHtml.ajaxCall(getTempJsExp, setTemp _)._2 + "}",
 	   "clip_front" -> "true"
    )
+   helpUrl = "/helptext/temperature"
 
    def setTemp(value: String): JsCmd = {
      println("From " + id + " getTemp recieved")

@@ -7,23 +7,25 @@
 	<!--[if lte IE 7]>
 		<link href="/classpath/css/logged-out/patch_my_layout.css" rel="stylesheet" type="text/css" />
 	<![endif]--> 
-  	
+  		<style type="text/css">
+		h2 {
+			color: #000000;
+		}
+	</style>
 </head>
 <body>
   <div class="page_margins">
     <!-- start: skip link navigation -->
     <!-- end: skip link navigation -->
     <div class="page">
-      <div id="main">
-        <div id="col3">
-          <div id="col3_content" class="clearfix"  style="height:400px">
-            <!-- add your content here -->
             <lift:bind name="content" />
+      <!--  <div id="main">
+        <div id="col3">
+          <div id="col3_content" class="clearfix">
           </div>
-          <!-- IE Column Clearing -->
           <div id="ie_clearing"> &#160; </div>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </body>

@@ -75,6 +75,7 @@ abstract class Widget(val data: model.Widget, widgetType: String, wp: WidgetPlac
 	//val com = new CometWidget(this)
 	var parent: String = Container.htmlid
 	val isFav = Fav.isFav(data)
+	var helpUrl = ""
  
 	wp match {
 		case  AdminSideBar 	=>	val copy = "$(\"#FavCh_" + id + "\")"
@@ -161,7 +162,7 @@ abstract class Widget(val data: model.Widget, widgetType: String, wp: WidgetPlac
     
     def parentTag = List(("parentTag", "$(\"#" + parent +  "\")"))
     def admin = if (User.superUser_?) List(("admin", "$(\"#" + ToolBox.id + "\")"), 
-                ("admin_url", """[ "",
+                ("admin_url", "[ \"" + helpUrl + """",
 		         "/widget/""" + data.id.is + """" ]"""),
 		         ("admin_onClick", """[
 		            function(){}, function(){}, """ + JavaScriptHelper.callback(delWidget) + """,

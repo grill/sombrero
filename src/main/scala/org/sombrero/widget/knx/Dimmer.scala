@@ -27,6 +27,7 @@ class Dimmer(data: org.sombrero.model.Widget, wp: WidgetPlace) extends StateWidg
 	   "slideRect" -> "[19, 90, 122, 42]",
 	   "opacity" -> "\"/images/dim0light.png\""
     )
+   helpUrl = "/helptext/dimmer"
    
    def translate(value: Array[Byte]): String = knx.translate(knx.translate(value)).toString
    def translate(value: String): String = {

@@ -8,7 +8,7 @@ import _root_.net.liftweb.util._
 class TreeView{
   def render(xhtml : NodeSeq): NodeSeq = { JavaScriptHelper.onLoad(
     JavaScriptHelper.initWidget("TreeView", "ipod", List(
-    		("top", "70"),
+    		("top", "40"),
 			("left", "5"),
 			("initPath", "[" + getPath(Room.current) + "]")
 		)))++ <div id="TreeView" class="hidden">

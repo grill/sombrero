@@ -313,7 +313,7 @@ $.widget("ui.ipod", {
     		var nextLeftVal = Math.round(parentLeft - parseFloat(container.width()));
     		var footer = $('.fg-menu-footer');
 
-    		footer.css("position", "absolute").css("top", that.options.maxHeight-blen+"px")
+    		footer.css("position", "absolute").css("top", "5px")
     		.css("width", container.width()-10);
 			depth = depth + 1;
     		// show next menu   		
