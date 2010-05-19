@@ -1,0 +1,59 @@
+<lift:surround with="default-helptext" at="content">
+	<h2>Room Link widget</h2>
+
+	<h3>Description</h3>
+    This widget is a KNX/EIB device widget and can be used to change temperature of a temperature actuator by clicking the picture in the content area of the widget. To change state more intuitive, you can move your mouse up and down while it's pressed and the state in which it is in after you released the mouse will be saved.
+    
+    All sombrero widgets that are positioned in the right area of the layout are capable of the following features:
+<ul>
+  <li><b>dragging</b><br/>
+    Every Sombrero widget can be dragged in the bounds of the right area of the layout. The position is saved automatically after you drag a widget to a new position.</li>
+  <li><b>clicking</b><br/>
+  Sombrero widgets are split into two parts. On the top there is the title bar with the name of the widget. Under the title bar there is the content area, containing a selfmade picture of the device the widget represents. By clicking this picture you can change the status or send a command.
+</li>
+  <li><b>adding as a favorite</b><br/>
+  The title bar also contains a Star button. By clicking it you add the respective widget to the Favorites Bar and by clicking it again it gets removed. When a widget is up in the Favorites Bar it can also be removed by clicking the Star button of the widget in the Bar. Widgets in the Bar can be used in the same way as if they were down in the right area of the layout.
+   </li>
+</ul>
+
+  <h3>Admin toolbox</h3>
+  
+  While in admin mode, every widget has a configuration bar. It consists of 4 small icons with various functionalities.
+  Now the description of them in the order they are displayed on the screen:
+<ul>
+  <li>displays a help page.</li>
+  <li>opens the widget editing dialog. The editing dialog is discribed above.</li>
+  <li>deletes the widget. Deleted widgets cannot be restored, so be careful.</li>
+  <li>removes widget from the current room and adds it to the clipboard, or vice-versa.
+    The widget clipboard is where widgets not currently associated with a room appear. It's handling is similar to the favourites bar. 
+  </li>
+</ul>
+  
+  <h3>Favorits widget</h3>
+    This widget allows you to collect your favorite widgets and quickly access them in every room. The Favorites Bar is also called widget container, because you can add sombrero widgets of almost any kind to it. The content of the Bar stays in the same in every room, so with this widget you can access widgets from another room without being in that room. To add a widget to the Favorites Bar you have to click on the star at the top of the widget. By clicking it again the widget will vanish from the Bar.
+  
+  <h3>Widget editing dialog</h3>
+    As the widget editing dialog can appear in different places and sometimes different forms, here is a list of widget attributes:
+    <ul>
+  <li><b>Name:</b><br />
+  The name of the widget, which is useful for identifying it among widgets of the same class. It cannot be blank, and while it is possible to give different widgets the same name, it is discouraged to do so.
+  </li>
+  <li><b>Class:</b><br />
+  The class of the widget, or in other words, what this widget represents. Possible values are either different types of KNX widgets (e.g. Lamps or Temperature) and room links. Depending on the class of the widget, the other attributes may change.
+  </li>
+  <li><b>Attributes of KNX widgets:</b><br />
+  <ul>
+  <li><b>Group Address:</b><br />
+  	 KNX group address of the represented device. If you don't have your devices' group address information at hand, it is perhaps easier to use the device finder.
+  </li></ul>
+  </li>
+  <li><b>Attributes of Room Links:</b><br />
+    <ul><li><b>Room Reference:</b><br />
+  	The room this link leads to when clicked.
+  </li>
+  <li><b>Image:</b><br />
+  	The image that is displayed on this room link. It should help to quickly identify the linked room.
+  </li></ul>
+  </li>
+</ul>
+</lift:surround>

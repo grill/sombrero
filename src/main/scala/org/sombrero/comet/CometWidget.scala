@@ -53,6 +53,7 @@ class CometWidget extends CometActor {
   
   override def localSetup {
     //open_! : if it has no name, it's not ours
+    name.open_!.split(";")
     parent = model.Widget.findAll(By(model.Widget.room, name.open_!.toLong)).
       map(w => WidgetList.map(w.wclass.is).factory(w))
     parent.foreach(w => Distributor ! Subscribe(w.data.id.is, this))

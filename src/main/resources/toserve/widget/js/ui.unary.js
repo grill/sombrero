@@ -43,7 +43,6 @@ $.extend($.ui.unary, {
 		height: 160,
 		width: 160,
 		img: "/images/Toggle.png",
-		click: function(){},
 	    stop: function(){},
 	    prefix: "",
 	    imgId: "img",

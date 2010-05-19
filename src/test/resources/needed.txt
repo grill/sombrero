@@ -1,0 +1,1 @@
+This files propose is to keep the folder resources in the repository so that it will be cloned and eclipse works properly.

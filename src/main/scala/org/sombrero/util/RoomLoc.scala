@@ -71,6 +71,9 @@ class RoomLoc extends Loc[RoomAccess] {
     //var l : List[widget.Widget] = room.widgets.map((w : model.Widget) => w match {
       //case w if(WidgetList.map.contains(w.wclass.is)) => WidgetList.map(w.wclass.is).factory(w)
       /*case w =>*/ CometWidget.render(room)
+      JavaScriptHelper.onLoad("""
+    		$("#col3_content").attr("style", "background: white url(/room/""" + room.id.is + """/image) no-repeat top right");
+      """)
       //case _ => null
     //})//.filter(_ != null)
     //l.foldLeft[List[Node]](Nil)((l, n : widget.Widget) => l ::: n.render.toList) : NodeSeq

@@ -9,10 +9,22 @@ import _root_.net.liftweb.sitemap._
 import org.sombrero.model._
 
 class Surround {
-  def choose(xhtml: NodeSeq): NodeSeq = {
+  def chooseRoom(xhtml: NodeSeq): NodeSeq = {
     def chooseTemplate() = {
       if (User.loggedIn_?)
     	  if (User.superUser_?) "default-admin" else "default-user" 
+      else "default"
+    }
+    
+    <lift:surround with={chooseTemplate} at="content">
+    	{xhtml}
+    </lift:surround>
+  }
+  
+  def choose(xhtml: NodeSeq): NodeSeq = {
+    def chooseTemplate() = {
+      if (User.loggedIn_?)
+    	  if (User.superUser_?) "default-admin-no-room" else "default-user" 
       else "default"
     }
     

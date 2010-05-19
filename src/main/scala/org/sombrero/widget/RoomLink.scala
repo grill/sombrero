@@ -21,7 +21,7 @@ import _root_.scala.xml._
 
 class RoomLink(data: org.sombrero.model.Widget) extends widget.Widget(data, "unary") {
    properties ++ Map(
-        "click" -> JavaScriptHelper.callback(change),
+        "change" -> JavaScriptHelper.callback(change),
         "img" ->  "\"/images/roomlink.png\"", 
         "hoveroff" -> "true"
    )

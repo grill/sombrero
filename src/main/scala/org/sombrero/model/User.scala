@@ -31,7 +31,7 @@ object User extends User with MetaMegaProtoUser[User] {
     </lift:surround>
       
   override def changePasswordXhtml = {
-    def chooseTemplate() = if (User.superUser_?) "default-admin" else "default-user"
+    def chooseTemplate() = if (User.superUser_?) "default-admin-no-room" else "default-user"
    
     <lift:surround with={chooseTemplate} at="content">
 		{ super.changePasswordXhtml }
@@ -49,7 +49,7 @@ object User extends User with MetaMegaProtoUser[User] {
     </lift:surround>
    
   override def editXhtml (user : User) = {
-    def chooseTemplate() = if (User.superUser_?) "default-admin" else "default-user"
+    def chooseTemplate() = if (User.superUser_?) "default-admin-no-room" else "default-user"
     
     <lift:surround with={chooseTemplate} at="content">
     	{ super.editXhtml(user) }

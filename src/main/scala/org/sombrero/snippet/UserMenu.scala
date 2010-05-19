@@ -17,7 +17,8 @@ class UserMenu {
 	  "link2" -> {
 	    <lift:UserMenu.build name="ChangePassword">Change Password</lift:UserMenu.build>},
 	  "link3" -> {
-	  	<lift:UserMenu.build name="Logout">LogOut</lift:UserMenu.build>})
+	  	<lift:UserMenu.build name="Logout">Log Out</lift:UserMenu.build>}
+	  )
 	} else {
 	  	  bind("menu", xhtml, 
 	  "link1" -> {

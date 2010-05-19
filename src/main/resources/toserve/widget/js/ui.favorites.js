@@ -25,6 +25,8 @@ $.widget("ui.favorites", {
 		this.height = this._getData('height') + 2*this.toff+2;
 		var woff = 81;
 		var hoff = 80;
+		var index = 0;
+		var max;
 	
 		if(this._getData('vertical')){
 			woff = 0;
@@ -43,7 +45,10 @@ $.widget("ui.favorites", {
 				top: 		"0px",
 				left: 		"0px"})
 			.click(function(){
-				that.favbar.animate({left: '+=' + (that._getData('width')+that.loff)}, 500, function(){});
+				if(index > 0){
+					index--;
+					that.favbar.animate({left: '+=' + (that._getData('width')+that.loff)}, 500, function(){});
+				}
 			});
 		}else{			
 			this.createButton("/images/arrowup.png")
@@ -53,7 +58,10 @@ $.widget("ui.favorites", {
 				top: 		"0px",
 				left: 		"0px"})
 			.click(function(){
-				that.favbar.animate({top: '+=' + (that._getData('height')+that.toff)}, 500, function(){});
+				if(index > 0){
+					index--;
+					that.favbar.animate({top: '+=' + (that._getData('height')+that.toff)}, 500, function(){});
+				}
 			});
 		}
 		
@@ -106,14 +114,35 @@ $.widget("ui.favorites", {
 			});
 		
 		if(!this._getData('vertical')){
-			this.createButton("/images/arrowright.png")
+			var sbutton = this.createButton("/images/arrowright.png")
 			.css({
 				height: 	this.height-2 + "px",
 				top: 		"0px",
 				left: 		this.width+39 	+ "px"})
 			.click(function(){
+				if(index < that.wlen - that.options.amount_widgets){
+					index++;
 					that.favbar.animate({left: '-=' + (that._getData('width')+that.loff)}, 500, function(){});
+				}
 			});
+			max = container.offset().left + that.width + 100;
+			var adopt = function() {
+				//alert("width: " + $(window).width() + " offs: " + container.offset().left + " mywidth: " + that.width);
+				if($(window).width() < max/* container.offset().left + that.width+100*/){
+					//alert($(window).width());
+					that.width = ($(window).width()-container.offset().left)-100;//((that._getData('amount_widgets')*(that._getData('width')+that.loff))+that.loff)-5;
+					that._setData('amount_widgets', (that.width / (162+2*that.loff)));
+					container.css({width: that.width});
+					sbutton.css({left: that.width+39 + "px"});
+				}else{
+					that.width = max - 100 - container.offset().left;
+					that._setData('amount_widgets', (that.width / (162+2*that.loff)));
+					container.css({width: that.width});
+					sbutton.css({left: that.width+39 + "px"});
+				}
+			};
+			adopt();
+			$(window).wresize(adopt);
 		}else{
 			this.createButton("/images/arrowdown.png")
 			.css({
@@ -122,7 +151,10 @@ $.widget("ui.favorites", {
 				height: hoff/2-1,
 				left:	"0px"})
 			.click(function(){
-				that.favbar.animate({top: '-=' + (that._getData('height')+that.toff)}, 500, function(){});
+				if(index < that.wlen - that.options.amount_widgets){
+					index++;
+					that.favbar.animate({top: '-=' + (that._getData('height')+that.toff)}, 500, function(){});
+				}
 			});
 		}
 	},

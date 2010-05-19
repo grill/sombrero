@@ -22,6 +22,7 @@
 				pheight: 400,
 				injectWidth: 50,
 				top: null,
+				ptop: null,
 				liMouseOver: {
 					marginLeft: "5px"
 				},
@@ -47,8 +48,9 @@
 					height: options.height,
 					width: options.injectWidth
 				};
+				if(options.ptop != null)
+					pcss.top = options.ptop;
 				if(options.top != null){
-					pcss.top = options.top;
 					ccss.top = options.top;
 				}else
 					ccss.top = ($(window).height()/2) - (options.height/2) + "px";
@@ -139,10 +141,13 @@
 					duration: 200,
 					complete: function(){
 					i.fadeOut(200, function(){
-                        isProcessing = false;
 							/*b.show("clip", 200,function(){
                                 isProcessing = false;
 							});*/
+                                isProcessing = false;
+                                i.removeClass("sidebar-inject-right");
+                                i.addClass("sidebar-inject-left");
+								i.fadeIn(200, function(){});
 						});
 					}
 				});
@@ -154,10 +159,16 @@
 					duration: 200,
 					complete: function(){
 						//b.hide("clip", 200, function(){
-							i.fadeIn(200, function(){
-                                isEnter = false;
-								isProcessing = false;
-							});
+					i.fadeOut(200, function(){
+
+	                    i.removeClass("sidebar-inject-left");
+	                    i.addClass("sidebar-inject-right");
+						i.fadeIn(200, function(){});
+									i.fadeIn(200, function(){
+		                                isEnter = false;
+										isProcessing = false;
+									});
+					});
 						//});
 					}
 				});				
@@ -173,6 +184,7 @@
 			c.append(i);
 			$(document.body).append(c);
 			$(document.body).append(p);
+			p.css({opacity: 1});
 			/*$(window).resize(function(){
 	            if(options.position == "left" || options.position == "right") {
 					c.css({top:($(this).height()/2) - (options.height/2) + "px"});

@@ -21,7 +21,7 @@ Dual licensed under the MIT (filamentgroup.com/examples/mit-license.txt) and GPL
 $.widget("ui.ipod", {
 	_init: function (){
 		var that = this;
-		var container = $('<div id="ein" style="top:' + this._getData('top') + 'px;left:' + this._getData('left') + 'px;" class="fg-menu-container ui-widget ui-widget-content ui-corner-all" >' + this.element.html() + '</div>');
+		var container = $('<div id="ein" style="top:' + this._getData('top') + 'px;left:' + this._getData('left') + 'px;" class="fg-menu-container" >' + this.element.html() + '</div>');
 		container.css({ width: this.options.width }).appendTo(this._getData('parent')).find('ul:first').not('.fg-menu-breadcrumb').addClass('fg-menu');
 		container.find('ul, li a').addClass('ui-corner-all');
 
@@ -49,11 +49,14 @@ $.widget("ui.ipod", {
 			if (this.options.backLink) { breadcrumb.addClass('fg-menu-footer').appendTo(container).hide(); }
 			else { breadcrumb.addClass('fg-menu-header').prependTo(container); };
 			breadcrumb.append(crumbDefaultHeader);
+			$('<ul class="fg-menu-breadcrumb ui-helper-clearfix"></ul>').addClass('fg-menu-header').prependTo(container);
+			$('<ul class="fg-menu-breadcrumb ui-helper-clearfix"></ul>').addClass('fg-menu-header').prependTo(container);
+			$('<ul class="fg-menu-breadcrumb ui-helper-clearfix"></ul>').addClass('fg-menu-header').prependTo(container);
 			
 			var checkMenuHeight = function(el){
 				if (container.height() > that.options.maxHeight) { container.addClass('fg-menu-scroll') };	
 				container.css({ height: that.options.maxHeight });
-				if (el.height() > that.options.maxHeight) { el.addClass('fg-menu-scroll') };	
+				if (el.height() > that.options.maxHeight) { el.addClass('fg-menu-scroll')};	
 				el.css({ height: that.options.maxHeight-blen });
 			};
 			
@@ -214,7 +217,7 @@ $.widget("ui.ipod", {
 		    		var nextLeftVal = Math.round(parentLeft - parseFloat(container.width()));
 		    		var footer = $('.fg-menu-footer');
 
-		    		footer.css("position", "absolute").css("top", that.options.maxHeight-blen+"px")
+		    		footer.css("position", "absolute").css("top", "5px")
 		    		.css("width", container.width()-10);
 					depth = depth + 1;
 		    		// show next menu

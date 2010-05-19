@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" xmlns:lift="http://liftweb.net/">
+<head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+<title>Sombrero - Admin</title>
+
+	<link href="/classpath/layout_css/default-user/menu.css" rel="stylesheet" type="text/css" />
+	<link href="/classpath/layout_css/default-user/my_layout.css" rel="stylesheet" type="text/css" />
+	<!--[if lte IE 7]>
+		<link href="/classpath/css/default/patch_my_layout.css" rel="stylesheet" type="text/css" />
+	<![endif]-->
+	
+	<link type="text/css" href="/classpath/widgettheme_css/sunny/jquery-ui-1.7.2.custom.css" rel="stylesheet" />
+  	<script type="text/javascript" src="/classpath/framework_js/jquery-1.4.2.min.js"></script>
+  	<script type="text/javascript" src="/classpath/framework_js/jquery-ui-1.7.2.custom.min.js"></script>
+  	<script type="text/javascript" src="/classpath/plugin/draggable/jquery-collide.js"></script>
+  	
+  	<script type="text/javascript" src="/classpath/widget/js/ui.toolbox.js"></script>
+  	<script type="text/javascript" src="/classpath/widget/js/ui.favorites.js"></script>
+  	<script type="text/javascript" src="/classpath/widget/js/ui.unary.js"></script>
+  	<script type="text/javascript" src="/classpath/widget/js/ui.titlebar.js"></script>
+  	<script type="text/javascript" src="/classpath/widget/js/ui.binary.js"></script>
+  	<script type="text/javascript" src="/classpath/widget/js/ui.analog.js"></script>
+  	<script type="text/javascript" src="/classpath/widget/js/ui.ipod.js"></script>
+  	<script type="text/javascript" src="/classpath/widget/js/ui.protowidget.js"></script>
+	<link type="text/css" href="/classpath/widget/css/fg.menu.css" media="screen" rel="stylesheet" />
+  	
+	<script type="text/javascript" src="/classpath/plugin/fancybox/jquery.fancybox-1.3.0.pack.js"></script>
+	<script type="text/javascript" src="/classpath/plugin/fancybox/jquery.easing-1.3.pack.js"></script>
+	<script type="text/javascript" src="/classpath/plugin/fancybox/jquery.mousewheel-3.0.2.pack.js"></script>
+	<link type="text/css" href="/classpath/plugin/fancybox/jquery.fancybox-1.3.0.css" rel="stylesheet" />
+	
+	
+	<script type="text/javascript" src="/classpath/plugin/sidebar/jquery.sidebar.js"></script>
+	<link type="text/css" href="/classpath/plugin/sidebar/dark-glass/sidebar.css" rel="stylesheet" />
+	
+	<!-- <script type="text/javascript" src="/classpath/plugin/niceforms/niceforms.js"></script>
+	<link type="text/css" href="/classpath/plugin/niceforms/niceforms-default.css" rel="stylesheet" />-->
+	
+	<script type="text/javascript" src="/classpath/plugin/jquery-message/jquery.message.js"></script>
+	<link type="text/css" href="/classpath/plugin/jquery-message/jquery.message.css" rel="stylesheet" />
+	
+	<!-- <script type="text/javascript" src="/classpath/plugin/jNice/jNice.js"></script>
+	<link type="text/css" href="/classpath/plugin/jNice/jNice.css" rel="stylesheet" /> -->
+	
+	<script type="text/javascript" src="/classpath/plugin/uniform/jquery.uniform.js"></script>
+	<link type="text/css" href="/classpath/plugin/uniform/css/uniform.default.css" rel="stylesheet" />
+	
+	<script type="text/javascript" src="/classpath/plugin/wresize/jquery.wresize.js"></script> 
+	
+    
+	<script type="text/javascript">
+    	$(document.body).ready(function(){
+            $("select, input:checkbox, input:radio, input:file").uniform();
+            $("button, input:submit").addClass("ui-state-default ui-corner-all")
+            .hover(
+            		function(){ 
+            			$(this).addClass("ui-state-hover"); 
+            		},
+            		function(){ 
+            			$(this).removeClass("ui-state-hover"); 
+            		}
+            )
+            .attr("style", "outline: 0;margin:0 4px 0 0;padding: .4em 1em;text-decoration:none !important;" + 
+                    "cursor:pointer;position: relative;text-align: center;zoom: 1;");
+    </script>
+	<style type="text/css">
+		tr > td:first-child {
+			width: 120px;
+		}
+		
+		#main a {
+			color: #000000;
+		}
+	</style>
+</head> 
+<body>
+
+  <div class="page_margins">
+    <div id="border-top">
+      <div id="edge-tl"></div>
+      <div id="edge-tr"></div>
+    </div>
+    
+    <div class="page">
+      <div id="header">
+        <div id="topnav">
+     	  <lift:UserMenu >
+     	  	<menu:link1 /> | <menu:link2 /> |<menu:link3 /> | 
+     	  </lift:UserMenu>
+     	  	<a href="/userlist">Userlist</a> | <a href="/knxgroups">KNX groups</a> | <a href="/devicefinder">Device finder</a> |
+     	  	 <a href="discovery">Router discovery</a>
+        </div>
+        <lift:UserMenu.build name="Home">	
+        	<img src="/images/logo.png" class="ui-widget-content ui-state-default"/>
+		</lift:UserMenu.build>
+        <h1>Control your Home</h1>
+      </div>
+      
+      <div id="teaser">
+      </div>
+      
+      <div id="main">
+        <div id="col1" style="min-width: 250px;height:800px;">
+          <div id="col1_content" class="clearfix">
+           <h2><lift:Room.name/></h2>
+           <lift:TreeView />
+          </div>
+        </div>  
+        
+        <div id="col2">
+          <div id="col2_content" style="left:25px;" class="clearfix">
+          </div>
+        </div>
+        
+        <div id="col3">
+          <div id="col3_content" class="clearfix">
+            <lift:bind name="content" />
+            <lift:msgs/>
+          </div>
+          <!-- IE Column Clearing -->
+          <div id="ie_clearing"> &#160; </div>
+        </div>
+        
+        
+      </div>
+      <!-- begin: #footer -->
+      <div id="footer">Layout based on <a href="http://www.yaml.de/">YAML</a> by Gabriel Grill
+      </div>
+    </div>
+    
+    <div id="border-bottom">
+      <div id="edge-bl"></div>
+      <div id="edge-br"></div>
+    </div>
+  </div>
+</body>
+</html>

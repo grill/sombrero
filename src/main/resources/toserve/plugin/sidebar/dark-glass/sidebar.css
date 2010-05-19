@@ -6,7 +6,7 @@
 div.sidebar-container-left {
     position:fixed;
     top:50%;
-    left:0px;
+    right:0px;
     background-color:#000000;
     filter: alpha(opacity=87);
     -moz-opacity:0.87;
@@ -75,7 +75,7 @@ div.sidebar-inject-left {
     position:absolute;
     background:url("inject-left.png") center no-repeat;
     top:0px;
-    right:0px;
+    left:0px;
 }
 
 div.sidebar-inject-right {
