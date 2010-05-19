@@ -68,11 +68,11 @@ class RoomLoc extends Loc[RoomAccess] {
   })
       
   def roomRender(room : Room)(ignore : NodeSeq) : NodeSeq = {
-    /*var l : List[widget.Widget] =*/ room.widgets.map((w : model.Widget) => w match {
+    //var l : List[widget.Widget] = room.widgets.map((w : model.Widget) => w match {
       //case w if(WidgetList.map.contains(w.wclass.is)) => WidgetList.map(w.wclass.is).factory(w)
-      case w => CometWidget.render(w)
+      /*case w =>*/ CometWidget.render(room)
       //case _ => null
-    })//.filter(_ != null)
+    //})//.filter(_ != null)
     //l.foldLeft[List[Node]](Nil)((l, n : widget.Widget) => l ::: n.render.toList) : NodeSeq
   }
    

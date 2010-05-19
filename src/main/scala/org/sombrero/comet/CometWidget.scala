@@ -17,7 +17,7 @@ import scala.xml._
 import net.liftweb.http.js.JE.JsRaw
 
 object CometWidget {
-  def render(w : model.Widget) = <lift:comet type="CometWidget" name={w.id.is.toString} />
+  def render(r : model.Room) = <lift:comet type="CometWidget" name={r.id.is.toString} />
 }
 
 class CometWidget extends CometActor {
@@ -25,11 +25,11 @@ class CometWidget extends CometActor {
   
   override def devMode = true
   
-  var parent : widget.Widget = null
+  var parent : List[widget.Widget] = Nil
   override def render = {
     //val w = parent.data.reload
-    parent = WidgetList.map(w.wclass.is).factory(w)
-    parent.render
+    //parent = WidgetList.map(w.wclass.is).factory(w)
+    NodeSeq.view(parent.flatMap(_.render))
   }
   
   override def lowPriority : PartialFunction[Any, Unit] = {
@@ -40,22 +40,22 @@ class CometWidget extends CometActor {
       //reRender(true)
       partialUpdate(JsRaw("location.reload()").cmd)
     }
-    case TitleMessage(_, s) => {
+    /*case TitleMessage(_, s) => {
     	partialUpdate(parent.setTitle(s)) 
-    }  
+    }*/  
     case KNXMessage(id, value) => {
-    	parent match {
+    	parent.filter(_.id == id).foreach(_ match {
     	  case p: StateWidget => { partialUpdate(p.setValue(value)) }
           case _ => {}
-    	}
+    	})
     }
   }
   
   override def localSetup {
     //open_! : if it has no name, it's not ours
-    model.Widget.find(By(model.Widget.id, name.open_!.toLong)).map((w) =>
-      parent = WidgetList.map(w.wclass.is).factory(w))
-    Distributor ! Subscribe(parent.data.id.is, this)
+    parent = model.Widget.findAll(By(model.Widget.room, name.open_!.toLong)).
+      map(w => WidgetList.map(w.wclass.is).factory(w))
+    parent.foreach(w => Distributor ! Subscribe(w.data.id.is, this))
     super.localSetup
   }
   
