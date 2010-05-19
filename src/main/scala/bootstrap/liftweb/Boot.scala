@@ -50,9 +50,9 @@ class Boot {
     // Build SiteMap
    val entries = Menu(Loc("Home", List("index"), "Home")) ::
      Menu(Loc("KNX", ("KNXWidgetForm" :: Nil) -> true, "KNXWidgetForm", Hidden, If(() => true, null)) ) ::
-     Menu( Loc("DBtools", List("db"), "DBtools")) ::
-     Menu( Loc("RoomFoo", List("roomadd"), "Add/Remove")) ::
-     Menu( Loc("Discovery", List("discovery"), "Router Discovery")) ::
+     Menu( Loc("DBtools", List("db"), "DBtools", Loc.If(User.superUser_? _, NotFoundResponse))) ::
+     Menu( Loc("RoomFoo", List("roomadd"), "Add/Remove", Loc.If(User.superUser_? _, NotFoundResponse))) ::
+     Menu( Loc("Discovery", List("discovery"), "Router Discovery", Loc.If(User.superUser_? _, NotFoundResponse))) ::
      Menu( Loc("Userlist", List("userlist"), "User List", Loc.If(User.superUser_? _, NotFoundResponse))) ::
      Menu( Loc("Grouplist", List("knxgroups"), "Group List", Loc.If(User.superUser_? _, NotFoundResponse))) ::
      Menu( Loc("WidgetAdd", List("widgetadd"), "Widget Add", Loc.If(User.superUser_? _, NotFoundResponse))) ::
@@ -68,6 +68,8 @@ class Boot {
   LiftRules.dispatch.append {
   case Req("room" :: roomid :: "image" :: Nil, _, _) =>
     () => RoomImage.get(roomid)
+  case Req("roomlink" :: rlid :: Nil, _ , _) =>
+    () => RoomLinkImage.get(rlid)
   }
   KNXRouter.getIP.map(ip => util.Connection.createConnection(ip))
   LiftRules.unloadHooks.append(() => { if(org.sombrero.util.Connection.isConnected) org.sombrero.util.Connection.destroyConnection }) }

@@ -19,10 +19,10 @@ import org.sombrero.util._
 import org.sombrero.model._
 import _root_.scala.xml._
 
-class RoomLink(data: org.sombrero.model.Widget) extends widget.Widget(data, "unary") {
+class RoomLink(data: org.sombrero.model.Widget, wp : WidgetPlace) extends widget.Widget(data, "unary", wp) {
    properties ++ Map(
         "change" -> JavaScriptHelper.callback(change),
-        "img" ->  "\"/images/roomlink.png\"", 
+        if(data.roomlink.image.is != null) ("img" -> ("\"/roomlink/" + data.roomlink.id.is.toString + "\"")) else ("img" -> "\"/images/roomlink.png\""),
         "hoveroff" -> "true"
    )
         

@@ -23,7 +23,7 @@ import tuwien.auto.calimero.exception.KNXException._
 import tuwien.auto.calimero.link._
  
 
-class Unary (data: org.sombrero.model.Widget) extends CommandWidget(data, "unary"){
+class Unary (data: org.sombrero.model.Widget, wp: WidgetPlace) extends CommandWidget(data, "unary", wp){
    val knx = new KNXSwitch(data.knx.groupAddress.is)
    var status = false//!device.getStatus
    properties ++ Map(
@@ -36,13 +36,13 @@ class Unary (data: org.sombrero.model.Widget) extends CommandWidget(data, "unary
    }
 }
 
-class Switch (data: model.Widget) extends Unary(data)
+class Switch (data: model.Widget, wp: WidgetPlace) extends Unary(data, wp)
 
-class SwitchOff (data: org.sombrero.model.Widget) extends Unary(data){  
+class SwitchOff (data: org.sombrero.model.Widget, wp: WidgetPlace) extends Unary(data, wp){  
   properties ++ Map("img" -> "\"/images/ButtonOff.png\"")
 }
  
-class SwitchOn (data: org.sombrero.model.Widget) extends Unary(data){ 
+class SwitchOn (data: org.sombrero.model.Widget, wp: WidgetPlace) extends Unary(data, wp){ 
   properties ++ Map("img" -> "\"/images/ButtonOn.png\"")  
 }
   

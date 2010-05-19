@@ -68,6 +68,6 @@ class Room {
   }  
   
   def name( xhtml : NodeSeq ) : NodeSeq = {
-    Text(model.Room.current.map(_.name.is) openOr "no Room")
+    Text(model.Room.current.map(_.name.is) openOr "")
   }
 }

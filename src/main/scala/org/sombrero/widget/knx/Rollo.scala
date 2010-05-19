@@ -23,7 +23,7 @@ import org.sombrero.snippet._
 
 import tuwien.auto.calimero.dptxlator._
 
-class Rollo (data: org.sombrero.model.Widget) extends StateWidget(data, "analog"){
+class Rollo (data: org.sombrero.model.Widget, wp: WidgetPlace) extends StateWidget(data, "analog", wp){
   val knx = KNXRollo(data.knx().groupAddress.is)
   
    properties ++ Map(

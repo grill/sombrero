@@ -25,20 +25,22 @@ class Favorites {
 	  val l = Fav.get
      
 	  if(l != Nil)
-	    l.map((w : model.Widget) => w match {
-	    	case w if(w.wclass.is == "Lamp") => new Lamp(w) with FavChild
-	    	case w if(w.wclass.is == "Temperature") => new Temperature(w) with FavChild
-	    	case w if(w.wclass.is == "SwitchOn") => new SwitchOn(w) with FavChild
-	    	case w if(w.wclass.is == "SwitchOff") => new SwitchOff(w) with FavChild
-	    	case w if(w.wclass.is == "Switch") => new Switch(w)  with FavChild
-	    	case w if(w.wclass.is == "Dimmer") => new Dimmer(w) with FavChild
-	    	case w if(w.wclass.is == "Rollo") => new Rollo(w) with FavChild
-	    	case w if(w.wclass.is == "Roomlink") => new RoomLink(w) with FavChild
-	    	case _ => null
-            //else /* if (w.wclass.is == "Temperature")*/ new Temperature(w)
-	    })
-       .filter(_ != null)
-       .foldLeft[List[Node]](Nil)((l, n : widget.Widget) => l ::: n.render.toList) : NodeSeq 
+	    l.map((w : model.Widget) => WidgetList.map(w.wclass.is).favwidget(w)).
+      foldLeft[List[Node]](Nil)((l, n : widget.Widget) => l ::: n.render.toList) : NodeSeq
+//	    l.map((w : model.Widget) => w match {
+//	    	case w if(w.wclass.is == "Lamp") => new Lamp(w) with FavChild
+//	    	case w if(w.wclass.is == "Temperature") => new Temperature(w) with FavChild
+//	    	case w if(w.wclass.is == "SwitchOn") => new SwitchOn(w) with FavChild
+//	    	case w if(w.wclass.is == "SwitchOff") => new SwitchOff(w) with FavChild
+//	    	case w if(w.wclass.is == "Switch") => new Switch(w)  with FavChild
+//	    	case w if(w.wclass.is == "Dimmer") => new Dimmer(w) with FavChild
+//	    	case w if(w.wclass.is == "Rollo") => new Rollo(w) with FavChild
+//	    	case w if(w.wclass.is == "Roomlink") => new RoomLink(w) with FavChild
+//	    	case _ => null
+//            //else /* if (w.wclass.is == "Temperature")*/ new Temperature(w)
+//	    })
+//       .filter(_ != null)
+//       .foldLeft[List[Node]](Nil)((l, n : widget.Widget) => l ::: n.render.toList) : NodeSeq 
 	  else
 		  Nil
 	}

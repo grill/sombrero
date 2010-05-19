@@ -54,6 +54,8 @@ class Widget extends LongKeyedMapper[Widget] with IdPK /*with LifecycleCallbacks
     override def defaultValue = WidgetList.default.id
     //realfilter.map((f) => WidgetList.map.filter(_._2.data == f).values.next.id) openOr 
     
+    override def displayName = "type"
+    
     override def _toForm = {
       def callback(newVal : String) = {
         val oldVal = is
