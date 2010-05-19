@@ -68,12 +68,20 @@ class RoomLoc extends Loc[RoomAccess] {
   })
       
   def roomRender(room : Room)(ignore : NodeSeq) : NodeSeq = {
-    //var l : List[widget.Widget] = room.widgets.map((w : model.Widget) => w match {
-      //case w if(WidgetList.map.contains(w.wclass.is)) => WidgetList.map(w.wclass.is).factory(w)
-      /*case w =>*/ CometWidget.render(room)
-      //case _ => null
-    //})//.filter(_ != null)
-    //l.foldLeft[List[Node]](Nil)((l, n : widget.Widget) => l ::: n.render.toList) : NodeSeq
+//    var l : List[widget.Widget] = room.widgets.map((w : model.Widget) => w match {
+//      //case w if(WidgetList.map.contains(w.wclass.is)) => WidgetList.map(w.wclass.is).factory(w)
+//      case w => WidgetList.map(w.wclass.is).widget(w)
+//      case _ => null
+//    })//.filter(_ != null)
+//    l.foldLeft[List[Node]](CometWidget.renderNinja.toList)((l, n : widget.Widget) => l ::: n.render.toList) : NodeSeq
+    var l : List[widget.Widget] = room.widgets.map(
+      (w : model.Widget) => WidgetList.map(w.wclass.is).widget(w))
+    l.foldLeft[List[Node]](
+      (if(room.image.is != null){
+      JavaScriptHelper.onLoad("""
+          $("#col3_content").attr("style", "background: white url(/room/""" + room.id.is + """/image) no-repeat top left");
+          """).toList} else Nil) :::
+      CometWidget.renderNinja.toList)((l, n : widget.Widget) => l ::: n.render.toList) : NodeSeq
   }
    
   override def snippets = {

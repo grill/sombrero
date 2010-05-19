@@ -17,10 +17,50 @@ import scala.xml._
 import net.liftweb.http.js.JE.JsRaw
 
 object CometWidget {
-  def render(r : model.Room) = <lift:comet type="CometWidget" name={r.id.is.toString} />
+  def render(r : model.Room) = <lift:comet type="RoomCometWidget" name={r.id.is.toString} />
+  def render(u : model.User) = <lift:comet type="FavCometWidget" name={u.id.is.toString} />
+  def renderAdmin() = <lift:comet type="AdminCometWidget" name="acw" />
+  def renderNinja() = <lift:comet type="NinjaCometWidget" name={model.User.currentUser.open_!.id.is.toString + ":" + model.Room.current.open_!.id.toString} />
 }
 
-class CometWidget extends CometActor {
+class NinjaCometWidget extends CometWidget {
+  override def render = Text("")
+  def getWidgets(id : String) = {id.split(":") match {
+    case a if a.length == 2 =>
+      val uid = a(0); val rid = a(1)
+      Log.info("ninja: uid: " + uid + " rid: " + rid)
+      (
+        model.Widget.findAll(By(model.Widget.room, rid.toLong)).
+        map(w => WidgetList.map(w.wclass.is).widget(w))
+      ) ::: (
+        model.Fav.findAll(By(model.Fav.user, uid.toLong)).
+        map(_.widget.obj).filter(_ != Empty).map(_.open_!).
+        map(w => WidgetList.map(w.wclass.is).favwidget(w))
+      ) ::: (
+        model.Widget.roomless.
+        map(w => WidgetList.map(w.wclass.is).admwidget(w))
+      )
+    case _ => Nil
+  }}
+}
+
+class RoomCometWidget extends CometWidget {
+  def getWidgets(id : String) = model.Widget.findAll(By(model.Widget.room, id.toLong)).
+      map(w => WidgetList.map(w.wclass.is).widget(w))
+}
+
+class FavCometWidget extends CometWidget {
+  def getWidgets(id : String) = model.Fav.findAll(By(model.Fav.user, id.toLong)).
+    map(_.widget.obj).filter(_ != Empty).map(_.open_!).
+    map(w => WidgetList.map(w.wclass.is).widget(w))
+}
+
+class AdminCometWidget extends CometWidget {
+  def getWidgets(id : String) = model.Widget.roomless.
+      map(w => WidgetList.map(w.wclass.is).widget(w))
+}
+
+abstract class CometWidget extends CometActor {
   override def defaultPrefix = Full("cw")
   
   override def devMode = true
@@ -51,11 +91,12 @@ class CometWidget extends CometActor {
     }
   }
   
+  def getWidgets(id : String) : List[widget.Widget]
+  
   override def localSetup {
     //open_! : if it has no name, it's not ours
-    parent = model.Widget.findAll(By(model.Widget.room, name.open_!.toLong)).
-      map(w => WidgetList.map(w.wclass.is).factory(w))
-    parent.foreach(w => Distributor ! Subscribe(w.data.id.is, this))
+    parent = getWidgets(name.open_!)
+    (Set() ++ parent.map(_.data.id.is)).foreach(wid => Distributor ! Subscribe(wid, this))
     super.localSetup
   }
   

@@ -18,6 +18,7 @@ object Distributor extends Actor{
         case Subscribe(id, rec) => {
           Log.info("subscribe " + id + " " + rec)
           map = map(id) = rec :: map(id)
+          reply()
         }
         case Unsubscribe(rec) => {map = map.transform((id, l) => l - rec); reply()}
       }

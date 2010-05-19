@@ -19,7 +19,7 @@ import net.liftweb.http.js._
   
 import tuwien.auto.calimero.dptxlator._
 
-class Temperature (data: org.sombrero.model.Widget) extends StateWidget(data, "analog"){
+class Temperature (data: org.sombrero.model.Widget, wp: WidgetPlace) extends StateWidget(data, "analog", wp){
   val knx = KNXTemperature(data.knx().groupAddress.is)
    var isLight = false
    

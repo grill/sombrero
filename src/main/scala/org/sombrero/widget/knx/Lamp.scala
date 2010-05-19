@@ -15,7 +15,7 @@ import org.sombrero.snippet._
  
 import tuwien.auto.calimero.dptxlator._
 
-class Lamp (data: org.sombrero.model.Widget) extends StateWidget(data, "binary"){
+class Lamp (data: org.sombrero.model.Widget, wp: WidgetPlace) extends StateWidget(data, "binary", wp){
    val knx = new KNXLamp(data.knx().groupAddress.is)
    var status:Boolean = false//knx.getStatus 
   

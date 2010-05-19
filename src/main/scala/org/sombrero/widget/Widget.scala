@@ -26,30 +26,12 @@ object Container {
 	val htmlid = "col3_content"
 }
 
-trait FavParent {
-  this: Widget =>
-  val copy = "$(\"#FavCh_" + id + "\")"
-  if(isFav) properties ++ Map("copy" -> copy)
-}
-
-trait AdminSideBar extends FavParent{
-  this: Widget =>
-  properties ++ Map("admin_img" -> """["ui-icon-help",
-                                       "ui-icon-wrench",
-                                       "ui-icon-trash",
-                                       "ui-icon-plus"]""")
-}
-
-trait FavChild {
-  this: Widget =>
-  id = "FavCh_" + id
-  parent = Fav.htmlid
-}
-
-
-
-abstract class StateWidget(data: model.Widget, widgetType: String) 
-	extends CommandWidget(data, widgetType) {
+abstract class WidgetPlace
+case object AdminSideBar extends WidgetPlace
+case object FavChild extends WidgetPlace
+case object FavParent extends WidgetPlace
+abstract class StateWidget(data: model.Widget, widgetType: String, wp: WidgetPlace) 
+	extends CommandWidget(data, widgetType, wp) {
      val knx: StateKNXWidget[_]
 	
     /* 
@@ -63,8 +45,8 @@ abstract class StateWidget(data: model.Widget, widgetType: String)
     def translate(value: Array[Byte]): String
 }
 
-abstract class CommandWidget(data: model.Widget, widgetType: String) 
-	extends Widget(data, widgetType) {
+abstract class CommandWidget(data: model.Widget, widgetType: String, wp: WidgetPlace) 
+	extends Widget(data, widgetType, wp) {
     val knx: KNXWidget[_]
     val change = "function(){" + SHtml.ajaxCall(getValue, update _)._2 + "}"
     properties ++ Map(
@@ -86,13 +68,27 @@ abstract class CommandWidget(data: model.Widget, widgetType: String)
     def translate(value: String): String
 }
 
-abstract class Widget(val data: model.Widget, widgetType: String) {
+abstract class Widget(val data: model.Widget, widgetType: String, wp: WidgetPlace) {
 	var id = widgetType + "_" + data.id.is
 	//var properties: List[(String, String)]
 	val properties: Map[String, String] = Map()
 	//val com = new CometWidget(this)
 	var parent: String = Container.htmlid
 	val isFav = Fav.isFav(data)
+ 
+	wp match {
+		case  AdminSideBar 	=>	val copy = "$(\"#FavCh_" + id + "\")"
+  			if(isFav) properties ++ Map("copy" -> copy)
+  			properties ++ Map("admin_img" -> """["ui-icon-help",
+                                       "ui-icon-wrench",
+                                       "ui-icon-trash",
+                                       "ui-icon-plus"]""")
+		case  FavChild		=>	id = "FavCh_" + id
+  			parent = Fav.htmlid
+		case  FavParent		=>	 val copy = "$(\"#FavCh_" + id + "\")"
+			if(isFav) properties ++ Map("copy" -> copy)
+		case _ => Nil
+	}
  
 	//Distributor ! Subscribe(data.id.is, com)     
 	def render(): NodeSeq = JavaScriptHelper.createWidget(id, widgetType, properties.toList :::

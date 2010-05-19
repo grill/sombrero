@@ -19,7 +19,7 @@ import org.sombrero.util._
 import org.sombrero.model._
 import org.sombrero.snippet._
 
-class Dimmer(data: org.sombrero.model.Widget) extends StateWidget(data, "analog"){
+class Dimmer(data: org.sombrero.model.Widget, wp: WidgetPlace) extends StateWidget(data, "analog", wp){
   val knx = KNXDimmer(data.knx().groupAddress.is)
    properties ++ Map(
 	   "frontImg" -> "\"/images/dim0drag.png\"",

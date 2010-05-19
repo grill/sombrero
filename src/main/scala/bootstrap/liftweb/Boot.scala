@@ -68,6 +68,8 @@ class Boot {
   LiftRules.dispatch.append {
   case Req("room" :: roomid :: "image" :: Nil, _, _) =>
     () => RoomImage.get(roomid)
+  case Req("roomlink" :: rlid :: Nil, _ , _) =>
+    () => RoomLinkImage.get(rlid)
   }
   KNXRouter.getIP.map(ip => util.Connection.createConnection(ip))
   LiftRules.unloadHooks.append(() => { if(org.sombrero.util.Connection.isConnected) org.sombrero.util.Connection.destroyConnection }) }
