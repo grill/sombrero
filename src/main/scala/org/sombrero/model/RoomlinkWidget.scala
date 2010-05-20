@@ -14,6 +14,12 @@ class RoomlinkWidget extends WidgetData[RoomlinkWidget] with IdPK{
   
   object image extends MappedBinary(this) {
     var error = false
+    
+    override def displayName = 
+      is match {
+        case null => "add image"
+        case _ => "replace image"
+      }
      
     override def _toForm = {
       def callback(fh : FileParamHolder) {
@@ -30,10 +36,7 @@ class RoomlinkWidget extends WidgetData[RoomlinkWidget] with IdPK{
         }
       }
       }
-      is match {
-        case null => Full(Text("add: ") ++ SHtml.fileUpload(callback _))
-        case _ => Full(Text("replace: ") ++ SHtml.fileUpload(callback _))
-      }
+      Full(SHtml.fileUpload(callback _))
     }
     
     def onlyImageMime(data : Array[Byte]) : List[FieldError] = {

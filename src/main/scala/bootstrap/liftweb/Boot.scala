@@ -72,11 +72,16 @@ class Boot {
   case Req("roomlink" :: rlid :: Nil, _ , _) =>
     () => RoomLinkImage.get(rlid)
   }
-  KNXRouter.getIP.map(ip => util.Connection.createConnection(ip))
-  LiftRules.unloadHooks.append(() => { if(org.sombrero.util.Connection.isConnected) org.sombrero.util.Connection.destroyConnection }) }
+  try {
+  KNXRouter.getIP.map(ip => {Log.info(ip); util.Connection.createConnection(ip)})
+  LiftRules.unloadHooks.append(() => { if(org.sombrero.util.Connection.isConnected) org.sombrero.util.Connection.destroyConnection }) 
+  } catch {
+    case e => Log.info(e.getMessage)
+  }
   
   //Distributor ! TestMessage(1l, "Hi I'm Boot.scala")
 }  
+}
 
 object DBVendor extends ConnectionManager {
   def newConnection(name: ConnectionIdentifier): Box[Connection] = {
