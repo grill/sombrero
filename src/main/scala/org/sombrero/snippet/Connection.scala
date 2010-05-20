@@ -36,4 +36,11 @@ class Connection {
 				"create" 	-> SHtml.ajaxButton(Text("connect"), create _), 
 				"destroy" 	-> SHtml.ajaxButton(Text("disconnect"), destroy _))
 	}
+	
+	def has(xhtml:NodeSeq) = {
+	  if(org.sombrero.util.Connection.isConnected)
+	    Text("")
+    else
+      xhtml
+	}
 }

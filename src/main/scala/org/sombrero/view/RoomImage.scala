@@ -1,6 +1,6 @@
-package org.sombrero.util
+package org.sombrero.view
 
-import org.sombrero.model.RoomlinkWidget
+import org.sombrero.model.Room
 import _root_.net.liftweb.http._
 import SHtml._
 import _root_.net.liftweb.util._
@@ -10,13 +10,13 @@ import JsCmds._ // For implicits
 import _root_.scala.xml._
 import _root_.net.liftweb.mapper._
   
-object RoomLinkImage {
-  def get(rlid : String) : Box[LiftResponse] = {
+object RoomImage {
+  def get(roomid : String) : Box[LiftResponse] = {
     try {
-      RoomlinkWidget.findAll(By(RoomlinkWidget.id, Integer.parseInt(rlid))) match {
-        case List(rl) => {
-          Full(InMemoryResponse(rl.image.is,
-              ("Content-Type" -> rl.imageMime.is) :: Nil,
+      Room.findAll(By(Room.id, Integer.parseInt(roomid))) match {
+        case List(room) => {
+          Full(InMemoryResponse(room.image.is,
+              ("Content-Type" -> room.imageMime.is) :: Nil,
               Nil,
               200))
         }
