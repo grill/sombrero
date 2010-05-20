@@ -49,12 +49,52 @@ class Room {
     realrender(xhtml)
   }
   
+  def modify( xhtml : NodeSeq ) : NodeSeq = 
+    redoSnippet.is.map(_(xhtml)) openOr {
+    model.Room.current.map{room =>
+    var newname = room.name.is
+    var fileHolder : Box[FileParamHolder] = Empty
+    
+    def realrender(xhtml : NodeSeq) : NodeSeq = {
+      def newRoom() {
+        if(newname != "") {
+        //val room = model.Room.create.name(newname).parent(parent)
+        room.name(newname)
+      
+        fileHolder match {
+          case Full(FileParamHolder(_, null, _, _)) => true
+          case Full(FileParamHolder(_, mime, _, data))
+            if mime.startsWith("image/") => {
+              room.image(data).imageMime(mime)
+            true
+          }
+          case Full(_) => false
+          case _ => true
+          }
+        room.save
+        } else {
+          S.error("Room needs a name!"); redoSnippet(Full(realrender _))
+        }
+      }
+      
+      bind("room", xhtml,
+        "name" -> text(newname, newname = _),
+        "imagelabel" -> (if(room.image.is == null) 
+          Text("add")  else 
+          Text("replace")),
+        "image" -> (fileUpload((f : FileParamHolder) => fileHolder = Full(f))),
+        "submit" -> submit("Modify Room", newRoom _) )
+    }
+    realrender(xhtml)
+    } openOr Text("")
+  }
+  
   def remove( xhtml : NodeSeq ) : NodeSeq = {
     model.Room.current.map(
       (room) =>
       {
         if (room.children != Nil)
-          Text("Room has children")
+          Text("Room cannot be deleted because it has children")
         else
           bind("room", xhtml, "current" -> submit("Delete Room", () => {room.delete_!; S redirectTo "/"}))
       }

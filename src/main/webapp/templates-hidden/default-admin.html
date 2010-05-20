@@ -93,6 +93,7 @@
 		h2 {
 			color: #000000;
 		}
+		#col2_content h3{color:#ffffff}
 	</style>
 </head> 
 <body>
@@ -131,17 +132,26 @@
         </div>  
         
         <div id="col2">
-          <div id="col2_content" style="left:25px;" class="clearfix">
+          <div id="col2_content" style="left:25px" class="clearfix">
   			   <table>
                	<lift:Room.add form="POST" multipart="TRUE">
+  			   	      <tr><td colspan="2"><h3>Add Child Room to <lift:Room.name/></h3></td></tr>
                 	<tr><td>New Room name:</td> <td><room:name/></td></tr>
-    				<tr><td style="position:absolute;top:40px;">New Room image:</td> <td><room:image/></td></tr>
-                 	<tr><td><room:submit/></td></tr>
+    				<tr><td style="vertical-align:top;">New Room image:</td> <td><room:image/></td></tr>
+                 	<tr><td colspan="2"><room:submit/></td></tr>
                	</lift:Room.add>
+  			   	      <tr><td colspan="2"><h3>Add Widget to <lift:Room.name/></h3></td></tr>
+  			   	  <lift:widgetadd form="POST" multipart="TRUE" />
+  			   	     <lift:Room.modify form="POST" multipart="TRUE">
+  			   	      <tr><td colspan="2"><h3>Modify <lift:Room.name/></h3></td></tr>
+                	<tr><td>Room name:</td> <td><room:name/></td></tr>
+    				      <tr><td style="vertical-align:top"><room:imagelabel/> Room image:</td> <td><room:image/></td></tr>
+                 	<tr><td colspan="2"><room:submit/></td></tr>
+               	</lift:Room.modify>
+  			   	      <tr><td colspan="2"><h3>Delete <lift:Room.name/></h3></td></tr>
                	<lift:Room.remove form="POST">
-                 	<tr><td><room:current/></td></tr>
+                 	<tr><td colspan="2"><room:current/></td></tr>
                	</lift:Room.remove>
-  			   	<lift:widgetadd form="POST" multipart="TRUE" />
   			   </table>
           </div>
   		  <div id="AdminSideBar">
