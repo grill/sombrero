@@ -43,6 +43,12 @@ abstract class StateWidget(data: model.Widget, widgetType: String, wp: WidgetPla
  	 * for the KNX/EIB Devices
  	 */
     def translate(value: Array[Byte]): String
+    
+    override def update(value: String): JsCmd = {
+       val r = super.update(value);
+ 	   knx.getStatus
+ 	   r
+    }
 }
 
 abstract class CommandWidget(data: model.Widget, widgetType: String, wp: WidgetPlace) 
@@ -68,7 +74,7 @@ abstract class CommandWidget(data: model.Widget, widgetType: String, wp: WidgetP
     def translate(value: String): String
 }
 
-abstract class Widget(val data: model.Widget, widgetType: String, wp: WidgetPlace) {
+abstract class Widget(val data: model.Widget, widgetType: String, var wp: WidgetPlace) {
 	var id = widgetType + "_" + data.id.is
 	//var properties: List[(String, String)]
 	val properties: Map[String, String] = Map()
@@ -125,12 +131,14 @@ abstract class Widget(val data: model.Widget, widgetType: String, wp: WidgetPlac
 	}
 	def newFavorite(): JsCmd = {
   		 System.out.println("newFavorite");
+  		 Distributor ! FavAddMessage(data.id.is)
 		 Fav.add(data)
 		 JsRaw(";").cmd
 	}
 
  	def delFavorite(): JsCmd = {
   		 System.out.println("delFavorite");
+  		 Distributor ! FavRemMessage(data.id.is)
  		 Fav.remove(data)
 		 JsRaw(";").cmd
 	}
@@ -174,6 +182,30 @@ abstract class Widget(val data: model.Widget, widgetType: String, wp: WidgetPlac
 		            function(){}
 		         ]""")) else Nil
     def isActive = if(isFav) List(("is_active", "true")) else Nil
+    
+    def addFavCmd(): JsCmd = {
+        //JavaScriptHelper.call(Fav.htmlid, "favorites", "append", 
+       JavaScriptHelper.call(widgetType + "_" + data.id.is, "titlebar", "setFav", "true") &
+        JsRaw("$('<div id=\"" + id + "\"></div>').appendTo($(\"#" + Container.htmlid + "\"));").cmd &
+        JsRaw(JavaScriptHelper.initWidget(id, widgetType, properties.toList :::
+		List(	("top", data.top.is.toString),
+				("left", data.left.is.toString),
+				("text", '"' + data.name.is + '"'),
+				("stop", "function(){" + SHtml.ajaxCall(getTopJsExp, setTop _)._2 + ";"
+           			+ SHtml.ajaxCall(getLeftJsExp, setLeft _)._2 + ";}"),
+           		("favorites", "$(\"#" + Fav.htmlid + "\")"),
+           		("active", JavaScriptHelper.callback(newFavorite)),
+           		("inactive", JavaScriptHelper.callback(delFavorite)),
+           		("in_toolbox", JavaScriptHelper.callback(newToolboxitem)),
+           		("out_toolbox", JavaScriptHelper.callback(delToolboxitem(Room.current)))
+		) ::: admin ::: parentTag ::: isActive ::: pob)).cmd &
+        JavaScriptHelper.call(Fav.htmlid, "favorites", "deactivate_and_append", "$(\"#" + id + "\")")
+    }
+    
+    def removeFavCmd(): JsCmd = {
+       JavaScriptHelper.call(widgetType + "_" + data.id.is, "titlebar", "setFav", "false") &
+       JavaScriptHelper.call(Fav.htmlid, "favorites", "remove", "$(\"#" +"FavCh_" + widgetType + "_" + data.id.is + "\")")
+    }
 }
 
 abstract class KNXWidget[T](destAddress:String, name:String, mainNumber:Int, dptID:String){

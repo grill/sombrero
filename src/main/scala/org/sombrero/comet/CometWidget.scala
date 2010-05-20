@@ -24,7 +24,10 @@ object CometWidget {
 }
 
 class NinjaCometWidget extends CometWidget {
-  override def render = Text("")
+  override def render = {
+    this ! pageLoad
+    Text("")
+  }
   def getWidgets(id : String) = {id.split(":") match {
     case a if a.length == 2 =>
       val uid = a(0); val rid = a(1)
@@ -37,8 +40,10 @@ class NinjaCometWidget extends CometWidget {
         map(_.widget.obj).filter(_ != Empty).map(_.open_!).
         map(w => WidgetList.map(w.wclass.is).favwidget(w))
       ) ::: (
+        if(model.User.superUser_?) (
         model.Widget.roomless.
         map(w => WidgetList.map(w.wclass.is).admwidget(w))
+        ) else Nil
       )
     case _ => Nil
   }}
@@ -61,6 +66,7 @@ class AdminCometWidget extends CometWidget {
 }
 
 abstract class CometWidget extends CometActor {
+  object pageLoad
   override def defaultPrefix = Full("cw")
   
   override def devMode = true
@@ -84,10 +90,52 @@ abstract class CometWidget extends CometActor {
     	partialUpdate(parent.setTitle(s)) 
     }*/  
     case KNXMessage(id, value) => {
-    	parent.filter(_.id == id).foreach(_ match {
-    	  case p: StateWidget => { partialUpdate(p.setValue(value)) }
+    	Log.info(parent.filter(_.data.id.is == id))
+    	parent.filter(_.data.id.is == id).foreach(_ match {
+    	  case p: StateWidget => {Log.info(p); partialUpdate(p.setValue(value)) }
           case _ => {}
     	})
+    }
+    
+    case FavAddMessage(id) => {
+      if(! parent.exists(w => w.data.id.is == id && w.wp == FavChild && model.Fav.isFav(w.data))) {
+        val l = 
+        model.Fav.findAll(By(model.Fav.user, model.User.currentUser.open_!.id)).
+        map(_.widget.obj).filter(_.map(_.id.is == id) openOr false).map(_.open_!).
+        map(w => WidgetList.map(w.wclass.is).favwidget(w))
+        Log.info("add:" + l.toString);
+        l.filter(w => ! parent.exists(_.data.id.is == w.data.id.is)).
+          foreach(w => Distributor ! Subscribe(w.data.id.is, this))
+        l.foreach(w => partialUpdate(w.addFavCmd))
+        parent = l ::: parent
+      }
+    }
+    
+    case FavRemMessage(id) => {
+      val l = parent.filter(w => w.data.id.is == id && w.wp == FavChild)
+        Log.info("remove:" + l.toString);
+      l.filter(w => ! parent.exists(_.data.id.is == w.data.id.is)).
+        foreach(w => Distributor ! PartialUnsubscribe(w.data.id.is, this))
+      l.foreach(w => partialUpdate(w.removeFavCmd))
+      parent = parent diff l
+    }
+    
+    case pageLoad => {
+      if(model.User.superUser_?) {
+      val oldAdmins = parent.filter(_.wp == AdminSideBar)
+      oldAdmins.foreach(w => Distributor ! PartialUnsubscribe(w.data.id.is, this))
+      parent = (parent diff oldAdmins)
+      val newAdmins = 
+        model.Widget.roomless.
+        map(w => WidgetList.map(w.wclass.is).admwidget(w))
+      newAdmins.foreach(w => Distributor ! Subscribe(w.data.id.is, this))
+      parent = parent ::: newAdmins
+      }
+      /*
+      parent.foreach(_ match {
+        case p : StateWidget => p.knx.getStatus
+        case _ =>
+      })*/
     }
   }
   
@@ -97,6 +145,9 @@ abstract class CometWidget extends CometActor {
     //open_! : if it has no name, it's not ours
     parent = getWidgets(name.open_!)
     (Set() ++ parent.map(_.data.id.is)).foreach(wid => Distributor ! Subscribe(wid, this))
+    /*parent.foreach(_ match {
+      case p : StateKNXWidget[_] => p.getStatus
+    })*/
     super.localSetup
   }
   

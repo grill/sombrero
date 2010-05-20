@@ -96,7 +96,10 @@ $.widget("ui.analog", {
 		
 			if(inRange){
 				inRange = false;
-				that._setData('temp', ((y-slide_rect[0])/slide_rect[2]-1)*-1);
+				if(y <= 0)
+					that._setData('value', 1);
+				else
+					that._setData('value', ((y-slide_rect[0])/slide_rect[2]-1)*-1);
 				//alert(that._getData('temp'));
 				that._getData('change')();
 			}

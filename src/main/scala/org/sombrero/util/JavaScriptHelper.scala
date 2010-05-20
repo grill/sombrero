@@ -38,10 +38,19 @@ object JavaScriptHelper {
             "});" 
 	}
  
+	def initWidgets(cls:String, function:String, properties:List[(String, String)]):String = {
+			"""$(".""" + cls + """").""" + function + "({" + 
+				properties.slice(1).foldLeft ((properties(0)._1 + ": " + properties(0)._2))
+                {(x, y) => x + ", " + y._1 + ": " + y._2} + 	
+            "});" 
+	}
+ 
  	def error(mes: String): JsExp = JsRaw("$().message(\"Hello world!\")")
  
  	def call(id:String, widgetType:String, option:String, value:String) = 
  		JsRaw("$('#" + id + "')." + widgetType + "('" + option + "', " + value + ");")
+ 	def call(id:String, widgetType:String, option:String) = 
+ 		JsRaw("$('#" + id + "')." + widgetType + "('" + option + "');")
  	def css(id:String, attr: String): JsExp = 
  		JsRaw("$('#" + id + "').css('" + attr + "')")
  	def getOption(id:String, widgetType:String, option:String): JsExp = 
@@ -64,4 +73,17 @@ object JavaScriptHelper {
 		    		"\"type\""			-> "\"iframe\"",
 		    		"title"				-> ("\"" + title + "\"")
  	).toList))
+    
+    /**
+ 	 * @param id the id-attribute of the link with the href of the iframe
+     */
+   	def popupCmd(cls:String, title: String): JsCmd = JsRaw(initWidgets(cls, "fancybox", Map(
+		    		"width"				-> "\"75%\"",
+		    		"height"			-> "\"75%\"",
+		            "autoScale"     	-> "false",
+		            "transitionIn"		-> "\"none\"",
+		    		"transitionOut"		-> "\"none\"",
+		    		"\"type\""			-> "\"iframe\"",
+		    		"title"				-> ("\"" + title + "\"")
+ 	).toList)).cmd
 }

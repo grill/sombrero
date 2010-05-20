@@ -97,12 +97,13 @@ $.widget("ui.favorites", {
 		if(kids.length > 0)
 			kids.each(function(){
 				//$(this)
-				that.append($(this));
+				that.deactivate_and_append($(this));
+				/*that.append($(this));
 				//alert($(this).binary('option', 'value'));
 				//alert($(this).protowidget('option', 'prefix'));
 				$(this).draggable("destroy");
 				if(!that._getData('admin_mode'))
-					$(this).toolbox('destroy');
+					$(this).toolbox('destroy');*/
 			});
 		
 		if(this._getData('vertical')){
@@ -169,6 +170,12 @@ $.widget("ui.favorites", {
 				}
 			});
 		}
+	},
+	deactivate_and_append: function(e){
+		this.append(e);
+		e.draggable("destroy");
+		if(!this._getData('admin_mode'))
+			e.toolbox('destroy');
 	},
 	append: function(e) {		
 		this.favbar.append(e);

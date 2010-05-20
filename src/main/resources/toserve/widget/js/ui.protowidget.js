@@ -46,9 +46,9 @@ $.widget("ui.protowidget", {
 			text:	this._getData('text'),
 			is_active: this._getData('is_active'),
 			active: function(){
-				if(fav != null)
+				/*if(fav != null)
 					that._setData('copy', that._getData('createCopy')());
-				fav.favorites('append', that._getData('copy').detach());
+				fav.favorites('append', that._getData('copy').detach());*/
 					//if(that._getData('admin')){
 						//fav.favorites('append', that.element.detach());
 					//}else{
@@ -56,7 +56,7 @@ $.widget("ui.protowidget", {
 				that._getData('active')();
 			},
 			inactive: function(){
-				if(fav != null){
+				/*if(fav != null){
 					if(that._getData('copy') != null)
 						fav.favorites('remove', that._getData('copy'));
 					else{
@@ -70,12 +70,12 @@ $.widget("ui.protowidget", {
 								});
 								that.reactivate();
 							}else{*/
-								if(that._getData('parentObj') != null)
+								/*if(that._getData('parentObj') != null)
 									that._getData('parentObj').titlebar('click');
 								else
 									fav.favorites('remove', that.element);
 					}
-				}
+				}*/
 				that._getData('inactive')();
 			}
     	});

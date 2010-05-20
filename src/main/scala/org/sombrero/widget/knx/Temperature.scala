@@ -22,11 +22,17 @@ import tuwien.auto.calimero.dptxlator._
 class Temperature (data: org.sombrero.model.Widget, wp: WidgetPlace) extends StateWidget(data, "analog", wp){
   val knx = KNXTemperature(data.knx().groupAddress.is)
    var isLight = false
-   
+   val min:Float = 15
+   val max:Float = 30
+   val status = 0/*knx.getStatus match{
+    	case Full(x:Float)   => ((x-min)/(max-min))*100
+    	case _				 => 0
+   }*/
    
    properties ++ Map(
 //	   "change" -> "function(){" + SHtml.ajaxCall(getTempJsExp, setTemp _)._2 + "}",
-	   "clip_front" -> "true"
+	   "clip_front" -> "true",
+	   "value"	->	status.toString
    )
    helpUrl = "/helptext/temperature"
 
@@ -37,16 +43,16 @@ class Temperature (data: org.sombrero.model.Widget, wp: WidgetPlace) extends Sta
    }
    
    def getTempJsExp(): JsExp = getOption("temp")
-   def translate(value: Array[Byte]): String = knx.translate(knx.translate(value)).toString
+   def translate(value: Array[Byte]): String = (((knx.translate(knx.translate(value))-min)/(max-min))*100).toString
    def translate(value: String): String = {
       Log.info("I'm a Temperature tell me what to do");
-      value
+      knx.translate(if((value.toFloat * 100) < 0) min else (min+((max-min) * value.toFloat)).toFloat)
    }
 } 
 
 case class KNXTemperature(destAddress:String)  
 	extends StateKNXWidget [Float](destAddress, "Temperature", 
-			TranslatorTypes.TYPE_2OCTET_SIGNED , DPTXlator2ByteFloat.DPT_TEMPERATURE.getID) {
+			TranslatorTypes.TYPE_2OCTET_FLOAT , DPTXlator2ByteFloat.DPT_TEMPERATURE.getID) {
 	val dptx = new DPTXlator2ByteFloat (DPTXlator2ByteFloat.DPT_TEMPERATURE.getID)
 	
 	def translate (value:Float): String = {

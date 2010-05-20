@@ -18,37 +18,48 @@ import tuwien.auto.calimero.dptxlator._
 import org.sombrero.util._
 import org.sombrero.model._
 import org.sombrero.snippet._
+import scala.concurrent.ops._
 
 class Dimmer(data: org.sombrero.model.Widget, wp: WidgetPlace) extends StateWidget(data, "analog", wp){
   val knx = KNXDimmer(data.knx().groupAddress.is)
+  val status = knx.getStatus match{
+    case Full(x:Short)   => x
+    case _				 => 0
+  }
+  /*spawn {knx.getStatus match{
+    case Full(x:Short)   => Log.info(x.toString)
+    case _				 => 100
+  }}*/
+  
    properties ++ Map(
 	   "frontImg" -> "\"/images/dim0drag.png\"",
 	   "backgroundImg" -> "\"/images/dim0.png\"",
 	   "slideRect" -> "[19, 90, 122, 42]",
-	   "opacity" -> "\"/images/dim0light.png\""
+	   "opacity" -> "\"/images/dim0light.png\"",
+	   "value"	->	status.toString
     )
    helpUrl = "/helptext/dimmer"
    
    def translate(value: Array[Byte]): String = knx.translate(knx.translate(value)).toString
    def translate(value: String): String = {
       Log.info("I'm a Dimmer tell me what to do");
-      value
+      knx.translate(if((value.toFloat * 100) < 0) 0.toShort else (value.toFloat * 100).toShort)
    }
 }
 
 case class KNXDimmer(destAddress:String)  
-	extends StateKNXWidget [Float](destAddress, "Temperature", 
-			TranslatorTypes.TYPE_2OCTET_SIGNED , DPTXlator2ByteFloat.DPT_TEMPERATURE.getID) {
-	val dptx = new DPTXlator2ByteFloat (DPTXlator2ByteFloat.DPT_TEMPERATURE.getID)
+	extends StateKNXWidget [Short](destAddress, "Dimmer", 
+			TranslatorTypes.TYPE_8BIT_UNSIGNED , DPTXlator8BitUnsigned.DPT_SCALING.getID) {
+	val dptx = new DPTXlator8BitUnsigned (DPTXlator8BitUnsigned.DPT_SCALING.getID)
 	
-	def translate (value:Float): String = {
+	def translate (value:Short): String = {
       dptx.setValue(value) 
       dptx.getValue
     }
     
-    def translate (value: String):Float = {
+    def translate (value: String):Short = {
       dptx.setValue(value)
-      dptx.getValueFloat
+      dptx.getValueUnsigned
     }
     
     def translate (value: Array[Byte]): String = {

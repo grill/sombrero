@@ -11,6 +11,9 @@ object Distributor extends Actor{
 
   def act = loop {
       react {
+        case s : FavAddMessage => {
+          (Set() ++ map.flatMap[CometActor](_._2)).foreach(_ ! s)
+        }
         case s : SombreroMessage => {
           Log.info(s + " " + map(s.id))
           map(s.id).foreach(_ ! s)
@@ -21,9 +24,11 @@ object Distributor extends Actor{
           reply()
         }
         case Unsubscribe(rec) => {map = map.transform((id, l) => l - rec); reply()}
+        case PartialUnsubscribe(id, rec) => {map = map(id) = map(id) - rec; reply()}
       }
     }
 }
    
 case class Subscribe(id : Long, rec : CometActor)
+case class PartialUnsubscribe(id : Long, rec : CometActor)
 case class Unsubscribe(rec : CometActor)

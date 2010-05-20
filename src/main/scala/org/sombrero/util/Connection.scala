@@ -9,6 +9,8 @@ import net.liftweb.http.js.jquery._
 import _root_.net.liftweb.mapper._
 import _root_.java.sql._
 
+import org.sombrero.comet.SombreroKNXListener
+
 import tuwien.auto.calimero._
 import tuwien.auto.calimero.link._
 import tuwien.auto.calimero.process._  
@@ -25,6 +27,7 @@ object Connection {
   		if(isConnected){   
   			Log.info("hi")
   			knxComm = new ProcessCommunicatorImpl(link)
+  			SombreroKNXListener.start
   		}
   	} 
    

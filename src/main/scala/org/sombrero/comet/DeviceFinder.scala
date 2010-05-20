@@ -38,7 +38,7 @@ class DeviceFinder extends ProcessListener with CometActor{
       doUpdate
     }
     case Clear => {
-      devs = Map[String,Int]("1/2/3" -> 5) withDefaultValue 0
+      devs = Map[String,Int]() withDefaultValue 0
       Connection.knxComm.addProcessListener(this)
       doUpdate
     }
@@ -52,9 +52,9 @@ class DeviceFinder extends ProcessListener with CometActor{
                 val newKNX = Full(KNXWidget.create.groupAddress(b._1))
                 a ++
                 <tr>
-                  <td><a href={"/widgetadd?groupAddress="+b._1} id={"knxaddr" + b._1}>{Text(b._1)}</a></td>
+                  <td><a href={"/widgetadd?groupAddress="+b._1} class="dflink" id={"knxaddr" + b._1}>{Text(b._1)}</a></td>
                   <td>{b._2}</td>
-                </tr> ++ JavaScriptHelper.popup("knxaddr" + b._1, "Add Widget", Text("I have no idea where this will show up."))}
+                </tr> /*++ JavaScriptHelper.popup("knxaddr" + b._1, "Add Widget", Text("I have no idea where this will show up."))*/}
             }}
-          </table>))
+          </table>) & JavaScriptHelper.popupCmd("dflink", "Add Widget"))
 }

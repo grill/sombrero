@@ -70,6 +70,17 @@ $.widget("ui.titlebar", {
 	click: function(){
 		this.img.click();
 	},
+	setFav: function(b){
+		if(b){
+			$(this)
+			.addClass("ui-state-default");
+			that._setData('is_active', true);
+		}else{
+			this.img
+			.removeClass("ui-state-default");
+			this._setData('is_active', false);
+		}
+	},
 	update_title: function(s) {
 		this.title.html(s);
 	}

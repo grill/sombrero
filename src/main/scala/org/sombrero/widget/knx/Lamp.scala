@@ -14,10 +14,14 @@ import org.sombrero.model._
 import org.sombrero.snippet._
  
 import tuwien.auto.calimero.dptxlator._
+import scala.concurrent.ops._
 
 class Lamp (data: org.sombrero.model.Widget, wp: WidgetPlace) extends StateWidget(data, "binary", wp){
    val knx = new KNXLamp(data.knx().groupAddress.is)
-   var status:Boolean = false//knx.getStatus 
+   var status:Boolean = knx.getStatus match {
+     case Full(x: Boolean)	=> x
+     case _					=> false
+   }
   
    properties ++ Map(
      	"value" -> status.toString
@@ -27,7 +31,7 @@ class Lamp (data: org.sombrero.model.Widget, wp: WidgetPlace) extends StateWidge
    def translate(value: Array[Byte]): String = knx.translate(knx.translate(value)).toString
    def translate(value: String): String = {
       Log.info("I'm a Lamp tell me what to do");
-      value
+      knx.translate(! value.toBoolean)
    }
 }
 

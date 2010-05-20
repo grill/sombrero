@@ -33,7 +33,7 @@ class Unary (data: org.sombrero.model.Widget, wp: WidgetPlace) extends CommandWi
    
    def translate(value: String): String = {
       Log.info("I'm a Switch tell me what to do");
-      value
+      knx.translate(value.toBoolean)
    }
 }
 

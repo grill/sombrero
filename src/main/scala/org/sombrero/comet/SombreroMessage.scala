@@ -6,4 +6,5 @@ case class TestMessage(override val id : Long, val text : String) extends Sombre
 case class TitleMessage(override val id : Long, val s: String) extends SombreroMessage(id)
 case class DBMessage(override val id : Long) extends SombreroMessage(id) //maybe add some sort of parameter that allows the receiver to identify the changed field
 case class KNXMessage(override val id : Long, val newVal : Array[Byte]) extends SombreroMessage(id)
-  
+case class FavAddMessage(override val id : Long) extends SombreroMessage(id)
+case class FavRemMessage(override val id : Long) extends SombreroMessage(id)
