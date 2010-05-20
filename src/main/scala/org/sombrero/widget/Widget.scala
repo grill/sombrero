@@ -53,7 +53,7 @@ abstract class CommandWidget(data: model.Widget, widgetType: String, wp: WidgetP
 	   "change" -> change
 	)
     
-    def getValue(): JsExp = getOption("value")
+    def getValue(): JsExp = /*JavaScriptHelper.getOption(id, "protowidget", "testtest")*/getOption("value")
     
     def update(value: String): JsCmd = {
     	Log.info("Value: " + value + "; Recvied from: " + id)
@@ -76,6 +76,7 @@ abstract class Widget(val data: model.Widget, widgetType: String, wp: WidgetPlac
 	var parent: String = Container.htmlid
 	val isFav = Fav.isFav(data)
 	var helpUrl = ""
+	var pob: List[(String,String)] = Nil
  
 	wp match {
 		case  AdminSideBar 	=>	val copy = "$(\"#FavCh_" + id + "\")"
@@ -91,6 +92,10 @@ abstract class Widget(val data: model.Widget, widgetType: String, wp: WidgetPlac
 		case _ => Nil
 	}
  
+	if(isFav){
+	   pob = List(("parentObj", "$(\"#" + widgetType + "_" + data.id.is + "\")"))
+	}
+ 
 	//Distributor ! Subscribe(data.id.is, com)     
 	def render(): NodeSeq = JavaScriptHelper.createWidget(id, widgetType, properties.toList :::
 		List(	("top", data.top.is.toString),
@@ -103,7 +108,7 @@ abstract class Widget(val data: model.Widget, widgetType: String, wp: WidgetPlac
            		("inactive", JavaScriptHelper.callback(delFavorite)),
            		("in_toolbox", JavaScriptHelper.callback(newToolboxitem)),
            		("out_toolbox", JavaScriptHelper.callback(delToolboxitem(Room.current)))
-		) ::: admin ::: parentTag ::: isActive,
+		) ::: admin ::: parentTag ::: isActive ::: pob,
 		content()
 	)
  

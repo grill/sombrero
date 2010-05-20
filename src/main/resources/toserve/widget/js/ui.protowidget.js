@@ -47,20 +47,19 @@ $.widget("ui.protowidget", {
 			is_active: this._getData('is_active'),
 			active: function(){
 				if(fav != null)
+					that._setData('copy', that._getData('createCopy')());
+				fav.favorites('append', that._getData('copy').detach());
 					//if(that._getData('admin')){
 						//fav.favorites('append', that.element.detach());
 					//}else{
-						that._setData('copy', that._getData('createCopy')());
-						fav.favorites('append', that._getData('copy').detach());
 					//}
 				that._getData('active')();
 			},
 			inactive: function(){
-				if(fav != null)
+				if(fav != null){
 					if(that._getData('copy') != null)
 						fav.favorites('remove', that._getData('copy'));
 					else{
-						if(that._getData('parentTag') != null)
 							/*if(that._getData('admin')){
 								fav.favorites('remove', that.element);
 								that.element
@@ -73,10 +72,10 @@ $.widget("ui.protowidget", {
 							}else{*/
 								if(that._getData('parentObj') != null)
 									that._getData('parentObj').titlebar('click');
-							//}
-						else
-							fav.favorites('remove', that.element);
+								else
+									fav.favorites('remove', that.element);
 					}
+				}
 				that._getData('inactive')();
 			}
     	});

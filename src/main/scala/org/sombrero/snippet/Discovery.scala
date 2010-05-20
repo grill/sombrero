@@ -17,12 +17,16 @@ class Discovery {
     
     d.startSearch(10, true)
     
-    Log.info(d.getSearchResponses.length.toString)
+    val responses = d.getSearchResponses;
+    
+    Log.info("hallo");
+    Log.info(responses)
+    Log.info(responses.length.toString)
     
     SetHtml("routerlist",
     <table id="routerlist">
-      {d.getSearchResponses.foldLeft(Nil : NodeSeq)
-        {(a,b) => a ++ <tr><td>b.getControlEndpoint.toString</td></tr>}
+      {responses.foldLeft(Text("") : NodeSeq)
+        {(a,b) => a ++ <tr><td>{Log.info(b); Log.info(b.getControlEndpoint);b.getControlEndpoint.toString}</td></tr>}
       }
     </table>
     )

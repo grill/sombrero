@@ -18,7 +18,7 @@ $.widget("ui.unary", {
 			position: 	"absolute",
 			height: 	(this._getData('height')) + "px",
 			width:		(this._getData('width'))  + "px",
-			top: 		this.element.protowidget('option', 'hoff') + "px",
+			top: 		this.element.protowidget('option', 'hoff')+1 + "px",
 			left: 		"0px"})
 		.attr("id", this._getData('prefix') + this._getData('imgId'))
 		.attr("src", this._getData('img'))
@@ -68,7 +68,8 @@ $.extend($.ui.unary, {
 		in_toolbox:		function(){},
 		out_toolbox:	function(){},
 	    value: 			true,				//true -> on - false -> off
-		change:			function(){}
+		change:			function(){},
+		test: true
 	}
 });
 })(jQuery);

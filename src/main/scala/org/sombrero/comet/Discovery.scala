@@ -10,6 +10,7 @@ import JsCmds._ // For implicits
 import _root_.scala.xml._
 import _root_.net.liftweb.mapper._
 import tuwien.auto.calimero.knxnetip.Discoverer
+import tuwien.auto.calimero.knxnetip.servicetype.SearchResponse
 import scala.concurrent.ops._
 
 class Discovery extends CometActor {
@@ -24,25 +25,34 @@ class Discovery extends CometActor {
     
     d.startSearch(10, true)
     
-    Log.info(d.getSearchResponses.length.toString)
+    val resp : Array[SearchResponse] = d.getSearchResponses
     
-    this ! SetHtml("routerlist",
-    <table id="routerlist">
-      {d.getSearchResponses.foldLeft(Nil : NodeSeq)
-        {(a,b) => a ++
-          <tr>
-            <td>
-              {SHtml.link(".", () => model.KNXRouter.get.ip(b.getControlEndpoint.toString).save, Text(b.getControlEndpoint.toString))}
-            </td>
-          </tr>}
-      }
-    </table>
-    )
+    Log.info(model.KNXRouter.get.ip.is)
+    Log.info(resp.toString)
+    Log.info(resp.length.toString)
+    Log.info(resp(1).toString)
+    resp.foreach(r => Log.info(r.getControlEndpoint.toString))
+    
+    this ! resp
   }
   
   override def lowPriority : PartialFunction[Any, Unit] = {
   case cmd : JsCmd => {
       partialUpdate(cmd)
     }
+  case resp : Array[SearchResponse] => {
+    this ! SetHtml("routerlist",
+    <table id="routerlist">
+      {resp.flatMap{b =>
+          <tr>
+            <td>
+              {SHtml.link("/discovery", {() => model.KNXRouter.get.ip(b.getControlEndpoint.getAddress.getHostAddress.toString).save}, Text(b.getControlEndpoint.toString))}
+            </td>
+          </tr>}
+      }
+    </table>
+    )
+    }
+  case _ => Log.info("OH NOEZ");
   }
 }

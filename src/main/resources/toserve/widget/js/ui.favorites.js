@@ -35,8 +35,15 @@ $.widget("ui.favorites", {
 		}
 		
 		var kids = this.element.children();
-		if(kids.length > 0)
-			kids.detach();
+		/*kids.each(function(){
+			alert($(this).binary('option', 'value'));
+			alert($(this).protowidget('option', 'prefix'));
+		});*/
+		/*if(kids.length > 0){
+			kids.each(function(){
+				$(this).detach();
+			});
+		}*/
 		
 		if(!this._getData('vertical')){
 			this.createButton("/images/arrowleft.png")
@@ -84,13 +91,18 @@ $.widget("ui.favorites", {
 			height: 	this._getData('height') + "px",
 			top: 		"0px",
 			left: 		"0px"})
-		.appendTo(container)
-		.append(kids);
+		.appendTo(container);
+		//.append(kids);
+		
 		if(kids.length > 0)
 			kids.each(function(){
-				that.add($(this));
-				if(that._getData('admin_mode'))
-					$(this).protowidget('toolbox');
+				//$(this)
+				that.append($(this));
+				//alert($(this).binary('option', 'value'));
+				//alert($(this).protowidget('option', 'prefix'));
+				$(this).draggable("destroy");
+				if(!that._getData('admin_mode'))
+					$(this).toolbox('destroy');
 			});
 		
 		if(this._getData('vertical')){

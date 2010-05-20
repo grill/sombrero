@@ -26,7 +26,7 @@ class Favorites {
      
 	  if(l != Nil)
 	    l.map((w : model.Widget) => WidgetList.map(w.wclass.is).favwidget(w)).
-      foldLeft[List[Node]](Nil)((l, n : widget.Widget) => l ::: n.render.toList) : NodeSeq
+        foldLeft[List[Node]](Nil)((l, n : widget.Widget) => l ::: n.render.toList) : NodeSeq
 //	    l.map((w : model.Widget) => w match {
 //	    	case w if(w.wclass.is == "Lamp") => new Lamp(w) with FavChild
 //	    	case w if(w.wclass.is == "Temperature") => new Temperature(w) with FavChild
