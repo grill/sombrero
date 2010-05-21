@@ -1,7 +1,7 @@
 <lift:Surround.choose>
 	<h2>Welcome to sombrero!</h2>
 	Control your house the easy and fast way. <br />
-	<lift:User.hasSuper>
+	<lift:SuperUser.has>
 	<h2>Add a Room!</h2>
 	<table>
     <lift:Room.add form="POST" multipart="TRUE">
@@ -10,6 +10,6 @@
       <tr><td colspan="2"><room:submit/></td></tr>
     </lift:Room.add>
   </table>
-	</lift:User.hasSuper>
+	</lift:SuperUser.has>
 	<lift:LoginRedirect />
 </lift:Surround.choose>

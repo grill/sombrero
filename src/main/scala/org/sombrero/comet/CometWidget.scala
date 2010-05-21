@@ -26,6 +26,7 @@ object CometWidget {
 class NinjaCometWidget extends CometWidget {
   override def render = {
     //this ! pageLoad
+    Log.info(toString + ": render")
     Text("")
   }
   def getWidgets(id : String) = {id.split(":") match {
@@ -69,7 +70,7 @@ abstract class CometWidget extends CometActor {
   //object pageLoad
   override def defaultPrefix = Full("cw")
   
-  override def devMode = true
+  //override def devMode = true
   
   var parent : List[widget.Widget] = Nil
   override def render = {
@@ -80,7 +81,7 @@ abstract class CometWidget extends CometActor {
   
   override def lowPriority : PartialFunction[Any, Unit] = {
     case TestMessage(id, text) => {
-      System.out.println("TestMessage recived for " + id + " " + text)
+      Log.info("TestMessage recived for " + id + " " + text)
     }
     case DBMessage(_) => { 
       //reRender(true)
@@ -98,6 +99,7 @@ abstract class CometWidget extends CometActor {
     }
     
     case FavAddMessage(id) => {
+      Log.info("buh")
       if(! parent.exists(w => w.data.id.is == id && w.wp == FavChild && model.Fav.isFav(w.data))) {
         val l = 
         model.Fav.findAll(By(model.Fav.user, model.User.currentUser.open_!.id)).
@@ -106,14 +108,20 @@ abstract class CometWidget extends CometActor {
         Log.info("add:" + l.toString);
         l.filter(w => ! parent.exists(_.data.id.is == w.data.id.is)).
           foreach(w => Distributor ! Subscribe(w.data.id.is, this))
-        l.foreach(w => partialUpdate(w.addFavCmd))
+        l.foreach{w => 
+          val cmd = w.addFavCmd
+          Log.info(cmd)
+          partialUpdate(cmd)
+          //partialUpdate(JsRaw("location.reload()").cmd)
+        }
         parent = l ::: parent
       }
     }
     
     case FavRemMessage(id) => {
       val l = parent.filter(w => w.data.id.is == id && w.wp == FavChild)
-        Log.info("remove:" + l.toString);
+      Log.info(parent.map(_.data.id.is).toString);
+      Log.info("remove:" + l.toString);
       l.filter(w => ! parent.exists(_.data.id.is == w.data.id.is)).
         foreach(w => Distributor ! PartialUnsubscribe(w.data.id.is, this))
       l.foreach(w => partialUpdate(w.removeFavCmd))
@@ -137,12 +145,15 @@ abstract class CometWidget extends CometActor {
         case _ =>
       })
     }*/
+    
+    case something => Log.info(something.toString)
   }
   
   def getWidgets(id : String) : List[widget.Widget]
   
   override def localSetup {
     //open_! : if it has no name, it's not ours
+    Log.info(toString + ": local setup")
     parent = getWidgets(name.open_!)
     (Set() ++ parent.map(_.data.id.is)).foreach(wid => Distributor ! Subscribe(wid, this))
     /*parent.foreach(_ match {

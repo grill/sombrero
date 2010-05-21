@@ -30,7 +30,8 @@ class RoomList {
     roomlist.flatMap((room) =>
       bind("room", xhtml,
         "link" -> {/*if(model.Room.current.map(_.id.is == room.id.is) openOr false) {Text(room.name.is)} else {*/ 
-          link("/room/"+room.id.is, () => Empty , Text(room.name.is)).map(el => 
+          //link("/room/"+room.id.is, () => Empty , Text(room.name.is)).map(el => 
+          <a href={"/room/"+room.id.is}>{Text(room.name.is)}</a>.map(el => 
             el match{ case e: Elem => e % new UnprefixedAttribute("class", room.id.is.toString, Null) })}/*}*/,
         "children" -> recursiveRender(xhtml, room.children)))
   }

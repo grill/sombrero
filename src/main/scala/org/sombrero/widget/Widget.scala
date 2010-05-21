@@ -130,16 +130,17 @@ abstract class Widget(val data: model.Widget, widgetType: String, var wp: Widget
 		 JsRaw(";").cmd
 	}
 	def newFavorite(): JsCmd = {
-  		 System.out.println("newFavorite");
-  		 Distributor ! FavAddMessage(data.id.is)
+  		 //System.out.println("newFavorite");
+  		 Log.info("newFavorite");
 		 Fav.add(data)
+  		 Distributor ! FavAddMessage(data.id.is)
 		 JsRaw(";").cmd
 	}
 
  	def delFavorite(): JsCmd = {
-  		 System.out.println("delFavorite");
-  		 Distributor ! FavRemMessage(data.id.is)
+  		 Log.info("delFavorite");
  		 Fav.remove(data)
+  		 Distributor ! FavRemMessage(data.id.is)
 		 JsRaw(";").cmd
 	}
 	
@@ -185,7 +186,7 @@ abstract class Widget(val data: model.Widget, widgetType: String, var wp: Widget
     
     def addFavCmd(): JsCmd = {
         //JavaScriptHelper.call(Fav.htmlid, "favorites", "append", 
-       JavaScriptHelper.call(widgetType + "_" + data.id.is, "titlebar", "setFav", "true") &
+       //JavaScriptHelper.call(widgetType + "_" + data.id.is, "titlebar", "setFav", "true") &
         JsRaw("$('<div id=\"" + id + "\"></div>').appendTo($(\"#" + Container.htmlid + "\"));").cmd &
         JsRaw(JavaScriptHelper.initWidget(id, widgetType, properties.toList :::
 		List(	("top", data.top.is.toString),

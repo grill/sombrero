@@ -21,10 +21,10 @@ object Distributor extends Actor{
         case Subscribe(id, rec) => {
           Log.info("subscribe " + id + " " + rec)
           map = map(id) = rec :: map(id)
-          reply()
+          //reply()
         }
-        case Unsubscribe(rec) => {map = map.transform((id, l) => l - rec); reply()}
-        case PartialUnsubscribe(id, rec) => {map = map(id) = map(id) - rec; reply()}
+        case Unsubscribe(rec) => {map = map.transform((id, l) => l - rec);} //reply()}
+        case PartialUnsubscribe(id, rec) => {map = map(id) = map(id) - rec;} //reply()}
       }
     }
 }
