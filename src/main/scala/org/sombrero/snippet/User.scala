@@ -20,9 +20,9 @@ import net.liftweb.http.js._
 import org.sombrero.util._
 import bootstrap._
   
-class User {
+class SuperUser {
 	
-	def hasSuper(xhtml:NodeSeq) = {
+	def has(xhtml:NodeSeq) = {
 	  if(org.sombrero.model.User.superUser_?)
       xhtml
     else
