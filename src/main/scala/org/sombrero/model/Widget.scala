@@ -16,7 +16,8 @@ import org.sombrero.util._
 import WidgetList.WidgetClass
 
 //Stores widget data that is common to all widgets.
-class Widget extends LongKeyedMapper[Widget] with IdPK /*with LifecycleCallbacks*/ {
+//Mainly used for accessing WidgetData.
+class Widget extends LongKeyedMapper[Widget] with IdPK {
   def getSingleton = Widget
   
   object name extends MappedString(this, 32) {
@@ -46,6 +47,7 @@ class Widget extends LongKeyedMapper[Widget] with IdPK /*with LifecycleCallbacks
   
   var dataToForm : ((Box[String], (NodeSeq) => NodeSeq, (Any) => Unit) => NodeSeq) => NodeSeq = null
     
+  //widet type (e.g. Lamp, Temperature, ...)
   object wclass extends MappedString(this, 32) {
     object filter extends RequestVar[Box[WidgetMetaData[_]]](Empty)
     override def defaultValue = WidgetList.default.id
@@ -78,6 +80,7 @@ class Widget extends LongKeyedMapper[Widget] with IdPK /*with LifecycleCallbacks
     }
   }
   
+  //creates form for the associated data
   def dataForm (redoSnippet : (NodeSeq) => NodeSeq, onSuccess : (WidgetData[_]) => Unit) : NodeSeq = {
     def onSubmit(something : Any) {
       something match {
@@ -94,6 +97,7 @@ class Widget extends LongKeyedMapper[Widget] with IdPK /*with LifecycleCallbacks
     <div id="widgetdata" >{data.map(_.toForm(Empty, redoSnippet, onSubmit)) openOr Text("")}</div>
   }
   
+  //dataForm, but polymorphic
   def dataForm[Data <: WidgetData[Data]] (initData : Data, redoSnippet : (NodeSeq) => NodeSeq, onSuccess : (Data) => Unit) : NodeSeq = {
     def onSubmit(something : Any) {
       something match {
