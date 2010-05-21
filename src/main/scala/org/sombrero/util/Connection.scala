@@ -16,10 +16,15 @@ import tuwien.auto.calimero.link._
 import tuwien.auto.calimero.process._  
 import tuwien.auto.calimero.link.medium._  
 
+/**
+ * This class has got a variaty of utility functions for connection management
+ * @author Gabriel Grill
+ */
 object Connection {
   	var link: KNXNetworkLinkIP = null
 	var knxComm: ProcessCommunicator = null
  
+	//creates a connection
   	def createConnection(remoteHost:String) = {
   		link = new KNXNetworkLinkIP(remoteHost, TPSettings.TP1)
   		if(isConnected){

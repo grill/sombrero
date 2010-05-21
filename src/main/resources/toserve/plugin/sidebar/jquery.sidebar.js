@@ -7,6 +7,11 @@
  * Dual licensed under the MIT licenses.
  * Date: 2009-09-01
  */
+
+/*
+ and heavily rewritten by Gabriel Grill for Sombrero
+*/
+
 //Side Bar Plugin
 (function($) {
 		

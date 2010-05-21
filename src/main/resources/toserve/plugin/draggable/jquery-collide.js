@@ -1,3 +1,8 @@
+/*
+ Heavily rewritten by Gabriel Grill for Sombrero
+*/
+
+
 $.ui.plugin.add("draggable", "collide", {
     start: function(event, ui) {
         var $t = $(this), widget = $t.data("draggable");

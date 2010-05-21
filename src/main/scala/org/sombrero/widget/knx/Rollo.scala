@@ -23,6 +23,10 @@ import org.sombrero.snippet._
 
 import tuwien.auto.calimero.dptxlator._
 
+/**
+ * Generates a Rollo widget
+ * @author Gabriel Grill
+ */
 class Rollo (data: org.sombrero.model.Widget, wp: WidgetPlace) extends StateWidget(data, "analog", wp){
   val knx = KNXRollo(data.knx().groupAddress.is)
   val status = knx.getStatus match{
@@ -46,6 +50,7 @@ class Rollo (data: org.sombrero.model.Widget, wp: WidgetPlace) extends StateWidg
    }
 }
 
+//This class enables KNX support
 case class KNXRollo(destAddress:String)  
 	extends StateKNXWidget [Short](destAddress, "Rollo", 
 			TranslatorTypes.TYPE_8BIT_UNSIGNED , DPTXlator8BitUnsigned.DPT_SCALING.getID) {

@@ -22,20 +22,37 @@ import tuwien.auto.calimero.datapoint._
 import tuwien.auto.calimero.dptxlator._
 
 
+/**
+ * This file contains a set of classes to access KNX and create and manage widgets
+ * All JQuery UI widget properties are explained in their respective files
+ * @author Gabriel Grill
+ */
+
+/**
+ * The id of the div tag that represents the main area
+ */
 object Container {
 	val htmlid = "col3_content"
 }
 
+/**
+ * These classes decide where a widget is placed on the page
+ */
 abstract class WidgetPlace
+//Admin's Toobox in the Admin Sidebar
 case object AdminSideBar extends WidgetPlace
+//Favorites widget
 case object FavChild extends WidgetPlace
+//main area
 case object FavParent extends WidgetPlace
+
+
 abstract class StateWidget(data: model.Widget, widgetType: String, wp: WidgetPlace) 
 	extends CommandWidget(data, widgetType, wp) {
      val knx: StateKNXWidget[_]
 	
     /* 
-     *
+     * updates the widget on the client with the new value
      */
 	def setValue(value: Array[Byte]) = call("update_value", translate(value)).cmd
  	
@@ -50,7 +67,7 @@ abstract class StateWidget(data: model.Widget, widgetType: String, wp: WidgetPla
  	   r
     }
 }
-
+ 
 abstract class CommandWidget(data: model.Widget, widgetType: String, wp: WidgetPlace) 
 	extends Widget(data, widgetType, wp) {
     val knx: KNXWidget[_]
@@ -59,8 +76,10 @@ abstract class CommandWidget(data: model.Widget, widgetType: String, wp: WidgetP
 	   "change" -> change
 	)
     
+    //gets the value of the widget from the client
     def getValue(): JsExp = /*JavaScriptHelper.getOption(id, "protowidget", "testtest")*/getOption("value")
     
+    //recives a value from the client and sends it to the respective KNX device
     def update(value: String): JsCmd = {
     	Log.info("Value: " + value + "; Recvied from: " + id)
 	    knx.write(translate(value))
@@ -75,13 +94,17 @@ abstract class CommandWidget(data: model.Widget, widgetType: String, wp: WidgetP
 }
 
 abstract class Widget(val data: model.Widget, widgetType: String, var wp: WidgetPlace) {
+    //id of the widget
 	var id = widgetType + "_" + data.id.is
-	//var properties: List[(String, String)]
+    //Map of properties for the respective JQuery UI widget
 	val properties: Map[String, String] = Map()
-	//val com = new CometWidget(this)
+	//parent Tag
 	var parent: String = Container.htmlid
 	val isFav = Fav.isFav(data)
+	//URL which points the helptext of the respective widget if changed in a subclass
 	var helpUrl = ""
+	//a probperty for the favorite widget, which has to be set to the parentObj if
+    //the widget is placed in the favorites widget
 	var pob: List[(String,String)] = Nil
  
 	wp match {
@@ -102,7 +125,7 @@ abstract class Widget(val data: model.Widget, widgetType: String, var wp: Widget
 	   pob = List(("parentObj", "$(\"#" + widgetType + "_" + data.id.is + "\")"))
 	}
  
-	//Distributor ! Subscribe(data.id.is, com)     
+	
 	def render(): NodeSeq = JavaScriptHelper.createWidget(id, widgetType, properties.toList :::
 		List(	("top", data.top.is.toString),
 				("left", data.left.is.toString),
@@ -184,6 +207,7 @@ abstract class Widget(val data: model.Widget, widgetType: String, var wp: Widget
 		         ]""")) else Nil
     def isActive = if(isFav) List(("is_active", "true")) else Nil
     
+    //this function adds a widget to the favorits widget
     def addFavCmd(): JsCmd = {
         //JavaScriptHelper.call(Fav.htmlid, "favorites", "append", 
        //JavaScriptHelper.call(widgetType + "_" + data.id.is, "titlebar", "setFav", "true") &
@@ -203,6 +227,7 @@ abstract class Widget(val data: model.Widget, widgetType: String, var wp: Widget
         JavaScriptHelper.call(Fav.htmlid, "favorites", "deactivate_and_append", "$(\"#" + id + "\")")
     }
     
+    //this function removes a widget from the favorits widget
     def removeFavCmd(): JsCmd = {
        JavaScriptHelper.call(widgetType + "_" + data.id.is, "titlebar", "setFav", "false") &
        JavaScriptHelper.call(Fav.htmlid, "favorites", "remove", "$(\"#" +"FavCh_" + widgetType + "_" + data.id.is + "\")")
@@ -219,7 +244,7 @@ abstract class KNXWidget[T](destAddress:String, name:String, mainNumber:Int, dpt
 	def write (status: T) = if(Connection.isConnected) Connection.knxComm.write(dp, translate(status))
 	def write (status: String) = if(Connection.isConnected) Connection.knxComm.write(dp, status)
 } 
-  
+
 abstract class StateKNXWidget[T] (destAddress:String, name:String, mainNumber:Int, dptID:String)
 		 extends KNXWidget[T](destAddress, name, mainNumber, dptID){
     override val dp = new StateDP(destDevice, name, mainNumber, dptID)

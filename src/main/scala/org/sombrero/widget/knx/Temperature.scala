@@ -18,7 +18,10 @@ import java.net._
 import net.liftweb.http.js._
   
 import tuwien.auto.calimero.dptxlator._
-
+/**
+ * Generates a Temperature widget
+ * @author Gabriel Grill
+ */
 class Temperature (data: org.sombrero.model.Widget, wp: WidgetPlace) extends StateWidget(data, "analog", wp){
   val knx = KNXTemperature(data.knx().groupAddress.is)
    var isLight = false
@@ -50,6 +53,7 @@ class Temperature (data: org.sombrero.model.Widget, wp: WidgetPlace) extends Sta
    }
 } 
 
+//This class enables KNX support
 case class KNXTemperature(destAddress:String)  
 	extends StateKNXWidget [Float](destAddress, "Temperature", 
 			TranslatorTypes.TYPE_2OCTET_FLOAT , DPTXlator2ByteFloat.DPT_TEMPERATURE.getID) {

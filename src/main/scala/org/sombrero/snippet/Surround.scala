@@ -8,6 +8,10 @@ import _root_.scala.xml._
 import _root_.net.liftweb.sitemap._
 import org.sombrero.model._
 
+/**
+ * This snippet can decide what surround tag is right for the current user
+ * @author Gabriel Grill
+ */
 class Surround {
   def chooseRoom(xhtml: NodeSeq): NodeSeq = {
     def chooseTemplate() = {

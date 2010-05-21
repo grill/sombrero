@@ -1,3 +1,10 @@
+/** 
+ * generates the a unary widget
+ * all documentation concerning properties has been done
+ * in the http://github.com/lx9k/sombrero-thesis Diplomarbeit.pdf
+ * @author Gabriel Grill 
+ */
+
 (function($) {
 
 $.widget("ui.unary", {

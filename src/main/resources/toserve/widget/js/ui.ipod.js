@@ -12,7 +12,7 @@ Dual licensed under the MIT (filamentgroup.com/examples/mit-license.txt) and GPL
 
 
 /*
- And rewritten by Gabriel Grill for sombrero
+ and heavily rewritten by Gabriel Grill for Sombrero
 */
 
 

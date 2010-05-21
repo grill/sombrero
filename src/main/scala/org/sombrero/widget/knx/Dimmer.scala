@@ -19,7 +19,10 @@ import org.sombrero.util._
 import org.sombrero.model._
 import org.sombrero.snippet._
 import scala.concurrent.ops._
-
+/**
+ * Generates a Dimmer widget
+ * @author Gabriel Grill
+ */
 class Dimmer(data: org.sombrero.model.Widget, wp: WidgetPlace) extends StateWidget(data, "analog", wp){
   val knx = KNXDimmer(data.knx().groupAddress.is)
   val status = knx.getStatus match{
@@ -47,6 +50,7 @@ class Dimmer(data: org.sombrero.model.Widget, wp: WidgetPlace) extends StateWidg
    }
 }
 
+//This class enables KNX support
 case class KNXDimmer(destAddress:String)  
 	extends StateKNXWidget [Short](destAddress, "Dimmer", 
 			TranslatorTypes.TYPE_8BIT_UNSIGNED , DPTXlator8BitUnsigned.DPT_SCALING.getID) {

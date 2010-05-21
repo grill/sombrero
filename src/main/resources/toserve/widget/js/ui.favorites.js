@@ -1,17 +1,9 @@
-/*-------------------------------------------------------------------- 
-Scripts for creating and manipulating custom menus based on standard <ul> markup
-Version: 3.0, 03.31.2009
-
-By: Maggie Costello Wachs (maggie@filamentgroup.com) and Scott Jehl (scott@filamentgroup.com)
-	http://www.filamentgroup.com
-	* reference articles: http://www.filamentgroup.com/lab/jquery_ipod_style_drilldown_menu/
-		
-Copyright (c) 2009 Filament Group
-Dual licensed under the MIT (filamentgroup.com/examples/mit-license.txt) and GPL (filamentgroup.com/examples/gpl-license.txt) licenses.
---------------------------------------------------------------------*/
-
-/* And rewritten by Gabriel Grill for sombrero */
-
+/** 
+ * generates a favorites widget or Admin's toolbox in the Sidebar
+ * all documentation concerning properties has been done
+ * in the http://github.com/lx9k/sombrero-thesis Diplomarbeit.pdf
+ * @author Gabriel Grill 
+ */
 
 (function($) {
 
@@ -35,15 +27,6 @@ $.widget("ui.favorites", {
 		}
 		
 		var kids = this.element.children();
-		/*kids.each(function(){
-			alert($(this).binary('option', 'value'));
-			alert($(this).protowidget('option', 'prefix'));
-		});*/
-		/*if(kids.length > 0){
-			kids.each(function(){
-				$(this).detach();
-			});
-		}*/
 		
 		if(!this._getData('vertical')){
 			this.createButton("/images/arrowleft.png")
@@ -96,14 +79,7 @@ $.widget("ui.favorites", {
 		
 		if(kids.length > 0)
 			kids.each(function(){
-				//$(this)
 				that.deactivate_and_append($(this));
-				/*that.append($(this));
-				//alert($(this).binary('option', 'value'));
-				//alert($(this).protowidget('option', 'prefix'));
-				$(this).draggable("destroy");
-				if(!that._getData('admin_mode'))
-					$(this).toolbox('destroy');*/
 			});
 		
 		if(this._getData('vertical')){
@@ -258,9 +234,9 @@ $.widget("ui.favorites", {
 $.extend($.ui.favorites, {
 	version: "1.0",
 	defaults: {
-		amount_widgets:	4,
-		width:			162,		//2 wegen off
-		height:			235,	//35 wegen off und hoff aus binary
+		amount_widgets:	4,			//amount of widgets displayed
+		width:			162,		//width of widgets which will be inserted
+		height:			235,		//height of widgets which will be inserted
 	    top:			100,
 	    left:			20,
 		icon_images:    [ "ui-icon-wrench",
@@ -273,9 +249,9 @@ $.extend($.ui.favorites, {
 		                  function(){},
 		                  function(){},
 		                  function(){}],
-		widgets: 		[],
-		vertical: 		false,
-		admin_mode:		false
+		vertical: 		false,		//if true favorites widget will be vertical aligned
+									//if false favorites widget will be horizontal aligned
+		admin_mode:		false		//if true the favorites widget becomes a toolbox
 	}
 });
 })(jQuery);

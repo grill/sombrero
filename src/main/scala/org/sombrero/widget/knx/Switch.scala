@@ -22,7 +22,10 @@ import tuwien.auto.calimero.dptxlator._
 import tuwien.auto.calimero.exception.KNXException._
 import tuwien.auto.calimero.link._
  
-
+/**
+ * Generates a Unary Widget
+ * @author Gabriel Grill
+ */
 class Unary (data: org.sombrero.model.Widget, wp: WidgetPlace) extends CommandWidget(data, "unary", wp){
    val knx = new KNXSwitch(data.knx.groupAddress.is)
    var status = false//!device.getStatus
@@ -36,17 +39,20 @@ class Unary (data: org.sombrero.model.Widget, wp: WidgetPlace) extends CommandWi
       knx.translate(value.toBoolean)
    }
 }
-
+//Generates a Switch widget
 class Switch (data: model.Widget, wp: WidgetPlace) extends Unary(data, wp)
 
+//Generates a SwitchOff widget
 class SwitchOff (data: org.sombrero.model.Widget, wp: WidgetPlace) extends Unary(data, wp){  
   properties ++ Map("img" -> "\"/images/ButtonOff.png\"")
 }
  
+//Generates a SwitchOn widget
 class SwitchOn (data: org.sombrero.model.Widget, wp: WidgetPlace) extends Unary(data, wp){ 
   properties ++ Map("img" -> "\"/images/ButtonOn.png\"")  
 }
-  
+
+//This class enables KNX support
 class KNXSwitch(destAddress:String)  
 	extends CommandKNXWidget[Boolean] (destAddress, "Switch", 
 			TranslatorTypes.TYPE_BOOLEAN, DPTXlatorBoolean.DPT_SWITCH.getID){

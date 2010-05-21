@@ -21,6 +21,7 @@ import org.sombrero._
 /**
   * A class that's instantiated and run on Startup.  It allows the programer
   * to modify lift's environment
+  * @author Alexander Steiner and Gabriel Grill
   */
 class Boot {
   def boot {
@@ -73,10 +74,14 @@ class Boot {
   case Req("roomlink" :: rlid :: Nil, _ , _) =>
     () => RoomLinkImage.get(rlid)
   }
+
   try {
-  KNXRouter.getIP.map(ip => {Log.info(ip); util.Connection.createConnection(ip)})
-  LiftRules.unloadHooks.append(() => { if(org.sombrero.util.Connection.isConnected) org.sombrero.util.Connection.destroyConnection }) 
+	  //connection establishment on start up
+	  KNXRouter.getIP.map(ip => {Log.info(ip); util.Connection.createConnection(ip)})
+	  //connection establishment on shut down
+	  LiftRules.unloadHooks.append(() => { if(org.sombrero.util.Connection.isConnected) org.sombrero.util.Connection.destroyConnection }) 
   } catch {
+    //matches all exceptions
     case e => Log.info(e.getMessage)
   }
   
@@ -84,7 +89,9 @@ class Boot {
 }  
 }
 
+//provides database access
 object DBVendor extends ConnectionManager {
+  //connect to database
   def newConnection(name: ConnectionIdentifier): Box[Connection] = {
     try {
 
@@ -95,6 +102,8 @@ object DBVendor extends ConnectionManager {
       case e : Exception => e.printStackTrace; Empty
     }
   }
+  
+  //shutdown database
   def releaseConnection(conn: Connection) = conn.close
 }
 

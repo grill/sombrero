@@ -15,7 +15,10 @@ import org.sombrero.snippet._
  
 import tuwien.auto.calimero.dptxlator._
 import scala.concurrent.ops._
-
+/**
+ * Generates a Lamp widget
+ * @author Gabriel Grill
+ */
 class Lamp (data: org.sombrero.model.Widget, wp: WidgetPlace) extends StateWidget(data, "binary", wp){
    val knx = new KNXLamp(data.knx().groupAddress.is)
    var status:Boolean = knx.getStatus match {
@@ -35,6 +38,7 @@ class Lamp (data: org.sombrero.model.Widget, wp: WidgetPlace) extends StateWidge
    }
 }
 
+//This class enables KNX support
 class KNXLamp (destAddress:String)  
 	extends StateKNXWidget [Boolean](destAddress, "Lamp", 
 			TranslatorTypes.TYPE_BOOLEAN, DPTXlatorBoolean.DPT_SWITCH.getID){

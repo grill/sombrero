@@ -1,3 +1,10 @@
+/** 
+ * generates the toolbox for a widget
+ * all documentation concerning properties has been done
+ * in the http://github.com/lx9k/sombrero-thesis Diplomarbeit.pdf
+ * @author Gabriel Grill 
+ */
+
 (function($) {
 
 $.widget("ui.toolbox", {
@@ -23,7 +30,6 @@ $.widget("ui.toolbox", {
 			"z-index":	1000
 		})
 		.attr("class", "ui-widget-header ui-corner-all")
-		//.attr("id", this._getData('prefix') + this._getData('imgId'))
 		.appendTo(this.element);
 
 		$.each(names, function(idx, value){
@@ -93,10 +99,9 @@ $.widget("ui.toolbox", {
 $.extend($.ui.toolbox, {
 	version: "1.0",
 	defaults: {
-	    pheight: 0,
+	    pheight: 0,	
 	    pwidth: 0,
 	    prefix: "",
-	    imgId: "img",
 		admin_img: 		[ "ui-icon-help",
 		                  "ui-icon-wrench",	//array filled with css classes to display
 			              "ui-icon-trash",	//the clickable icons of the admin widget
@@ -105,13 +110,10 @@ $.extend($.ui.toolbox, {
 		                  function(){},		//the associated icon of the admin widget
 		                  function(){},
 		                  function(){}],
-		admin_url: 		[ "",
-		           		  "" ],
-		title:			["Help",
-		      			 "Configure Widget" ],
-		admin: null,
-		admin_url: 		[ "",
-		           		  "" ]
+		admin_url: 		[ "",				//these strings should contain URL's pointing
+		           		  "" ],				//to the respective dialog content
+		title:			["Help",			//titles for the dialogs
+		      			 "Configure Widget" ]
 	}
 });
 

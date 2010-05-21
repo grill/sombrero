@@ -1,3 +1,10 @@
+/** 
+ * generates the a analog widget
+ * all documentation concerning properties has been done
+ * in the http://github.com/lx9k/sombrero-thesis Diplomarbeit.pdf
+ * @author Gabriel Grill 
+ */
+
 (function($) {
 	
 $.widget("ui.analog", {
@@ -118,6 +125,7 @@ $.widget("ui.analog", {
 		this.element.disableSelection();
 	},
 	update_value: function(y){
+		//updates the UI
 		var slide_rect = this._getData('slideRect');
 		var height = this._getData('height');
 		var width = this._getData('width');

@@ -7,6 +7,13 @@ import _root_.net.liftweb.util._
 import org.sombrero.widget.knx._
 import org.sombrero.widget._
 
+/**
+ * This snippet renders the Admin's toolbox in the SideBar
+ * and works exactly like Favorites. For further need of information
+ * look into Favorites.scala.
+ * 
+ * @author Gabriel Grill
+ */
 class ToolBox {
 
 	def render(xhtml: NodeSeq): NodeSeq = {
@@ -27,25 +34,12 @@ class ToolBox {
 	} 
     
 	def getWidgets(): NodeSeq = {
+	  //gets the List of widgets in the toolbox
 	  val l = model.Widget.roomless 
      
 	  if(l != Nil)
 	    l.map((w : model.Widget) => WidgetList.map(w.wclass.is).admwidget(w)).
       foldLeft[List[Node]](Nil)((l, n : widget.Widget) => l ::: n.render.toList) : NodeSeq
-//	    l.map((w : model.Widget) => w match {
-//	    	case w if(w.wclass.is == "Lamp") => new Lamp(w) with AdminSideBar
-//	    	case w if(w.wclass.is == "Temperature") => new Temperature(w) with AdminSideBar
-//	    	case w if(w.wclass.is == "SwitchOn") => new SwitchOn(w) with AdminSideBar
-//	    	case w if(w.wclass.is == "SwitchOff") => new SwitchOff(w) with AdminSideBar
-//	    	case w if(w.wclass.is == "Switch") => new Switch(w)  with AdminSideBar
-//	    	case w if(w.wclass.is == "Dimmer") => new Dimmer(w) with AdminSideBar
-//	    	case w if(w.wclass.is == "Rollo") => new Rollo(w) with AdminSideBar
-//	    	case w if(w.wclass.is == "Roomlink") => new RoomLink(w) with AdminSideBar
-//	    	case _ => null
-//            //else /* if (w.wclass.is == "Temperature")*/ new Temperature(w)
-//	    })
-//       .filter(_ != null)
-//       .foldLeft[List[Node]](Nil)((l, n : widget.Widget) => l ::: n.render.toList) : NodeSeq 
 	  else
 		  Nil
 	}
