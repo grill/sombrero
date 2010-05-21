@@ -1,3 +1,4 @@
+//author: Alexander C. Steiner
 package org.sombrero.comet
 
 import org.sombrero.model
@@ -13,6 +14,7 @@ import tuwien.auto.calimero.knxnetip.Discoverer
 import tuwien.auto.calimero.knxnetip.servicetype.SearchResponse
 import scala.concurrent.ops._
 
+//router discovery
 class Discovery extends CometActor {
   override def defaultPrefix = Full("rtr")
   

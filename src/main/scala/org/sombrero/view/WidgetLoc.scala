@@ -1,3 +1,4 @@
+//author: Alexander C. Steiner
 package org.sombrero.view
 
 import _root_.net.liftweb.util._
@@ -23,12 +24,12 @@ case object WidgetNotFound extends WidgetAccess
 case object WidgetPermissionDenied extends WidgetAccess
 case class FullWidgetAccess(w : Widget) extends WidgetAccess
 
+//handles widget edit forms
 class WidgetLoc extends Loc[WidgetAccess] {
 
   def response(path : List[String]) = new RewriteResponse(ParsePath(path, "", true, false), Map.empty, true)
 
   override def rewrite = Full({
-    //case RewriteRequest(ParsePath("widget" :: _, _, _, _), _, _) if (! User.superUser_?) => {Log.info("hello?"); Log.info(User.superUser_?.toString); (response("widget" :: Nil), WidgetPermissionDenied)}
     case RewriteRequest(ParsePath(List("widget", aid), _, _, _), _, _) => {
       Log.info("rewrite!")
       try {
@@ -48,10 +49,8 @@ class WidgetLoc extends Loc[WidgetAccess] {
     }
   })
    
+  //the snippet
   def widgetForm(w : Widget) = (ignore : NodeSeq) => {
-    //var to : String = "/"
-    //w.completeForm("Save Widget", (w, wd) => w.room.obj.map((r : model.Room) => to = "/room/" + r.id.is), to)
-    
     w.completeForm("Save Widget", (w, wd) => null, "/closeframe")
   } 
    

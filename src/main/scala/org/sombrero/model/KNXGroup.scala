@@ -1,3 +1,4 @@
+//author: Alexander C. Steiner
 package org.sombrero.model
 import net.liftweb.mapper._
 import net.liftweb.util._

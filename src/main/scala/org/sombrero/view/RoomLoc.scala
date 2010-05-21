@@ -1,3 +1,4 @@
+//author: Alexander C. Steiner
 package org.sombrero.view
  
 import _root_.net.liftweb.util._
@@ -23,6 +24,7 @@ abstract class RoomAccess
 case object NoSuchRoom extends RoomAccess
 case class FullRoomAccess(room : Room) extends RoomAccess
 
+//handles room access
 class RoomLoc extends Loc[RoomAccess] {
 
   def response(path : List[String]) = new RewriteResponse(ParsePath(path, "", true, false), Map.empty, true)
@@ -46,34 +48,11 @@ class RoomLoc extends Loc[RoomAccess] {
        } catch { case e : NumberFormatException => (RewriteResponse("room" :: Nil),
             NoSuchRoom) }
     }
-    /*
-    case RewriteRequest(ParsePath(List("room", aid, "widgetadd"), _, _, _), _, _) => {
-      Log.info("rewrite called")
-      try {
-        val rid = aid.toLong
-        Room.findAll(By(Room.id, rid)) match {
-          case List(room) => {
-            (response("room" :: "widgetadd" :: Nil),
-            FullRoomAccess(room))
-          }
-          case _ => {
-            (response("room" :: "display" :: Nil),
-            NoSuchRoom)
-          }
-        }
-       } catch { case e : NumberFormatException => (response("room" :: "display" :: Nil),
-            NoSuchRoom) }
-    }
-    */
   })
-      
+  
+  //collects the right widgets from the database, renders them,
+  //and maybe renders a background
   def roomRender(room : Room)(ignore : NodeSeq) : NodeSeq = {
-//    var l : List[widget.Widget] = room.widgets.map((w : model.Widget) => w match {
-//      //case w if(WidgetList.map.contains(w.wclass.is)) => WidgetList.map(w.wclass.is).factory(w)
-//      case w => WidgetList.map(w.wclass.is).widget(w)
-//      case _ => null
-//    })//.filter(_ != null)
-//    l.foldLeft[List[Node]](CometWidget.renderNinja.toList)((l, n : widget.Widget) => l ::: n.render.toList) : NodeSeq
     var l : List[widget.Widget] = room.widgets.map(
       (w : model.Widget) => WidgetList.map(w.wclass.is).widget(w))
     l.foldLeft[List[Node]](

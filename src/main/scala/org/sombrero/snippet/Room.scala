@@ -1,3 +1,4 @@
+//author: Alexander C. Steiner
 package org.sombrero.snippet
 
 import org.sombrero.model
@@ -10,10 +11,12 @@ import JsCmds._ // For implicits
 import _root_.scala.xml._
 import _root_.net.liftweb.mapper._
 
+//various room functions
 class Room {
   
   object redoSnippet extends RequestVar[Box[(NodeSeq) => NodeSeq]](Empty) 
 
+  //add room form
   def add( xhtml : NodeSeq ) : NodeSeq = 
     redoSnippet.is.map(_(xhtml)) openOr {
     var newname = ""
@@ -49,6 +52,7 @@ class Room {
     realrender(xhtml)
   }
   
+  //modify room form
   def modify( xhtml : NodeSeq ) : NodeSeq = 
     redoSnippet.is.map(_(xhtml)) openOr {
     model.Room.current.map{room =>
@@ -58,7 +62,6 @@ class Room {
     def realrender(xhtml : NodeSeq) : NodeSeq = {
       def newRoom() {
         if(newname != "") {
-        //val room = model.Room.create.name(newname).parent(parent)
         room.name(newname)
       
         fileHolder match {
@@ -89,6 +92,7 @@ class Room {
     } openOr Text("")
   }
   
+  //delete room button
   def remove( xhtml : NodeSeq ) : NodeSeq = {
     model.Room.current.map(
       (room) =>
@@ -101,6 +105,7 @@ class Room {
       ) openOr Text("No Room to delete")
   }
   
+  //room deletion list
   def removeList( xhtml : NodeSeq ) : NodeSeq = {
     model.Room.findAll.flatMap((room) =>
                       bind("room", xhtml,

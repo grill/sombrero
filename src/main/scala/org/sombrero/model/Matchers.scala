@@ -1,3 +1,4 @@
+//author: Alexander C. Steiner
 package org.sombrero.model
 
 //Just some utility Regexes used in field validation.

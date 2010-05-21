@@ -1,3 +1,4 @@
+//author: Alexander C. Steiner
 package org.sombrero.snippet
 
 import org.sombrero.util._
@@ -20,6 +21,7 @@ import net.liftweb.http.js._
 import org.sombrero.util._
 import bootstrap._
   
+//restricts parts of the page to superusers
 class SuperUser {
 	
 	def has(xhtml:NodeSeq) = {

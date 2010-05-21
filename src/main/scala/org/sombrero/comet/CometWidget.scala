@@ -1,3 +1,4 @@
+//author: Alexander C. Steiner
 package org.sombrero.comet
 
 import _root_.net.liftweb.util._
@@ -16,6 +17,7 @@ import org.sombrero.util.WidgetList
 import scala.xml._
 import net.liftweb.http.js.JE.JsRaw
 
+//the CometWidget handles updates for all widgets on the page
 object CometWidget {
   def render(r : model.Room) = <lift:comet type="RoomCometWidget" name={r.id.is.toString} />
   def render(u : model.User) = <lift:comet type="FavCometWidget" name={u.id.is.toString} />
@@ -23,9 +25,9 @@ object CometWidget {
   def renderNinja() = <lift:comet type="NinjaCometWidget" name={model.User.currentUser.open_!.id.is.toString + ":" + model.Room.current.open_!.id.toString} />
 }
 
+//the implementation in use, it is stealthy (renders nothing) and updates everything
 class NinjaCometWidget extends CometWidget {
   override def render = {
-    //this ! pageLoad
     Log.info(toString + ": render")
     Text("")
   }
@@ -66,16 +68,12 @@ class AdminCometWidget extends CometWidget {
       map(w => WidgetList.map(w.wclass.is).widget(w))
 }
 
+//base class for different implementations
 abstract class CometWidget extends CometActor {
-  //object pageLoad
   override def defaultPrefix = Full("cw")
-  
-  //override def devMode = true
   
   var parent : List[widget.Widget] = Nil
   override def render = {
-    //val w = parent.data.reload
-    //parent = WidgetList.map(w.wclass.is).factory(w)
     NodeSeq.view(parent.flatMap(_.render))
   }
   
@@ -84,12 +82,8 @@ abstract class CometWidget extends CometActor {
       Log.info("TestMessage recived for " + id + " " + text)
     }
     case DBMessage(_) => { 
-      //reRender(true)
       partialUpdate(JsRaw("location.reload()").cmd)
     }
-    /*case TitleMessage(_, s) => {
-    	partialUpdate(parent.setTitle(s)) 
-    }*/  
     case KNXMessage(id, value) => {
     	Log.info(parent.filter(_.data.id.is == id))
     	parent.filter(_.data.id.is == id).foreach(_ match {
@@ -112,7 +106,6 @@ abstract class CometWidget extends CometActor {
           val cmd = w.addFavCmd
           Log.info(cmd)
           partialUpdate(cmd)
-          //partialUpdate(JsRaw("location.reload()").cmd)
         }
         parent = l ::: parent
       }
@@ -128,24 +121,6 @@ abstract class CometWidget extends CometActor {
       parent = parent diff l
     }
     
-    /*case pageLoad => {
-      if(model.User.superUser_?) {
-      val oldAdmins = parent.filter(_.wp == AdminSideBar)
-      oldAdmins.foreach(w => Distributor ! PartialUnsubscribe(w.data.id.is, this))
-      parent = (parent diff oldAdmins)
-      val newAdmins = 
-        model.Widget.roomless.
-        map(w => WidgetList.map(w.wclass.is).admwidget(w))
-      newAdmins.foreach(w => Distributor ! Subscribe(w.data.id.is, this))
-      parent = parent ::: newAdmins
-      }*/
-      /*
-      parent.foreach(_ match {
-        case p : StateWidget => p.knx.getStatus
-        case _ =>
-      })
-    }*/
-    
     case something => Log.info(something.toString)
   }
   
@@ -156,9 +131,6 @@ abstract class CometWidget extends CometActor {
     Log.info(toString + ": local setup")
     parent = getWidgets(name.open_!)
     (Set() ++ parent.map(_.data.id.is)).foreach(wid => Distributor ! Subscribe(wid, this))
-    /*parent.foreach(_ match {
-      case p : StateKNXWidget[_] => p.getStatus
-    })*/
     super.localSetup
   }
   

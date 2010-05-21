@@ -1,3 +1,4 @@
+//author: Alexander C. Steiner
 package org.sombrero.snippet
 
 import org.sombrero.util._
@@ -15,13 +16,8 @@ import _root_.net.liftweb.util.Log
 import java.net._;
 import _root_.net.liftweb.mapper._
 
+//builds a structure of links to represent the rooms
 class RoomList { 
-/*
-  def render(xhtml : NodeSeq) : NodeSeq = {
-    Room.findAll.flatMap((room) =>
-      bind("room", xhtml, "link" -> link("/room/"+room.id.is, () => Empty , Text(room.name.is))))
-  }
-  */
   def render(xhtml : NodeSeq) : NodeSeq = {
     recursiveRender(xhtml, Room.roots)
   }
@@ -29,10 +25,9 @@ class RoomList {
   def recursiveRender(xhtml : NodeSeq, roomlist : List[model.Room]) : NodeSeq = {
     roomlist.flatMap((room) =>
       bind("room", xhtml,
-        "link" -> {/*if(model.Room.current.map(_.id.is == room.id.is) openOr false) {Text(room.name.is)} else {*/ 
-          //link("/room/"+room.id.is, () => Empty , Text(room.name.is)).map(el => 
+        "link" -> {
           <a href={"/room/"+room.id.is}>{Text(room.name.is)}</a>.map(el => 
-            el match{ case e: Elem => e % new UnprefixedAttribute("class", room.id.is.toString, Null) })}/*}*/,
+            el match{ case e: Elem => e % new UnprefixedAttribute("class", room.id.is.toString, Null) })},
         "children" -> recursiveRender(xhtml, room.children)))
   }
 } 

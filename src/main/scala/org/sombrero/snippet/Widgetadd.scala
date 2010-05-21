@@ -1,3 +1,4 @@
+//author: Alexander C. Steiner
 package org.sombrero.snippet
 
 import scala.xml._
@@ -6,14 +7,9 @@ import net.liftweb.util._
 import net.liftweb.http.RequestVar
 import net.liftweb.http.S
 
+//widget adding forms
 class Widgetadd {
   def render(ignore : NodeSeq) : NodeSeq = render(ignore, false)
-  /*
-  model.Room.current match {
-    case Full(room) => WidgetAdd.render(room)(ignore)
-    case _ =>  WidgetAdd.render(ignore)
-  }
-  */
   
   def render(ignore : NodeSeq, inFrame : Boolean) : NodeSeq = Widgetadd.newData.is match {
     case Full(wd) =>
@@ -34,12 +30,6 @@ class Widgetadd {
   }
   
   def form(ignore : NodeSeq) : NodeSeq = {Log.info("widgetadd here: " + Widgetadd.newData.is); render(ignore, true)}
-  /*
-  model.Room.current match {
-    case Full(room) => WidgetAdd.render(room, ignore, true)
-    case _ =>  WidgetAdd.render(ignore, true)
-  }
-  */
 }
 
 object Widgetadd {

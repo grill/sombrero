@@ -1,3 +1,4 @@
+//author: Alexander C. Steiner
 package org.sombrero.model
 import _root_.net.liftweb.mapper._
 import _root_.net.liftweb.util._
@@ -23,7 +24,6 @@ class RoomlinkWidget extends WidgetData[RoomlinkWidget] with IdPK{
      
     override def _toForm = {
       def callback(fh : FileParamHolder) {
-        //Log.info(fh.toString)
         fh match {
         case FileParamHolder(_, _, "", _) => error = false
         case FileParamHolder(_, mime, _, data)
@@ -58,10 +58,8 @@ class RoomlinkWidget extends WidgetData[RoomlinkWidget] with IdPK{
   
   object room extends MappedLongForeignKey(this, Room) {
     override def _toForm = {
-      //val setRoom : Room => RoomlinkWidget = this.apply _
-      //Log.info(obj.toString);
       Full(SHtml.selectObj[Room](Room.findAll.map((room) => {
-      /*Log.info(room.toString); Log.info(obj.equals(room).toString);*/ (room, room.name.is)}), obj, this(_))) //(r : Room) => {Log.info(r.toString); setRoom(r)}))
+      (room, room.name.is)}), obj, this(_)))
     }
   }
 }

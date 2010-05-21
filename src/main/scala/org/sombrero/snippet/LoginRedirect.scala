@@ -1,3 +1,4 @@
+//author: Alexander C. Steiner
 package org.sombrero.snippet
 
 import org.sombrero.util._
@@ -15,6 +16,7 @@ import _root_.net.liftweb.util.Log
 import java.net._;
 import _root_.net.liftweb.mapper._
 
+//redirects to login when not logged in (for convenience)
 class LoginRedirect {
 
   def render(xhtml : NodeSeq) : NodeSeq = {

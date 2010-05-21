@@ -1,3 +1,4 @@
+//author: Alexander C. Steiner
 package org.sombrero.comet
 
 import tuwien.auto.calimero.process._
@@ -5,7 +6,6 @@ import tuwien.auto.calimero.DetachEvent
 import org.sombrero.model.KNXGroup
 import org.sombrero.model.KNXWidget
 import org.sombrero.util.Connection
-//import net.liftweb.mapper._
 import net.liftweb.http.js.{JsCmd,JsCmds}
 import _root_.net.liftweb.util._
 import Helpers._
@@ -19,6 +19,7 @@ import org.sombrero.util.JavaScriptHelper
 
 case object Clear
 
+//find devices by listening on the KNX network
 class DeviceFinder extends ProcessListener with CometActor{
   override def defaultPrefix = Full("df")
   
@@ -54,7 +55,7 @@ class DeviceFinder extends ProcessListener with CometActor{
                 <tr>
                   <td><a href={"/widgetadd?groupAddress="+b._1} class="dflink" id={"knxaddr" + b._1}>{Text(b._1)}</a></td>
                   <td>{b._2}</td>
-                </tr> /*++ JavaScriptHelper.popup("knxaddr" + b._1, "Add Widget", Text("I have no idea where this will show up."))*/}
+                </tr>}
             }}
           </table>) & JavaScriptHelper.popupCmd("dflink", "Add Widget"))
 }

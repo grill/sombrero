@@ -1,3 +1,4 @@
+//author: Alexander C. Steiner
 package org.sombrero.snippet
 
 import org.sombrero.util._
@@ -15,24 +16,13 @@ import _root_.net.liftweb.util.Log
 import java.net._
 import _root_.net.liftweb.mapper._
 
-//object DButil {
-    
-/*object DButil {
->>>>>>> 1.9
-    def realcreate() : Unit = {
-      Schemifier.schemify(true, Log.infoF _, Room, User, Widget, KNXWidget)
-      Schemifier.destroyTables_!!(Log.infoF _, Room, User, Widget, KNXWidget)
-      Schemifier.schemify(true, Log.infoF _, Room, User, Widget, KNXWidget)
-      Log.info("tables created!")
-    }
-}*/
-
+//database utility for debugging
 class DButil {
   def create() : NodeSeq = {
     def realcreate() : Unit = {
-      Schemifier.schemify(true, Log.infoF _, Room, User, Position, Widget, KNXWidget, RoomlinkWidget, ContainerWidget, Fav)
-      Schemifier.destroyTables_!!(Log.infoF _, Room, User, Position, Widget, KNXWidget, RoomlinkWidget, ContainerWidget, Fav)
-      Schemifier.schemify(true, Log.infoF _, Room, User, Position, Widget, KNXWidget, RoomlinkWidget, ContainerWidget, Fav)
+      Schemifier.schemify(true, Log.infoF _, Room, User, Position, Widget, KNXWidget, RoomlinkWidget, Fav)
+      Schemifier.destroyTables_!!(Log.infoF _, Room, User, Position, Widget, KNXWidget, RoomlinkWidget, Fav)
+      Schemifier.schemify(true, Log.infoF _, Room, User, Position, Widget, KNXWidget, RoomlinkWidget, Fav)
       Log.info("tables created!")
     }
     link("/db", () => realcreate, Text("create the tables!"))
