@@ -1,5 +1,15 @@
 <lift:Surround.choose>
 	<h2>Welcome to sombrero!</h2>
 	Control your house the easy and fast way. <br />
+	<lift:User.hasSuper>
+	<h2>Add a Room!</h2>
+	<table>
+    <lift:Room.add form="POST" multipart="TRUE">
+      <tr><td>New Room name:</td> <td><room:name/></td></tr>
+      <tr><td style="vertical-align:top;">New Room image:</td> <td><room:image/></td></tr>
+      <tr><td colspan="2"><room:submit/></td></tr>
+    </lift:Room.add>
+  </table>
+	</lift:User.hasSuper>
 	<lift:LoginRedirect />
 </lift:Surround.choose>
