@@ -1,3 +1,4 @@
+//author: Alexander C. Steiner
 package org.sombrero.view
 
 import _root_.net.liftweb.util._
@@ -12,8 +13,6 @@ import _root_.net.liftweb.mapper._
 import _root_.java.sql._
 import _root_.scala.xml._
 import org.sombrero.util._;
-//import org.sombrero.user._;
-//import org.sombrero.user.knx._;
 
 import org.sombrero.model._
  
@@ -23,12 +22,12 @@ case object UserNotFound extends UserAccess
 case object UserPermissionDenied extends UserAccess
 case class FullUserAccess(u : User) extends UserAccess
 
+//handles user editing for userlist
 class UserLoc extends Loc[UserAccess] {
 
   def response(path : List[String]) = new RewriteResponse(ParsePath(path, "", true, false), Map.empty, true)
 
   override def rewrite = Full({
-    //case RewriteRequest(ParsePath("user" :: _, _, _, _), _, _) if (! User.superUser_?) => {Log.info("hello?"); Log.info(User.superUser_?.toString); (response("user" :: Nil), UserPermissionDenied)}
     case RewriteRequest(ParsePath(List("useredit", aid), _, _, _), _, _) => {
       Log.info("rewrite!")
         try {
@@ -52,6 +51,7 @@ class UserLoc extends Loc[UserAccess] {
   
   object redoSnippet extends RequestVar[Box[(NodeSeq) => NodeSeq]](Empty) 
   
+  //basic user form
   def userForm(u : User) = (ignore : NodeSeq) => {
     def validateEdit {
       u.validate match {

@@ -1,3 +1,4 @@
+//author: Alexander C. Steiner
 package org.sombrero.model
 import net.liftweb.mapper._
 import net.liftweb.util.Empty
@@ -15,7 +16,8 @@ import org.sombrero.util._
 import WidgetList.WidgetClass
 
 //Stores widget data that is common to all widgets.
-class Widget extends LongKeyedMapper[Widget] with IdPK /*with LifecycleCallbacks*/ {
+//Mainly used for accessing WidgetData.
+class Widget extends LongKeyedMapper[Widget] with IdPK {
   def getSingleton = Widget
   
   object name extends MappedString(this, 32) {
@@ -43,16 +45,12 @@ class Widget extends LongKeyedMapper[Widget] with IdPK /*with LifecycleCallbacks
   object width  extends ProxyField (this, pos.width)
   object height extends ProxyField (this, pos.height)
   
-  
-  //def defaultDataToForm (b : Box[String], n2n : (NodeSeq) => NodeSeq, a2u : (Any) => Unit) : NodeSeq = Text("")
   var dataToForm : ((Box[String], (NodeSeq) => NodeSeq, (Any) => Unit) => NodeSeq) => NodeSeq = null
     
+  //widet type (e.g. Lamp, Temperature, ...)
   object wclass extends MappedString(this, 32) {
-    //private lazy var realfilter : Box[WidgetMetaData[_]] = data.map(_.getSingleton)
-    //def filter(newFilter : Box[WidgetMetaData[_]]) = {realfilter = newFilter; this}
     object filter extends RequestVar[Box[WidgetMetaData[_]]](Empty)
     override def defaultValue = WidgetList.default.id
-    //realfilter.map((f) => WidgetList.map.filter(_._2.data == f).values.next.id) openOr 
     
     override def displayName = "type"
     
@@ -82,6 +80,7 @@ class Widget extends LongKeyedMapper[Widget] with IdPK /*with LifecycleCallbacks
     }
   }
   
+  //creates form for the associated data
   def dataForm (redoSnippet : (NodeSeq) => NodeSeq, onSuccess : (WidgetData[_]) => Unit) : NodeSeq = {
     def onSubmit(something : Any) {
       something match {
@@ -98,6 +97,7 @@ class Widget extends LongKeyedMapper[Widget] with IdPK /*with LifecycleCallbacks
     <div id="widgetdata" >{data.map(_.toForm(Empty, redoSnippet, onSubmit)) openOr Text("")}</div>
   }
   
+  //dataForm, but polymorphic
   def dataForm[Data <: WidgetData[Data]] (initData : Data, redoSnippet : (NodeSeq) => NodeSeq, onSuccess : (Data) => Unit) : NodeSeq = {
     def onSubmit(something : Any) {
       something match {
@@ -142,7 +142,8 @@ class Widget extends LongKeyedMapper[Widget] with IdPK /*with LifecycleCallbacks
         </table>
       case _ => Text("")
     }
-    
+  
+  //creates a form for the widget and its data, as well as maybe KNX group selection
   def completeForm(submitText : String, onSuccess : (Widget, WidgetData[_]) => Unit, successRedirect : String) : NodeSeq = {
     def redo(ignore : NodeSeq) = completeForm(submitText, onSuccess, successRedirect)
     var wb : Box[Widget] = Empty
@@ -158,6 +159,8 @@ class Widget extends LongKeyedMapper[Widget] with IdPK /*with LifecycleCallbacks
       })
   }
   
+  //creates a form for a new widget and its data, as well as maybe KNX group selection
+  //has to be handled seperately because new widgets don't appear in the database
   def completeForm[Data <: WidgetData[Data]] (initData : Data, submitText : String, onSuccess : (Widget, Data) => Unit, successRedirect : String) : NodeSeq = {
     def redo(ignore : NodeSeq) = completeForm(initData, submitText, onSuccess, successRedirect)
     var wb : Box[Widget] = Empty
@@ -201,20 +204,6 @@ class Widget extends LongKeyedMapper[Widget] with IdPK /*with LifecycleCallbacks
   
   def data () : Box[WidgetData[_]] = {
     if(! saved_?) Empty else WidgetList.map(wclass.is).data.find(By(WidgetList.map(wclass.is).data._widget, id.is))
-  }
-    
-  def childs () : List[Widget] = {
-    ContainerWidget.findAll(By(ContainerWidget.widget, id.is)).map(_.content.obj.open_!)
-  }
-  
-  def addChild (w : model.Widget) : Widget = {
-    ContainerWidget.create.widget(this).content(w).save
-    this
-  }    
-  
-  def removeChild (w: model.Widget) : Widget = {
-    ContainerWidget.find(By(ContainerWidget.widget, id.is), By(ContainerWidget.content, w.id.is)).open_!.delete_!
-    this
   }
   
   override def delete_! = {

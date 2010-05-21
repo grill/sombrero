@@ -1,3 +1,4 @@
+//author: Alexander C. Steiner
 package org.sombrero.view
 
 import org.sombrero.model.RoomlinkWidget
@@ -10,6 +11,8 @@ import JsCmds._ // For implicits
 import _root_.scala.xml._
 import _root_.net.liftweb.mapper._
   
+//displays roomlink images
+//throws exception when the roomlink doesn't exist, so be careful
 object RoomLinkImage {
   def get(rlid : String) : Box[LiftResponse] = {
     try {
