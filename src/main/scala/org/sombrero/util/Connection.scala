@@ -21,11 +21,8 @@ object Connection {
 	var knxComm: ProcessCommunicator = null
  
   	def createConnection(remoteHost:String) = {
-  		Log.info("du")
   		link = new KNXNetworkLinkIP(remoteHost, TPSettings.TP1)
-  		Log.info("du")
-  		if(isConnected){   
-  			Log.info("hi")
+  		if(isConnected){
   			knxComm = new ProcessCommunicatorImpl(link)
   			SombreroKNXListener.start
   		}

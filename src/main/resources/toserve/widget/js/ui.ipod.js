@@ -80,89 +80,6 @@ $.widget("ui.ipod", {
 							$(this).html('<span>' + $(this).text() + '</span><span style="z-index:200" class="fg-border ui-icon ' + that.options.nextMenuLink + '"><span>df</span></span>');
 							$(this).attr('style', 'z-index:1');
 						});
-						/*.click(function(){ // ----- show the next menu			
-							var nextList = $(this).next();
-				    		var parentUl = $(this).parents('ul:eq(0)');   		
-				    		var parentLeft = (parentUl.is('.fg-menu-content')) ? 0 : parseFloat(topList.css('left'));    		
-				    		var nextLeftVal = Math.round(parentLeft - parseFloat(container.width()));
-				    		var footer = $('.fg-menu-footer');
-
-				    		footer.css("position", "absolute").css("top", that.options.maxHeight-blen+"px")
-				    		.css("width", container.width()-10);
-							depth = depth + 1;
-				    		// show next menu
-				    		resetChildMenu(parentUl);
-				    		checkMenuHeight(nextList);
-							topList.animate({ left: nextLeftVal }, that.options.crossSpeed);						
-				    		nextList.show().addClass('fg-menu-current').attr('aria-expanded', 'true');    
-				    		
-				    		var setPrevMenu = function(backlink){
-				    			var b = backlink;
-				    			var c = $('.fg-menu-current');
-					    		var prevList = c.parents('ul:eq(0)');
-					    		c.hide().attr('aria-expanded', 'false');
-				    			resetChildMenu(c);
-				    			checkMenuHeight(prevList);
-					    		prevList.addClass('fg-menu-current').attr('aria-expanded', 'true');
-					    		if (prevList.hasClass('fg-menu-content')) { b.remove(); footer.hide(); };
-				    		};		
-				
-							// initialize "back" link
-							if (that.options.backLink) {
-								if (footer.find('a').size() == 0) {
-									footer.show();
-									$('<a href="#"><span class="ui-icon ui-icon-triangle-1-w"></span> <span>Back</span></a>')
-										.appendTo(footer)
-										.click(function(){ // ----- show the previous menu
-											if(depth > 0 && !isAnimatingBack){
-												isAnimatingBack = true;
-												depth = depth - 1;
-												var b = $(this);
-												var prevLeftVal = parseFloat(topList.css('left')) + container.width();		    						    		
-												topList.animate({ left: prevLeftVal },  that.options.crossSpeed, function(){
-													setPrevMenu(b);
-													isAnimatingBack = false;
-													//alert("hi");
-												});
-											}
-											return false;
-										});
-								}
-							}
-							// or initialize top breadcrumb
-				    		else { 
-				    			if (breadcrumb.find('li').size() == 1){				
-									breadcrumb.empty().append(firstCrumb);
-									firstCrumb.find('a').click(function(){
-										menu.resetDrilldownMenu();
-										return false;
-									});
-								}
-								$('.fg-menu-current-crumb').removeClass('fg-menu-current-crumb');
-								var crumbText = $(this).find('span:eq(0)').text();
-								var newCrumb = $('<li class="fg-menu-current-crumb"><a href="javascript://" class="fg-menu-crumb">'+crumbText+'</a></li>');	
-								newCrumb
-									.appendTo(breadcrumb)
-									.find('a').click(function(){
-										if ($(this).parent().is('.fg-menu-current-crumb')){
-											menu.chooseItem(this);
-										}
-										else {
-											var newLeftVal = - ($('.fg-menu-current').parents('ul').size() - 1) * 180;
-											topList.animate({ left: newLeftVal }, this.options.crossSpeed, function(){
-												setPrevMenu();
-											});
-										
-											// make this the current crumb, delete all breadcrumbs after this one, and navigate to the relevant menu
-											$(this).parent().addClass('fg-menu-current-crumb').find('span').remove();
-											$(this).parent().nextAll().remove();									
-										};
-										return false;
-									});
-								newCrumb.prev().append(' <span class="ui-icon '+this.options.nextCrumbLink+'"></span>');
-				    		};			
-				    		return false;    		
-		    			});*/
 				}
 				// if the link is a leaf node (doesn't open a child menu)
 				else {
@@ -398,9 +315,6 @@ $.widget("ui.ipod", {
 		
 		$.ui.ipod.prototype.destroy.call(this);
 	},
-	setPosition: function(top, left){
-		
-	}, 
 	resetDrilldownMenu: function(){
 		$('.fg-menu-current').removeClass('fg-menu-current');
 		topList.animate({ left: 0 }, this.options.crossSpeed, function(){
