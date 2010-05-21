@@ -25,7 +25,7 @@ object CometWidget {
 
 class NinjaCometWidget extends CometWidget {
   override def render = {
-    this ! pageLoad
+    //this ! pageLoad
     Text("")
   }
   def getWidgets(id : String) = {id.split(":") match {
@@ -66,7 +66,7 @@ class AdminCometWidget extends CometWidget {
 }
 
 abstract class CometWidget extends CometActor {
-  object pageLoad
+  //object pageLoad
   override def defaultPrefix = Full("cw")
   
   override def devMode = true
@@ -120,7 +120,7 @@ abstract class CometWidget extends CometActor {
       parent = parent diff l
     }
     
-    case pageLoad => {
+    /*case pageLoad => {
       if(model.User.superUser_?) {
       val oldAdmins = parent.filter(_.wp == AdminSideBar)
       oldAdmins.foreach(w => Distributor ! PartialUnsubscribe(w.data.id.is, this))
@@ -130,13 +130,13 @@ abstract class CometWidget extends CometActor {
         map(w => WidgetList.map(w.wclass.is).admwidget(w))
       newAdmins.foreach(w => Distributor ! Subscribe(w.data.id.is, this))
       parent = parent ::: newAdmins
-      }
+      }*/
       /*
       parent.foreach(_ match {
         case p : StateWidget => p.knx.getStatus
         case _ =>
-      })*/
-    }
+      })
+    }*/
   }
   
   def getWidgets(id : String) : List[widget.Widget]

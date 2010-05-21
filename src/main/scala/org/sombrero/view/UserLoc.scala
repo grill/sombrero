@@ -1,4 +1,4 @@
-package org.sombrero.util
+package org.sombrero.view
 
 import _root_.net.liftweb.util._
 import org.sombrero.snippet._

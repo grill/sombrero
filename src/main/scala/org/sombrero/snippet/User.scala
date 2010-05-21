@@ -20,27 +20,12 @@ import net.liftweb.http.js._
 import org.sombrero.util._
 import bootstrap._
   
-class Connection {
-	def render(xhtml:NodeSeq) = {
-		def create(): JsCmd = {
-		  KNXRouter.getIP.map(ip => util.Connection.createConnection(ip))
-		  JsRaw(";").cmd
-		}
-  
-		def destroy():JsCmd = {
-		  if(org.sombrero.util.Connection.isConnected) org.sombrero.util.Connection.destroyConnection
-		  JsRaw(";").cmd
-		}
-	  
-		bind("cn", xhtml,
-				"create" 	-> SHtml.ajaxButton(Text("connect"), create _), 
-				"destroy" 	-> SHtml.ajaxButton(Text("disconnect"), destroy _))
-	}
+class User {
 	
-	def has(xhtml:NodeSeq) = {
-	  if(org.sombrero.util.Connection.isConnected)
-	    Text("")
-    else
+	def hasSuper(xhtml:NodeSeq) = {
+	  if(org.sombrero.model.User.superUser_?)
       xhtml
+    else
+	    Text("")
 	}
 }

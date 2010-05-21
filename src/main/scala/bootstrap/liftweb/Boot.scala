@@ -13,6 +13,7 @@ import org.sombrero.snippet.DButil
 import org.sombrero.model._
 import org.sombrero.util._ 
 import org.sombrero.comet._ 
+import org.sombrero.view._
 import org.sombrero._
 
 
