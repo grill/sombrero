@@ -23,5 +23,5 @@ object Fav extends Fav with LongKeyedMetaMapper[Fav] {
   def get = findAll(By(user, User.currentUser)).map(_.widget.obj).filter(_ != Empty).map(_.open_!)
   def add(w : Widget) = create.user(User.currentUser).widget(w).save
   def remove(w : Widget) : Unit = findAll(By(user, User.currentUser), By(widget, w)).map(_.delete_!)
-  def isFav(w: Widget) = findAll(By(Fav.widget, w)) != Nil
+  def isFav(w: Widget) = findAll(By(Fav.widget, w), By(user, User.currentUser)) != Nil
 }

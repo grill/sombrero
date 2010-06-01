@@ -32,7 +32,7 @@ class Discovery extends CometActor {
     Log.info(model.KNXRouter.get.ip.is)
     Log.info(resp.toString)
     Log.info(resp.length.toString)
-    Log.info(resp(1).toString)
+    //Log.info(resp(1).toString)
     resp.foreach(r => Log.info(r.getControlEndpoint.toString))
     
     this ! resp

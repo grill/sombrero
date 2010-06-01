@@ -17,6 +17,7 @@ import _root_.scala.util.Random
 import _root_.net.liftweb.util.Log
 import java.net._
 import net.liftweb.http.js._
+import tuwien.auto.calimero.exception._ 
  
 import org.sombrero.model._
 import org.sombrero.snippet._
@@ -28,11 +29,11 @@ import tuwien.auto.calimero.dptxlator._
  * @author Gabriel Grill
  */
 class Rollo (data: org.sombrero.model.Widget, wp: WidgetPlace) extends StateWidget(data, "analog", wp){
-  val knx = KNXRollo(data.knx().groupAddress.is)
-  val status = knx.getStatus match{
-    case Full(x:Short)   => x
-    case _				 => 0
-  }
+	  val knx = KNXRollo(data.knx().groupAddress.is)
+	  val status = knx.getStatus match{
+	  	case Full(x:Short)   => x
+	  	case _				 => 0
+	  }
   
    properties ++ Map(
 	   "frontImg" -> "\"/images/rollo0zu.png\"",

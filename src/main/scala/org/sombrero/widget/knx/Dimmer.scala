@@ -13,7 +13,8 @@ import _root_.scala.util.Random
 import _root_.net.liftweb.util.Log
 import java.net._
 import net.liftweb.http.js._
- 
+import tuwien.auto.calimero.exception._ 
+
 import tuwien.auto.calimero.dptxlator._
 import org.sombrero.util._
 import org.sombrero.model._
@@ -24,11 +25,10 @@ import scala.concurrent.ops._
  * @author Gabriel Grill
  */
 class Dimmer(data: org.sombrero.model.Widget, wp: WidgetPlace) extends StateWidget(data, "analog", wp){
-  val knx = KNXDimmer(data.knx().groupAddress.is)
-  val status = knx.getStatus match{
-    case Full(x:Short)   => x
-    case _				 => 0
-  }
+	val knx = KNXDimmer(data.knx().groupAddress.is)
+  	val status = knx.getStatus match{
+  		case Full(x:Short)   => x
+  		case _				 => 0 }
   /*spawn {knx.getStatus match{
     case Full(x:Short)   => Log.info(x.toString)
     case _				 => 100

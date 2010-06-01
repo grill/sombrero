@@ -29,6 +29,7 @@ object Connection {
   		link = new KNXNetworkLinkIP(remoteHost, TPSettings.TP1)
   		if(isConnected){
   			knxComm = new ProcessCommunicatorImpl(link)
+  			knxComm.setResponseTimeout(0)
   			SombreroKNXListener.start
   		}
   	} 

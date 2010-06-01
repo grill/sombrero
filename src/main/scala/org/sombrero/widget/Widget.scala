@@ -8,6 +8,7 @@ import JsCmds._
 import JE.{JsRaw,Str}
 import _root_.net.liftweb.util._
 import _root_.scala.collection.mutable.Map
+import tuwien.auto.calimero.exception._ 
 
 import org.sombrero.util._
 import org.sombrero.snippet._
@@ -63,7 +64,11 @@ abstract class StateWidget(data: model.Widget, widgetType: String, wp: WidgetPla
     
     override def update(value: String): JsCmd = {
        val r = super.update(value);
- 	   knx.getStatus
+ 	   try{
+ 		   knx.getStatus
+      }catch{
+        case e: Exception => 
+ 	  }
  	   r
     }
 }
@@ -137,9 +142,7 @@ abstract class Widget(val data: model.Widget, widgetType: String, var wp: Widget
            		("inactive", JavaScriptHelper.callback(delFavorite)),
            		("in_toolbox", JavaScriptHelper.callback(newToolboxitem)),
            		("out_toolbox", JavaScriptHelper.callback(delToolboxitem(Room.current)))
-		) ::: admin ::: parentTag ::: isActive ::: pob,
-		content()
-	)
+		) ::: admin ::: parentTag ::: isActive ::: pob)
  
  	def newToolboxitem(): JsCmd = {
   		 System.out.println("newToolbox");
@@ -254,7 +257,11 @@ abstract class StateKNXWidget[T] (destAddress:String, name:String, mainNumber:In
 	def getStatus (): Box[T] = {
 	  if(Connection.isConnected){
 		  Log.info(Connection.knxComm.toString)
-		  Full(translate(Connection.knxComm.read(dp)))
+		  try {
+			  Full(translate(Connection.knxComm.read(dp)))
+		  } catch {
+		    case e => Empty
+		  }
 	  }else
          Empty
 	}
