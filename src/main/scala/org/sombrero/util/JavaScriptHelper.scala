@@ -47,7 +47,7 @@ object JavaScriptHelper {
      */
 	def initWidget(id:String, function:String, properties:List[(String, String)]):String = {
 			"""$("#""" + id + """").""" + function + "({" + 
-				properties.slice(1).foldLeft ((properties(0)._1 + ": " + properties(0)._2))
+				properties.tail.foldLeft ((properties(0)._1 + ": " + properties(0)._2))
                 {(x, y) => x + ", " + y._1 + ": " + y._2} + 	
             "});" 
 	}
@@ -58,7 +58,7 @@ object JavaScriptHelper {
      */
 	def initWidgets(cls:String, function:String, properties:List[(String, String)]):String = {
 			"""$(".""" + cls + """").""" + function + "({" + 
-				properties.slice(1).foldLeft ((properties(0)._1 + ": " + properties(0)._2))
+				properties.tail.foldLeft ((properties(0)._1 + ": " + properties(0)._2))
                 {(x, y) => x + ", " + y._1 + ": " + y._2} + 	
             "});" 
 	}

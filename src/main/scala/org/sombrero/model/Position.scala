@@ -1,8 +1,8 @@
 //author: Alexander C. Steiner
 package org.sombrero.model
 import net.liftweb.mapper._
-import net.liftweb.util.Empty
-import net.liftweb.util.Log
+import net.liftweb.util._
+import _root_.net.liftweb.common._
 import _root_.net.liftweb.http.RequestVar
 
 //Positions of the widgets get stored here.

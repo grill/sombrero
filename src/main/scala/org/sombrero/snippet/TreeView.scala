@@ -2,8 +2,10 @@ package org.sombrero.snippet
 
 import org.sombrero.util._
 import org.sombrero.model._
+import org.sombrero.model
 import _root_.scala.xml._
 import _root_.net.liftweb.util._
+import _root_.net.liftweb.common._
 
 /**
  * This snippet renders the Tree View navigation Sidebar 

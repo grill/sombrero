@@ -1,11 +1,11 @@
 //author: Alexander C. Steiner
 package org.sombrero.model
 import net.liftweb.mapper._
-import net.liftweb.util.Empty
 
 import _root_.net.liftweb.http._
 import SHtml._
 import _root_.net.liftweb.util._
+import _root_.net.liftweb.common._
 import Helpers._
 import _root_.net.liftweb.http.js.JsCmds.SetHtml
 import _root_.net.liftweb.http.js.JsCmds.Noop
@@ -14,6 +14,7 @@ import org.sombrero.comet._
 
 import org.sombrero.util._
 import WidgetList.WidgetClass
+
 
 //Stores widget data that is common to all widgets.
 //Mainly used for accessing WidgetData.
@@ -81,10 +82,10 @@ class Widget extends LongKeyedMapper[Widget] with IdPK {
   }
   
   //creates form for the associated data
-  def dataForm (redoSnippet : (NodeSeq) => NodeSeq, onSuccess : (WidgetData[_]) => Unit) : NodeSeq = {
+  def dataForm (redoSnippet : (NodeSeq) => NodeSeq, onSuccess : (AnyWidgetData) => Unit) : NodeSeq = {
     def onSubmit(something : Any) {
       something match {
-        case wd : WidgetData[_] =>
+        case wd : AnyWidgetData =>
           wd.widget(this)
           onSuccess(wd)
         case _ => ;
@@ -144,13 +145,13 @@ class Widget extends LongKeyedMapper[Widget] with IdPK {
     }
   
   //creates a form for the widget and its data, as well as maybe KNX group selection
-  def completeForm(submitText : String, onSuccess : (Widget, WidgetData[_]) => Unit, successRedirect : String) : NodeSeq = {
+  def completeForm(submitText : String, onSuccess : (Widget, AnyWidgetData) => Unit, successRedirect : String) : NodeSeq = {
     def redo(ignore : NodeSeq) = completeForm(submitText, onSuccess, successRedirect)
     var wb : Box[Widget] = Empty
-    var wdb : Box[WidgetData[_]] = Empty
+    var wdb : Box[AnyWidgetData] = Empty
     
     toForm(Empty, redo _, (nw : Widget) => wb = Full(nw)) ++
-    dataForm(redo _, (nwd : WidgetData[_]) => wdb = Full(nwd)) ++
+    dataForm(redo _, (nwd : AnyWidgetData) => wdb = Full(nwd)) ++
     aliasForm ++
     submit(submitText, () =>
       (wb, wdb) match {
@@ -202,7 +203,7 @@ class Widget extends LongKeyedMapper[Widget] with IdPK {
       lst.head
   }
   
-  def data () : Box[WidgetData[_]] = {
+  def data () : Box[AnyWidgetData] = {
     if(! saved_?) Empty else WidgetList.map(wclass.is).data.find(By(WidgetList.map(wclass.is).data._widget, id.is))
   }
   

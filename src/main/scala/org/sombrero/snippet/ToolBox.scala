@@ -2,8 +2,11 @@ package org.sombrero.snippet
 
 import org.sombrero.util._
 import org.sombrero.model._
+import org.sombrero.model
+import org.sombrero.widget
 import _root_.scala.xml._
 import _root_.net.liftweb.util._
+import _root_.net.liftweb.common._
 import org.sombrero.widget.knx._
 import org.sombrero.widget._
 

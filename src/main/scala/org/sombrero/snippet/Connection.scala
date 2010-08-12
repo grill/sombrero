@@ -1,6 +1,7 @@
 package org.sombrero.snippet
 
 import org.sombrero.util._
+import org.sombrero.util
 import org.sombrero.model._
 import _root_.net.liftweb.http._
 import S._

@@ -8,6 +8,7 @@ import org.sombrero.model.KNXWidget
 import org.sombrero.util.Connection
 import net.liftweb.http.js.{JsCmd,JsCmds}
 import _root_.net.liftweb.util._
+import _root_.net.liftweb.common._
 import Helpers._
 import _root_.net.liftweb.http._
 import SHtml._

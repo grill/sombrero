@@ -1,6 +1,7 @@
 package bootstrap.liftweb
 
 import _root_.net.liftweb.util._
+import _root_.net.liftweb.common._
 import _root_.net.liftweb.http._
 import _root_.net.liftweb.sitemap._
 import _root_.net.liftweb.sitemap.Loc._
@@ -30,7 +31,7 @@ class Boot {
   
     // where to search snippet
     LiftRules.addToPackages("org.sombrero")
-    LiftRules.jsArtifacts = JQueryArtifacts
+    LiftRules.jsArtifacts = JQuery14Artifacts
 
     //org.sombrero.util.Connection.createConnection("172.19.0.7")
     //org.sombrero.comet.SombreroKNXListener.start
@@ -52,14 +53,14 @@ class Boot {
     // Build SiteMap
    val entries = Menu(Loc("Home", List("index"), "Home")) ::
      Menu(Loc("KNX", ("KNXWidgetForm" :: Nil) -> true, "KNXWidgetForm", Hidden, If(() => true, null)) ) ::
-     Menu( Loc("DBtools", List("db"), "DBtools", Loc.If(User.superUser_? _, NotFoundResponse))) ::
-     Menu( Loc("RoomFoo", List("roomadd"), "Add/Remove", Loc.If(User.superUser_? _, NotFoundResponse))) ::
-     Menu( Loc("Discovery", List("discovery"), "Router Discovery", Loc.If(User.superUser_? _, NotFoundResponse))) ::
-     Menu( Loc("Userlist", List("userlist"), "User List", Loc.If(User.superUser_? _, NotFoundResponse))) ::
-     Menu( Loc("Grouplist", List("knxgroups"), "Group List", Loc.If(User.superUser_? _, NotFoundResponse))) ::
-     Menu( Loc("WidgetAdd", List("widgetadd"), "Widget Add", Loc.If(User.superUser_? _, NotFoundResponse))) ::
+     Menu( Loc("DBtools", List("db"), "DBtools", Loc.If(User.superUser_? _, () => NotFoundResponse()))) ::
+     Menu( Loc("RoomFoo", List("roomadd"), "Add/Remove", Loc.If(User.superUser_? _, () => NotFoundResponse()))) ::
+     Menu( Loc("Discovery", List("discovery"), "Router Discovery", Loc.If(User.superUser_? _, () => NotFoundResponse()))) ::
+     Menu( Loc("Userlist", List("userlist"), "User List", Loc.If(User.superUser_? _, () => NotFoundResponse()))) ::
+     Menu( Loc("Grouplist", List("knxgroups"), "Group List", Loc.If(User.superUser_? _, () => NotFoundResponse()))) ::
+     Menu( Loc("WidgetAdd", List("widgetadd"), "Widget Add", Loc.If(User.superUser_? _, () => NotFoundResponse()))) ::
      Menu( Loc("CloseFrame", List("closeframe"), "Close Frame")) ::
-     Menu( Loc("DeviceFinder", List("devicefinder"), "DeviceFinder", Loc.If(User.superUser_? _, NotFoundResponse))) ::
+     Menu( Loc("DeviceFinder", List("devicefinder"), "DeviceFinder", Loc.If(User.superUser_? _, () => NotFoundResponse()))) ::
      Menu(Loc("Help", List("helptext") -> true, "Help")) ::
      Menu( new RoomLoc()) ::
      Menu( new WidgetLoc()) ::

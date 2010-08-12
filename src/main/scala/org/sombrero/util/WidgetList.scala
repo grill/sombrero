@@ -3,6 +3,7 @@ package org.sombrero.util
 
 import org.sombrero.model
 import org.sombrero.widget._
+import org.sombrero.widget
 import _root_.net.liftweb.http.SHtml
 import org.sombrero.widget.knx._
 
@@ -11,7 +12,7 @@ import org.sombrero.widget.knx._
 //widget typesjust have to be added here to work
 object WidgetList {
   case class WidgetClass[MapperT <: model.WidgetData[MapperT]] (
-      name : String, id : String, data : model.WidgetMetaData[MapperT], factory : (model.Widget, widget.WidgetPlace) => widget.Widget) {
+      name : String, id : String, data : model.WidgetMetaData[MapperT], factory : (model.Widget, org.sombrero.widget.WidgetPlace) => org.sombrero.widget.Widget) {
     def widget(w : model.Widget) = factory(w, FavParent)
     def favwidget(w : model.Widget) = factory(w, FavChild)
     def admwidget(w : model.Widget) = factory(w, AdminSideBar)

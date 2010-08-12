@@ -2,7 +2,7 @@
 package org.sombrero.model
  
 import net.liftweb.mapper._
-import net.liftweb.util.Empty
+import _root_.net.liftweb.common._
 import scala.xml._
 
 //Just another random MegaProtoUser implementation.

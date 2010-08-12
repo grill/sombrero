@@ -2,6 +2,7 @@
 package org.sombrero.view
  
 import _root_.net.liftweb.util._
+import _root_.net.liftweb.common._
 import org.sombrero.snippet._
 import _root_.net.liftweb.http._
 import _root_.net.liftweb.sitemap._
@@ -13,8 +14,10 @@ import _root_.java.sql._
 import _root_.scala.xml._
 import org.sombrero.util._;
 import org.sombrero.widget._;
+import org.sombrero.widget;
 import org.sombrero.widget.knx._;
 
+import org.sombrero.model
 import org.sombrero.model.Room
 import org.sombrero.model.User
 import org.sombrero.comet.CometWidget
@@ -68,7 +71,7 @@ class RoomLoc extends Loc[RoomAccess] {
     case ("roomview", _) => { ignore : NodeSeq => Text("Room not found.") }
   }
   
-  override def defaultParams = Empty
+  override def defaultValue = Full(NoSuchRoom)
   override def params = Nil
   override def link = new Link("room" :: Nil, true)
   override def name = "Rooms"

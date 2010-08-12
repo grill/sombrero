@@ -2,6 +2,7 @@
 package org.sombrero.model
 import net.liftweb.mapper._
 import net.liftweb.util._
+import _root_.net.liftweb.common._
 import _root_.net.liftweb.http.RequestVar
 
 //Saves Room data, including image.

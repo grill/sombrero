@@ -2,6 +2,7 @@
 package org.sombrero.model
 import _root_.net.liftweb.mapper._
 import _root_.net.liftweb.util._
+import _root_.net.liftweb.common._
 import _root_.net.liftweb.util.Helpers._   
 
 //Every User can have an arbitrary number of favorite Widgets.

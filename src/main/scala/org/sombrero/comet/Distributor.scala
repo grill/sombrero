@@ -14,7 +14,7 @@ object Distributor extends Actor{
   def act = loop {
       react {
         case s : FavAddMessage => {
-          (Set() ++ map.flatMap[CometActor](_._2)).foreach(_ ! s)
+          (Set() ++ map.toSeq.flatMap[CometActor, Seq[CometActor]](_._2)).foreach(_ ! s)
         }
         case s : SombreroMessage => {
           Log.info(s + " " + map(s.id))

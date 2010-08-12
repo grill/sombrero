@@ -7,6 +7,7 @@ import _root_.net.liftweb.http.js.{JE,JsCmd,JsCmds, JsExp}
 import JsCmds._
 import JE.{JsRaw,Str}
 import _root_.net.liftweb.util._
+import _root_.net.liftweb.common._
 import _root_.scala.collection.mutable.Map
 import tuwien.auto.calimero.exception._ 
 
@@ -14,6 +15,7 @@ import org.sombrero.util._
 import org.sombrero.snippet._
 import org.sombrero.model._
 import org.sombrero.comet._
+import org.sombrero.model
 
 import tuwien.auto.calimero._  
 import tuwien.auto.calimero.link._
@@ -24,7 +26,7 @@ import tuwien.auto.calimero.dptxlator._
 
 
 /**
- * This file contains a set of classes to access KNX and create and manage widgets
+ * This file contains a set of classes to access a EIB/KNX Network, create and manage widgets
  * All JQuery UI widget properties are explained in their respective files
  * @author Gabriel Grill
  */

@@ -1,8 +1,13 @@
 //author: Alexander C. Steiner
-package org.sombrero.model
-
 import _root_.net.liftweb.mapper._
 import _root_.net.liftweb.util._
+import _root_.net.liftweb.common._
+
+package org.sombrero{
+package object model {
+  type AnyWidgetData = T forSome {type T <: WidgetData[_]}
+}}
+package org.sombrero.model {
 
 //Superclass for all widget information dependant on the actual widget class, see org.sombrero.util.WidgetList.
 //Foreign key needs alias in WidgetMetaData due to type system strangeness. (and the fact that you are not meant to do Mapper superclasses...)
@@ -18,3 +23,5 @@ trait WidgetMetaData[T <: WidgetData[T]] extends LongKeyedMetaMapper[T] {
 self:T =>
   def _widget = widget
 };
+
+}

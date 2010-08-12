@@ -5,6 +5,7 @@ import S._
 import _root_.net.liftweb.util._
 import Helpers._
 import _root_.scala.xml._
+import _root_.net.liftweb.common._
 import _root_.net.liftweb.http.js.{JE,JsCmd,JsCmds}
 import JsCmds._
 import JE.{JsRaw,Str}
@@ -19,6 +20,7 @@ import tuwien.auto.calimero.dptxlator._
 import org.sombrero.util._
 import org.sombrero.model._
 import org.sombrero.snippet._
+import org.sombrero.widget._
 import scala.concurrent.ops._
 /**
  * Generates a Dimmer widget

@@ -8,11 +8,13 @@ import _root_.net.liftweb.http.js.{JE,JsCmd,JsCmds, JsExp}
 import JsCmds._
 import JE.{JsRaw,Str}
 import _root_.net.liftweb.util._
+import _root_.net.liftweb.common._
 import tuwien.auto.calimero.exception._ 
 
 import org.sombrero.util._
 import org.sombrero.model._
 import org.sombrero.snippet._
+import org.sombrero.widget._
  
 import tuwien.auto.calimero.dptxlator._
 import scala.concurrent.ops._
@@ -29,7 +31,7 @@ class Lamp (data: org.sombrero.model.Widget, wp: WidgetPlace) extends StateWidge
   
    properties ++ Map(
      	"value" -> status.toString
-   )  
+   )
    helpUrl = "/helptext/lamp"
   
    def translate(value: Array[Byte]): String = knx.translate(knx.translate(value)).toString

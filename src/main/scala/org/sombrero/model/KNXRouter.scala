@@ -2,6 +2,7 @@
 package org.sombrero.model
 import _root_.net.liftweb.mapper._
 import _root_.net.liftweb.util._
+import _root_.net.liftweb.common._
 
 import _root_.net.liftweb.http._
 import SHtml._

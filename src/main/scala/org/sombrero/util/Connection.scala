@@ -17,31 +17,30 @@ import tuwien.auto.calimero.process._
 import tuwien.auto.calimero.link.medium._  
 
 /**
- * This class has got a variaty of utility functions for connection management
+ * This class contains a variaty of utility functions for connection management
  * @author Gabriel Grill
  */
 object Connection {
-  	var link: KNXNetworkLinkIP = null
-	var knxComm: ProcessCommunicator = null
+  var link: KNXNetworkLinkIP = null
+  var knxComm: ProcessCommunicator = null
  
-	//creates a connection
-  	def createConnection(remoteHost:String) = {
-  		link = new KNXNetworkLinkIP(remoteHost, TPSettings.TP1)
-  		if(isConnected){
-  			knxComm = new ProcessCommunicatorImpl(link)
-  			knxComm.setResponseTimeout(0)
-  			SombreroKNXListener.start
-  		}
-  	} 
-   
-   def isConnected = link match {
-     case null 	=> false
-     case x		=> link.isOpen 
-   }
-   
-   def destroyConnection = {
-     knxComm.detach
-     link.close
-   }
+  //creates a connection
+  def createConnection(remoteHost:String) = {
+    link = new KNXNetworkLinkIP(remoteHost, TPSettings.TP1)
+    if(isConnected){
+      knxComm = new ProcessCommunicatorImpl(link)
+      knxComm.setResponseTimeout(0)
+      SombreroKNXListener.start
+    }
+  }
+
+  def isConnected = link match {
+    case null 	=> false
+    case x		=> link.isOpen 
+  }
+
+  def destroyConnection = {
+    knxComm.detach
+    link.close
+  }
 }
- 

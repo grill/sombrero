@@ -2,19 +2,13 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.sombrero</groupId>
   <artifactId>sombrero</artifactId>
-  <version>0.1</version>
+  <version>1.0</version>
   <packaging>war</packaging>
   <name>sombrero</name>
-  <inceptionYear>2007</inceptionYear>
+  <inceptionYear>2010</inceptionYear>
   <properties>
-    <scala.version>2.7.3</scala.version>
+    <scala.version>2.8.0</scala.version>
   </properties>
-
-  <scm>
-    <connection>scm:cvs:extssh:cvs.htlwrn.ac.at:/cvs/sombrero:sombrero</connection>
-    <developerConnection>scm:cvs:extssh:cvs.htlwrn.ac.at:/cvs/sombrero:sombrero</developerConnection>
-    <tag>HEAD</tag>
-  </scm>
 
   <repositories>
     <repository>
@@ -40,18 +34,18 @@
     </dependency>
     <dependency>
       <groupId>net.liftweb</groupId>
-      <artifactId>lift-util</artifactId>
-      <version>1.0</version>
+      <artifactId>lift-util_2.8.0</artifactId>
+      <version>2.1-M1</version>
     </dependency>
     <dependency>
       <groupId>net.liftweb</groupId>
-      <artifactId>lift-webkit</artifactId>
-      <version>1.0</version>
+      <artifactId>lift-webkit_2.8.0</artifactId>
+      <version>2.1-M1</version>
     </dependency>
     <dependency>
       <groupId>net.liftweb</groupId>
-      <artifactId>lift-mapper</artifactId>
-      <version>1.0</version>
+      <artifactId>lift-mapper_2.8.0</artifactId>
+      <version>2.1-M1</version>
     </dependency>
     <dependency>
       <groupId>javax.servlet</groupId>
@@ -68,13 +62,13 @@
     <dependency>
       <groupId>org.mortbay.jetty</groupId>
       <artifactId>jetty</artifactId>
-      <version>[6.1.6,)</version>
+      <version>[6.1.22,)</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
-      <version>1.1.112</version>
+      <version>1.2.138</version>
     </dependency>
     <!-- for LiftConsole -->
     <dependency>

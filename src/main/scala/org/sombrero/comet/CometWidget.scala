@@ -2,6 +2,7 @@
 package org.sombrero.comet
 
 import _root_.net.liftweb.util._
+import _root_.net.liftweb.common._
 import _root_.net.liftweb.http._
 import _root_.net.liftweb.sitemap._
 import _root_.net.liftweb.sitemap.Loc._
@@ -12,6 +13,7 @@ import _root_.java.sql._
 import scala.actors.Actor
 import scala.actors.Actor._
 import org.sombrero.widget._
+import org.sombrero.widget
 import org.sombrero.model
 import org.sombrero.util.WidgetList
 import scala.xml._
@@ -74,7 +76,7 @@ abstract class CometWidget extends CometActor {
   
   var parent : List[widget.Widget] = Nil
   override def render = {
-    NodeSeq.view(parent.flatMap(_.render))
+    NodeSeq.seqToNodeSeq(parent.flatMap[Node,Seq[Node]](_.render))
   }
   
   override def lowPriority : PartialFunction[Any, Unit] = {

@@ -6,6 +6,7 @@ import org.sombrero.snippet._
 import _root_.net.liftweb.http._
 import _root_.net.liftweb.sitemap._
 import _root_.net.liftweb.sitemap.Loc._
+import _root_.net.liftweb.common._
 import Helpers._
 import SHtml._
 import net.liftweb.http.js.jquery._
@@ -80,7 +81,7 @@ class UserLoc extends Loc[UserAccess] {
     case ("useredit", _) => wrapIt(Text("User not found."))
   }
   
-  override def defaultParams = Empty
+  override def defaultValue = Full(UserNotFound)
   override def params = Nil
   override def link = new Link("useredit" :: Nil, true)
   override def name = "Users"

@@ -2,6 +2,7 @@
 package org.sombrero.view
 
 import _root_.net.liftweb.util._
+import _root_.net.liftweb.common._
 import org.sombrero.snippet._
 import _root_.net.liftweb.http._
 import _root_.net.liftweb.sitemap._
@@ -61,7 +62,7 @@ class WidgetLoc extends Loc[WidgetAccess] {
     case ("widgetedit", _) => { ignore : NodeSeq => Text("Widget not found.") }
   }
      
-  override def defaultParams = Empty
+  override def defaultValue = Full(WidgetNotFound)
   override def params = Nil
   override def link = new Link("widget" :: Nil, true)
   override def name = "Widgets"

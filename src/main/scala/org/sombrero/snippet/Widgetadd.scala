@@ -4,6 +4,7 @@ package org.sombrero.snippet
 import scala.xml._
 import org.sombrero.model
 import net.liftweb.util._
+import _root_.net.liftweb.common._
 import net.liftweb.http.RequestVar
 import net.liftweb.http.S
 

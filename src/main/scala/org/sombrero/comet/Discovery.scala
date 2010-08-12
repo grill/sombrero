@@ -5,6 +5,7 @@ import org.sombrero.model
 import _root_.net.liftweb.http._
 import SHtml._
 import _root_.net.liftweb.util._
+import _root_.net.liftweb.common._
 import Helpers._
 import _root_.net.liftweb.http.js.{JE,JsCmd,JsCmds}
 import JsCmds._ // For implicits
