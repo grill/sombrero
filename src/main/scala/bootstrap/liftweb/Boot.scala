@@ -64,7 +64,8 @@ class Boot {
      Menu(Loc("Help", List("helptext") -> true, "Help")) ::
      Menu( new RoomLoc()) ::
      Menu( new WidgetLoc()) ::
-     Menu( new UserLoc()) :: Nil
+     Menu( new UserLoc()) :: 
+     Menu( new WidgetViewLoc()) :: Nil
    
     LiftRules.setSiteMap(SiteMap((entries ::: User.sitemap):_*))
     

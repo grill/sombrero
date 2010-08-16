@@ -27,7 +27,7 @@ case object WidgetViewPermissionDenied extends WidgetViewAccess
 case class FullWidgetViewAccess(w : Widget) extends WidgetViewAccess
 
 //handles widget edit forms
-class WidgetLoc extends Loc[WidgetAccess] {
+class WidgetViewLoc extends Loc[WidgetAccess] {
 
   def response(path : List[String]) = new RewriteResponse(ParsePath(path, "", true, false), Map.empty, true)
 
