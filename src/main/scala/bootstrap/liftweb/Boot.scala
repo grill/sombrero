@@ -77,10 +77,12 @@ class Boot {
   }
 
   try {
+    var net : SombreroNetwork = null
 	  //connection establishment on start up
-	  KNXRouter.getIP.map(ip => {Log.info(ip); util.Connection.createConnection(ip)})
+	  KNXRouter.getIP.map(ip => {Log.info(ip); util.Connection.createConnection(ip); net = new SombreroNetwork(ip); net.open})
 	  //connection establishment on shut down
-	  LiftRules.unloadHooks.append(() => { if(org.sombrero.util.Connection.isConnected) org.sombrero.util.Connection.destroyConnection }) 
+	  LiftRules.unloadHooks.append(() => { if(org.sombrero.util.Connection.isConnected) org.sombrero.util.Connection.destroyConnection})
+	  LiftRules.unloadHooks.append(() => { if(net != null) net.close}) 
   } catch {
     //matches all exceptions
     case e => Log.info(e.getMessage)
