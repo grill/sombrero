@@ -57,9 +57,8 @@ case object FavChild extends WidgetPlace
 //main area
 case object FavParent extends WidgetPlace
 
-abstract class StateWidget(data: model.Widget, widgetType: String, wp: WidgetPlace)
-  extends CommandWidget(data, widgetType, wp) /* with TStateDevice[PrimitiveType]*/{
-  val knx: Device[DataPointValueType <: DPValue[PrimitiveType], PrimitiveType]
+abstract class StateWidget[DataPointValueType <: DPValue[PrimitiveType], PrimitiveType](data: model.Widget, widgetType: String, wp: WidgetPlace)
+  extends CommandWidget[DataPointValueType, PrimitiveType](data, widgetType, wp) /* with TStateDevice[PrimitiveType]*/{
 
  /**
   * This method turns a byte value into an Javascript command, that updates
@@ -73,12 +72,11 @@ abstract class StateWidget(data: model.Widget, widgetType: String, wp: WidgetPla
   def translate(value: PrimitiveType): String
 }
 
-abstract class CommandWidget(data: model.Widget, widgetType: String, wp: WidgetPlace)
+abstract class CommandWidget[DataPointValueType <: DPValue[PrimitiveType], PrimitiveType](data: model.Widget, widgetType: String, wp: WidgetPlace)
   extends Widget(data, widgetType, wp) /* with TCommandDevice[DataPointValueType, PrimitiveType]*/ {
-  val knx: Device[DataPointValueType <: DPValue[PrimitiveType], PrimitiveType]
+  val knx: Device[DataPointValueType, PrimitiveType]
 
-  properties +=
-    ("change" -> "function(){" + SHtml.ajaxCall(getOption("value"), update _)._2 + "}")
+  properties ~= ("change", "function(){" + SHtml.ajaxCall(getOption("value"), update _)._2 + "}")
 
  /**
   * This method is used as a callback. When it is called it
@@ -103,7 +101,7 @@ abstract class Widget(val data: model.Widget, widgetType: String, var wp: Widget
   private var id = widgetType + "_" + data.id.is
 
   //URL which points the helptext of the respective widget if changed in a subclass
-  protected lazy val helpUrl
+  protected lazy val helpUrl = ""
 
  /**
   * The following part of the constructer is used to set all settings for the
@@ -111,15 +109,15 @@ abstract class Widget(val data: model.Widget, widgetType: String, var wp: Widget
   */
 
   //Map of properties for the respective JQuery UI widget
-  val properties = ("top", data.top) ~ ("left", data.left) ~
+  var properties = ("top", data.top) ~ ("left", data.left) ~
     ("text", data.name.is) ~
     ("stop", SHtml.ajaxCall(getTopJsExp, setTop _)._2 + ";" +
       SHtml.ajaxCall(getLeftJsExp, setLeft _)._2 + ";") ~
     ("favorites", "#" + Fav.htmlid) ~ ("active", JavaScriptHelper.callback(newFavorite)) ~
     ("inactive", JavaScriptHelper.callback(delFavorite)) ~
     ("in_toolbox", JavaScriptHelper.callback(newToolboxitem)) ~
-    ("out_toolbox", JavaScriptHelper.callback(delToolboxitem(Room.current)))  
-  
+    ("out_toolbox", JavaScriptHelper.callback(delToolboxitem(Room.current)))
+
   wp match {
     case  AdminSideBar  =>
       if(Fav.isFav(data)) properties ~= ("copy", "#FavCh_" + id)
@@ -141,9 +139,9 @@ abstract class Widget(val data: model.Widget, widgetType: String, var wp: Widget
   }
   if (User.superUser_?) 
     properties ~= ("admin", "#" + ToolBox.id) ~
-      ("admin_url", JArray(helpUrl :: "/widget/" + data.id.is :: Nil) ~
+      ("admin_url", JArray(helpUrl :: "/widget/" + data.id.is :: Nil)) ~
       ("admin_onClick", JArray("" :: "" :: JavaScriptHelper.callback(delWidget) ::
-        "" :: Nil)
+        "" :: Nil))
 
   def render(): NodeSeq = JavaScriptHelper.createWidget(id, widgetType, properties)
 
@@ -203,24 +201,15 @@ abstract class Widget(val data: model.Widget, widgetType: String, var wp: Widget
   }
 
   //this function adds a widget to the favorits widget
-  /* def addFavCmd(): JsCmd = {
+   def addFavCmd(): JsCmd = {
     //JavaScriptHelper.call(Fav.htmlid, "favorites", "append",
     //JavaScriptHelper.call(widgetType + "_" + data.id.is, "titlebar", "setFav", "true") &
     JsRaw("$('<div id=\"" + id + "\"></div>').appendTo($(\"#" + Container.htmlid + "\"));").cmd &
-    JsRaw(JavaScriptHelper.initWidget(id, widgetType, properties.toList :::
-    List(
-      ("top", data.top.is.toString), ("left", data.left.is.toString),
-      ("text", '"' + data.name.is + '"'),
-      ("stop", "function(){" + SHtml.ajaxCall(getTopJsExp, setTop _)._2 + ";"
-        + SHtml.ajaxCall(getLeftJsExp, setLeft _)._2 + ";}"),
-      ("favorites", "$(\"#" + Fav.htmlid + "\")"), ("active", JavaScriptHelper.callback(newFavorite)),
-      ("inactive", JavaScriptHelper.callback(delFavorite)), ("in_toolbox", JavaScriptHelper.callback(newToolboxitem)),
-      ("out_toolbox", JavaScriptHelper.callback(delToolboxitem(Room.current)))
-    ) ::: admin ::: parentTag ::: isActive ::: pob)).cmd &
+    JsRaw(JavaScriptHelper.initWidget(id, widgetType, properties)).cmd &
     JavaScriptHelper.call(Fav.htmlid, "favorites", "deactivate_and_append", "$(\"#" + id + "\")")
-  }*/
+  }
 
-    //this function removes a widget from the favorits widget
+  //this function removes a widget from the favorits widget
   def removeFavCmd(): JsCmd = {
     JavaScriptHelper.call(id, "titlebar", "setFav", "false") &
     JavaScriptHelper.call(Fav.htmlid, "favorites", "remove", "$(\"#" +"FavCh_" + widgetType + "_" + data.id.is + "\")")

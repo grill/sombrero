@@ -1,6 +1,5 @@
 package org.sombrero.widget.knx
 
-
 import _root_.net.liftweb.http._
 import S._
 import _root_.scala.xml._
@@ -9,7 +8,6 @@ import JsCmds._
 import JE.{JsRaw,Str}
 import _root_.net.liftweb.util._
 import _root_.net.liftweb.common._
-import tuwien.auto.calimero.exception._ 
 
 import org.sombrero.util._
 import org.sombrero.model._
@@ -17,48 +15,22 @@ import org.sombrero.snippet._
 import org.sombrero.widget._
  
 import tuwien.auto.calimero.dptxlator._
-import scala.concurrent.ops._
+import tuwien.auto.calimero.exception._ 
+
+import org.scalimero.device.preconf
+
 /**
  * Generates a Lamp widget
  * @author Gabriel Grill
  */
-class Lamp (data: org.sombrero.model.Widget, wp: WidgetPlace) extends StateWidget(data, "binary", wp){
-   val knx = new KNXLamp(data.knx().groupAddress.is)
-   var status:Boolean = knx.getStatus match {
-     case Full(x: Boolean)	=> x
-     case _					=> false
-   }
-  
-   properties ++ Map(
-     	"value" -> status.toString
-   )
-   helpUrl = "/helptext/lamp"
-  
-   def translate(value: Array[Byte]): String = knx.translate(knx.translate(value)).toString
-   def translate(value: String): String = {
-      Log.info("I'm a Lamp tell me what to do");
-      knx.translate(! value.toBoolean)
-   }
-}
+class Lamp (data: org.sombrero.model.Widget, wp: WidgetPlace) extends
+  StateWidget[preconf.Lamp.DataPointValueType, preconf.Lamp.PrimitiveType](data, "binary", wp){
+  override val knx = preconf.Lamp(data.knx().groupAddress.is)
 
-//This class enables KNX support
-class KNXLamp (destAddress:String)  
-	extends StateKNXWidget [Boolean](destAddress, "Lamp", 
-			TranslatorTypes.TYPE_BOOLEAN, DPTXlatorBoolean.DPT_SWITCH.getID){
-	val dptx = new DPTXlatorBoolean (DPTXlatorBoolean.DPT_SWITCH.getID)
- 
-    def translate (value: Boolean): String = {
-      dptx.setValue(value) 
-      dptx.getValue
-    }
-    
-    def translate (value: String): Boolean = {
-      dptx.setValue(value)
-      dptx.getValueBoolean
-    }
-    
-    def translate (value: Array[Byte]): String = {
-		dptx.setData(value)
-		dptx.getValue
-    }   
+  override val helpUrl = "/helptext/lamp"
+
+  properties ~= ("value", try{device.read}catch{case e=>false})
+
+  def translate(value: Boolean): String = value.toString
+  def translate(value: String): Boolean = ! value.toBoolean
 }
