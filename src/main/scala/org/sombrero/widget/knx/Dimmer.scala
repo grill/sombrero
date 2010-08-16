@@ -2,7 +2,7 @@ package org.sombrero.widget.knx
 
 import _root_.net.liftweb.http._
 import S._
-import _root_.net.liftweb.util._
+import _root_.net.liftweb.util.Helpers
 import Helpers._
 import _root_.scala.xml._
 import _root_.net.liftweb.common._
@@ -11,7 +11,6 @@ import JsCmds._
 import JE.{JsRaw,Str}
 import _root_.net.liftweb.http.SHtml._
 import _root_.scala.util.Random
-import _root_.net.liftweb.util.Log
 import java.net._
 import net.liftweb.http.js._
 import tuwien.auto.calimero.exception._ 

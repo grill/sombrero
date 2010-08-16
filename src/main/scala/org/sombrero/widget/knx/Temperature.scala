@@ -13,12 +13,12 @@ import JsCmds._
 import JE.{JsRaw,Str}
 import _root_.net.liftweb.http.SHtml._
 import _root_.scala.util.Random
-import _root_.net.liftweb.util.Log
 import _root_.net.liftweb.common._
 import java.net._
 import net.liftweb.http.js._
 
 import org.sombrero.widget._
+import org.sombrero.util.Log
   
 import tuwien.auto.calimero.dptxlator._
 /**

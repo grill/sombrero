@@ -1,6 +1,6 @@
 package bootstrap.liftweb
 
-import _root_.net.liftweb.util._
+import _root_.net.liftweb.util.Helpers
 import _root_.net.liftweb.common._
 import _root_.net.liftweb.http._
 import _root_.net.liftweb.sitemap._
@@ -48,7 +48,7 @@ class Boot {
     		() => RedirectResponse("/login"))
      
     //Create Tables
-    Schemifier.schemify(true, Log.infoF _, Room, User, Position, Widget, KNXWidget, RoomlinkWidget, Fav, KNXGroup, KNXAlias, KNXRouter)
+    Schemifier.schemify(true, Schemifier.infoF _, Room, User, Position, Widget, KNXWidget, RoomlinkWidget, Fav, KNXGroup, KNXAlias, KNXRouter)
     
     // Build SiteMap
    val entries = Menu(Loc("Home", List("index"), "Home")) ::

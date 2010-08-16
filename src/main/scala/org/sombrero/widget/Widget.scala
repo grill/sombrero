@@ -6,7 +6,7 @@ import _root_.scala.xml._
 import _root_.net.liftweb.http.js.{JE,JsCmd,JsCmds, JsExp}
 import JsCmds._
 import JE.{JsRaw,Str}
-import _root_.net.liftweb.util._
+import _root_.net.liftweb.util.Helpers
 import _root_.net.liftweb.common._
 import _root_.scala.collection.mutable.Map
 import tuwien.auto.calimero.exception._ 

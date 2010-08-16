@@ -1,7 +1,8 @@
 //author: Alexander C. Steiner
 package org.sombrero.model
 import net.liftweb.mapper._
-import net.liftweb.util._
+import org.sombrero.util.Log
+//import net.liftweb.util._
 import _root_.net.liftweb.common._
 import _root_.net.liftweb.http.RequestVar
 

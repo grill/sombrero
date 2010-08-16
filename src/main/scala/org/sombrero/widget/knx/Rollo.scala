@@ -14,13 +14,13 @@ import JsCmds._
 import JE.{JsRaw,Str}
 import _root_.net.liftweb.http.SHtml._
 import _root_.scala.util.Random
-import _root_.net.liftweb.util.Log
 import _root_.net.liftweb.common._
 import java.net._
 import net.liftweb.http.js._
 import tuwien.auto.calimero.exception._ 
  
 import org.sombrero.model._
+import org.sombrero.util.Log
 import org.sombrero.snippet._
 import org.sombrero.widget._
 

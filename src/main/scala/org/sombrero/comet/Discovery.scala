@@ -2,9 +2,10 @@
 package org.sombrero.comet
 
 import org.sombrero.model
+import org.sombrero.util.Log
 import _root_.net.liftweb.http._
 import SHtml._
-import _root_.net.liftweb.util._
+import _root_.net.liftweb.util.Helpers
 import _root_.net.liftweb.common._
 import Helpers._
 import _root_.net.liftweb.http.js.{JE,JsCmd,JsCmds}

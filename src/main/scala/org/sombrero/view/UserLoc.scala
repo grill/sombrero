@@ -1,7 +1,7 @@
 //author: Alexander C. Steiner
 package org.sombrero.view
 
-import _root_.net.liftweb.util._
+import _root_.net.liftweb.util.Helpers
 import org.sombrero.snippet._
 import _root_.net.liftweb.http._
 import _root_.net.liftweb.sitemap._

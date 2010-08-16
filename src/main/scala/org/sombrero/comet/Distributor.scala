@@ -1,10 +1,11 @@
 //author: Alexander C. Steiner
 package org.sombrero.comet
 
+import org.sombrero.util.Log
 import scala.actors._ 
 import Actor._
 import net.liftweb.http._
-import net.liftweb.util._
+//import net.liftweb.util.Helpers
 
 //receives KNX updates and forwards them to the CometWidgets
 object Distributor extends Actor{
@@ -22,10 +23,10 @@ object Distributor extends Actor{
         }
         case Subscribe(id, rec) => {
           Log.info("subscribe " + id + " " + rec)
-          map = map(id) = rec :: map(id)
+          map = map.updated(id, rec :: map(id))
         }
-        case Unsubscribe(rec) => {map = map.transform((id, l) => l - rec);}
-        case PartialUnsubscribe(id, rec) => {map = map(id) = map(id) - rec;}
+        case Unsubscribe(rec) => {map = map.transform((id, l) => l.filterNot(_ == rec));}
+        case PartialUnsubscribe(id, rec) => {map = map.updated(id, map(id).filterNot(_ == rec));}
       }
     }
 }

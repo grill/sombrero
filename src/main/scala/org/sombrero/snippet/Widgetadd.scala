@@ -7,6 +7,7 @@ import net.liftweb.util._
 import _root_.net.liftweb.common._
 import net.liftweb.http.RequestVar
 import net.liftweb.http.S
+import org.sombrero.util.Log
 
 //widget adding forms
 class Widgetadd {
