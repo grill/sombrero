@@ -14,6 +14,9 @@ import _root_.scala.util.Random
 import _root_.net.liftweb.util.Log
 import java.net._
 import net.liftweb.http.js._
+import net.liftweb.json.JsonDSL._
+import net.liftweb.json._
+import net.liftweb.json.JsonAST._
 
 import org.sombrero.snippet._
 import org.sombrero.util._
@@ -26,17 +29,17 @@ import _root_.scala.xml._
  * @author Gabriel Grill
  */
 class RoomLink(data: org.sombrero.model.Widget, wp : WidgetPlace) extends widget.Widget(data, "unary", wp) {
-   properties ++ Map(
-        "change" -> JavaScriptHelper.callback(change),
-        if(data.roomlink.image.is != null) ("img" -> ("\"/roomlink/" + data.roomlink.id.is.toString + "\"")) else ("img" -> "\"/images/roomlink.png\""),
-        "hoveroff" -> "true"
-   )
-   
-   helpUrl = "/helptext/roomlink"
-        
+   properties ~= ("change", JavaScriptHelper.callback(change)) ~
+    ("hoveroff", true)
+  if(data.roomlink.image.is != null)
+    properties ~= ("img", "/roomlink/" + data.roomlink.id.is.toString + "")
+  else
+    properties ~= ("img", "/images/roomlink.png")
+
+   override val helpUrl = "/helptext/roomlink"
+
    def change(): JsCmd = {
-     println("From " + id + " change recieved")
- 
-     JsRaw("window.location = 'http://localhost:9090/room/" + data.roomlink.room.is + "';").cmd  //redirect in JavaScript
+     Log.info("From " + id + " change recieved")
+     JsRaw("window.location = '/room/" + data.roomlink.room.is + "';").cmd  //redirect in JavaScript
    }
 }

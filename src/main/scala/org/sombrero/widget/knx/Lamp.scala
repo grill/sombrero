@@ -10,6 +10,9 @@ import JE.{JsRaw,Str}
 import _root_.net.liftweb.util.Helpers
 import _root_.net.liftweb.common._
 import tuwien.auto.calimero.exception._ 
+import net.liftweb.json.JsonDSL._
+import net.liftweb.json._
+import net.liftweb.json.JsonAST._
 
 import org.sombrero.util._
 import org.sombrero.model._
@@ -20,6 +23,7 @@ import tuwien.auto.calimero.dptxlator._
 import tuwien.auto.calimero.exception._ 
 
 import org.scalimero.device.preconf
+import org.scalimero.device._
 
 /**
  * Generates a Lamp widget
@@ -31,7 +35,7 @@ class Lamp (data: org.sombrero.model.Widget, wp: WidgetPlace) extends
 
   override val helpUrl = "/helptext/lamp"
 
-  properties ~= ("value", try{device.read}catch{case e=>false})
+  properties ~= ("value", try{knx.read}catch{case e=>false})
 
   def translate(value: Boolean): String = value.toString
   def translate(value: String): Boolean = ! value.toBoolean

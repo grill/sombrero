@@ -13,6 +13,9 @@ import _root_.scala.util.Random
 import _root_.net.liftweb.common._
 import java.net._ 
 import net.liftweb.http.js._
+import net.liftweb.json.JsonDSL._
+import net.liftweb.json._
+import net.liftweb.json.JsonAST._
 
 import org.sombrero.util._
 import org.sombrero.util.Log
@@ -26,6 +29,7 @@ import tuwien.auto.calimero.exception.KNXException._
 import tuwien.auto.calimero.link._
 
 import org.scalimero.device.preconf
+import org.scalimero.device._
  
 /**
  * Generates a Unary Widget

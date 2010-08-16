@@ -16,6 +16,9 @@ import _root_.scala.util.Random
 import _root_.net.liftweb.common._
 import java.net._
 import net.liftweb.http.js._
+import net.liftweb.json.JsonDSL._
+import net.liftweb.json._
+import net.liftweb.json.JsonAST._
 
 import org.sombrero.widget._
 import org.sombrero.util.Log
@@ -23,6 +26,7 @@ import org.sombrero.util.Log
 import tuwien.auto.calimero.dptxlator._
 
 import org.scalimero.device.preconf
+import org.scalimero.device._
 
 /**
  * Generates a Temperature widget
@@ -36,7 +40,7 @@ class Temperature (data: org.sombrero.model.Widget, wp: WidgetPlace) extends
    
   override val helpUrl = "/helptext/temperature"
   properties ~= ("clip_front", true) ~
-    ("value", try{device.read}catch{case e=>0})
+    ("value", try{knx.read}catch{case e=>0})
 
   def translate(value: Float): String = (((value-min)/(max-min))*100).toString
   def translate(value: String): Float = if((value.toFloat * 100) < 0) min else (min+((max-min) * value.toFloat)).toFloat

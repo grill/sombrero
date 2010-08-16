@@ -2,7 +2,6 @@ package org.sombrero.util
 
 import net.liftweb.http.js._
 import _root_.net.liftweb.http._
-import S._
 import _root_.net.liftweb.util._
 import Helpers._
 import _root_.scala.xml._
@@ -97,7 +96,7 @@ object JavaScriptHelper {
   * @param title of the new dialog 
   */
   def popupCmd(cls:String, title: String): JsCmd =
-    JsRaw(initWidgets(cls, "fancybox",
+    JsRaw(initWidget(cls, "fancybox",
       ("width", "75%") ~
       ("height", "75%") ~
       ("autoScale", false) ~

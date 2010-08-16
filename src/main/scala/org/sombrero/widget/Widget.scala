@@ -10,6 +10,9 @@ import _root_.net.liftweb.util.Helpers
 import _root_.net.liftweb.common._
 import _root_.scala.collection.mutable.Map
 import tuwien.auto.calimero.exception._ 
+import net.liftweb.json.JsonDSL._
+import net.liftweb.json._
+import net.liftweb.json.JsonAST._
 
 import org.sombrero.util._
 import org.sombrero.snippet._
@@ -96,7 +99,7 @@ abstract class CommandWidget[DataPointValueType <: DPValue[PrimitiveType], Primi
 
 abstract class Widget(val data: model.Widget, widgetType: String, var wp: WidgetPlace) {
   //id of the widget
-  private var id = widgetType + "_" + data.id.is
+  protected var id = widgetType + "_" + data.id.is
 
   //URL which points the helptext of the respective widget if changed in a subclass
   protected lazy val helpUrl = ""
@@ -107,7 +110,7 @@ abstract class Widget(val data: model.Widget, widgetType: String, var wp: Widget
   */
 
   //Map of properties for the respective JQuery UI widget
-  var properties = ("top", data.top) ~ ("left", data.left) ~
+  var properties: JObject = ("top", data.top.is) ~ ("left", data.left.is) ~
     ("text", data.name.is) ~
     ("stop", SHtml.ajaxCall(getTopJsExp, setTop _)._2 + ";" +
       SHtml.ajaxCall(getLeftJsExp, setLeft _)._2 + ";") ~
@@ -120,8 +123,8 @@ abstract class Widget(val data: model.Widget, widgetType: String, var wp: Widget
     case  AdminSideBar  =>
       if(Fav.isFav(data)) properties ~= ("copy", "#FavCh_" + id)
       properties ~=
-      ("admin_img", JArray("ui-icon-help" :: "ui-icon-wrench" ::
-        "ui-icon-trash" :: "ui-icon-plus" :: Nil)) ~
+      ("admin_img", JArray(List("ui-icon-help", "ui-icon-wrench",
+        "ui-icon-trash", "ui-icon-plus"))) ~
       ("parentTag", "#" + Container.htmlid)
     case  FavChild    =>
       id = "FavCh_" + id
@@ -137,9 +140,8 @@ abstract class Widget(val data: model.Widget, widgetType: String, var wp: Widget
   }
   if (User.superUser_?) 
     properties ~= ("admin", "#" + ToolBox.id) ~
-      ("admin_url", JArray(helpUrl :: "/widget/" + data.id.is :: Nil)) ~
-      ("admin_onClick", JArray("" :: "" :: JavaScriptHelper.callback(delWidget) ::
-        "" :: Nil))
+      ("admin_url", JArray(List(helpUrl, "/widget/" + data.id.is))) ~
+      ("admin_onClick", JArray(List("", "", JavaScriptHelper.callback(delWidget), "")))
 
   def render(): NodeSeq = JavaScriptHelper.createWidget(id, widgetType, properties)
 

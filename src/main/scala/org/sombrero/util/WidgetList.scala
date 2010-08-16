@@ -26,7 +26,7 @@ object WidgetList {
   "SwitchOff"   -> WidgetClass[model.KNXWidget] ("SwitchOff", "SwitchOff", model.KNXWidget, new SwitchOff(_,_)),
   "Switch"      -> WidgetClass[model.KNXWidget] ("Switch", "Switch", model.KNXWidget, new Switch(_,_)),
   "Dimmer"      -> WidgetClass[model.KNXWidget] ("Dimmer", "Dimmer", model.KNXWidget, new Dimmer(_,_)),
-  "Rollo"       -> WidgetClass[model.KNXWidget] ("Rollo", "Rollo", model.KNXWidget, new Rollo(_,_)),
+  "RollerBlind" -> WidgetClass[model.KNXWidget] ("RollerBlind", "RollerBlind", model.KNXWidget, new RollerBlind(_,_)),
   "Roomlink"    -> WidgetClass[model.RoomlinkWidget] ("Roomlink", "Roomlink", model.RoomlinkWidget, new RoomLink(_,_))
   )
 

@@ -18,6 +18,9 @@ import _root_.net.liftweb.util.Log
 import _root_.net.liftweb.common._
 import java.net._
 import net.liftweb.http.js._
+import net.liftweb.json.JsonDSL._
+import net.liftweb.json._
+import net.liftweb.json.JsonAST._
  
 import org.sombrero.model._
 import org.sombrero.snippet._
@@ -27,6 +30,7 @@ import tuwien.auto.calimero.dptxlator._
 import tuwien.auto.calimero.exception._ 
 
 import org.scalimero.device.preconf
+import org.scalimero.device._
 
 /**
  * Generates a Rollo widget
@@ -39,10 +43,10 @@ class RollerBlind (data: org.sombrero.model.Widget, wp: WidgetPlace) extends
 
   properties ~= ("frontImg" -> "/images/rollo0zu.png") ~
     ("backgroundImg", "/images/rollo0.png") ~
-    ("slideRect", JArray(19 :: 19 :: 122 :: 122 :: Nil)) ~
+    ("slideRect", JArray(List(19, 19, 122, 122))) ~
     ("reverse", true) ~
-    ("value", try{device.read}catch{case e=>0})
+    ("value", try{knx.read}catch{case e=>0})
 
    def translate(value: Int): String = value.toString
-   def translate(value: String): Int = if((value.toFloat * 100) < 0) 0 else value.toFloat * 100
+   def translate(value: String): Int = if((value.toFloat * 100) < 0) 0 else (value.toFloat * 100).toInt
 }
