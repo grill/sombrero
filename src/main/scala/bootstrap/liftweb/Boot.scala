@@ -1,6 +1,6 @@
 package bootstrap.liftweb
 
-import _root_.net.liftweb.util._
+import _root_.net.liftweb.util.Helpers
 import _root_.net.liftweb.common._
 import _root_.net.liftweb.http._
 import _root_.net.liftweb.sitemap._
@@ -12,8 +12,8 @@ import _root_.java.sql._
 
 import org.sombrero.snippet.DButil
 import org.sombrero.model._
-import org.sombrero.util._ 
-import org.sombrero.comet._ 
+import org.sombrero.util._
+import org.sombrero.comet._
 import org.sombrero.view._
 import org.sombrero._
 
@@ -28,28 +28,28 @@ class Boot {
   def boot {
     // set up database connection
     if (!DB.jndiJdbcConnAvailable_?) DB.defineConnectionManager (DefaultConnectionIdentifier, DBVendor)
-  
+
     // where to search snippet
     LiftRules.addToPackages("org.sombrero")
     LiftRules.jsArtifacts = JQuery14Artifacts
 
     //org.sombrero.util.Connection.createConnection("172.19.0.7")
     //org.sombrero.comet.SombreroKNXListener.start
-    
+
     //Add new Resources
     ResourceServer.allow {
       case "framework_js" :: _ => true
       case "layout_css" :: _ => true
-      case "plugin" :: _ => true 
+      case "plugin" :: _ => true
       case "widget" :: _ => true
       case "widgettheme_css" :: _ => true
     }
     val loggedIn = If(() => User.loggedIn_?,
-    		() => RedirectResponse("/login"))
-     
+      () => RedirectResponse("/login"))
+
     //Create Tables
-    Schemifier.schemify(true, Log.infoF _, Room, User, Position, Widget, KNXWidget, RoomlinkWidget, Fav, KNXGroup, KNXAlias, KNXRouter)
-    
+    Schemifier.schemify(true, Schemifier.infoF _, Room, User, Position, Widget, KNXWidget, RoomlinkWidget, Fav, KNXGroup, KNXAlias, KNXRouter)
+
     // Build SiteMap
    val entries = Menu(Loc("Home", List("index"), "Home")) ::
      Menu(Loc("KNX", ("KNXWidgetForm" :: Nil) -> true, "KNXWidgetForm", Hidden, If(() => true, null)) ) ::
@@ -64,10 +64,11 @@ class Boot {
      Menu(Loc("Help", List("helptext") -> true, "Help")) ::
      Menu( new RoomLoc()) ::
      Menu( new WidgetLoc()) ::
-     Menu( new UserLoc()) :: Nil
-   
+     Menu( new UserLoc()) ::
+     Menu( new WidgetViewLoc()) :: Nil
+
     LiftRules.setSiteMap(SiteMap((entries ::: User.sitemap):_*))
-    
+
   //Custom Dispatch for Room Images
   LiftRules.dispatch.append {
   case Req("room" :: roomid :: "image" :: Nil, _, _) =>
@@ -77,17 +78,19 @@ class Boot {
   }
 
   try {
-	  //connection establishment on start up
-	  KNXRouter.getIP.map(ip => {Log.info(ip); util.Connection.createConnection(ip)})
-	  //connection establishment on shut down
-	  LiftRules.unloadHooks.append(() => { if(org.sombrero.util.Connection.isConnected) org.sombrero.util.Connection.destroyConnection }) 
+    var net : SombreroNetwork = null
+    //connection establishment on start up
+    KNXRouter.getIP.map(ip => {Log.info(ip); util.Connection.createConnection(ip); net = new SombreroNetwork(ip); net.open})
+    //connection establishment on shut down
+    LiftRules.unloadHooks.append(() => { if(org.sombrero.util.Connection.isConnected) org.sombrero.util.Connection.destroyConnection})
+    LiftRules.unloadHooks.append(() => { if(net != null) net.close})
   } catch {
     //matches all exceptions
     case e => Log.info(e.getMessage)
   }
-  
+
   //Distributor ! TestMessage(1l, "Hi I'm Boot.scala")
-}  
+}
 }
 
 //provides database access
@@ -103,8 +106,7 @@ object DBVendor extends ConnectionManager {
       case e : Exception => e.printStackTrace; Empty
     }
   }
-  
+
   //shutdown database
   def releaseConnection(conn: Connection) = conn.close
 }
-

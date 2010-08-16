@@ -1,17 +1,15 @@
 package org.sombrero.widget
-
+ 
 import _root_.net.liftweb.http._
 import S._
 import _root_.scala.xml._
 import _root_.net.liftweb.http.js.{JE,JsCmd,JsCmds, JsExp}
 import JsCmds._
 import JE.{JsRaw,Str}
-import _root_.net.liftweb.util._
+import _root_.net.liftweb.util.Helpers
 import _root_.net.liftweb.common._
-import _root_.scala.collection.mutable._
-import net.liftweb.json.JsonDSL._
-import net.liftweb.json._
-import net.liftweb.json.JsonAST._
+import _root_.scala.collection.mutable.Map
+import tuwien.auto.calimero.exception._ 
 
 import org.sombrero.util._
 import org.sombrero.snippet._

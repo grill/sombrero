@@ -1,7 +1,7 @@
 //author: Alexander C. Steiner
 package org.sombrero.comet
 
-import _root_.net.liftweb.util._
+import _root_.net.liftweb.util.Helpers
 import _root_.net.liftweb.common._
 import _root_.net.liftweb.http._
 import _root_.net.liftweb.sitemap._
@@ -16,6 +16,7 @@ import org.sombrero.widget._
 import org.sombrero.widget
 import org.sombrero.model
 import org.sombrero.util.WidgetList
+import org.sombrero.util.Log
 import scala.xml._
 import net.liftweb.http.js.JE.JsRaw
 

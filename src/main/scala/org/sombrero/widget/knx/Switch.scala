@@ -11,11 +11,11 @@ import JE.{JsRaw,Str}
 import _root_.net.liftweb.http.SHtml._
 import _root_.scala.util.Random
 import _root_.net.liftweb.common._
-import _root_.net.liftweb.util.Log
 import java.net._ 
 import net.liftweb.http.js._
 
 import org.sombrero.util._
+import org.sombrero.util.Log
 import org.sombrero.model._
 import org.sombrero.model
 import org.sombrero.snippet._

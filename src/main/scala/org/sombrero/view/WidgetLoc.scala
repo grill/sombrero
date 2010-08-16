@@ -1,7 +1,7 @@
 //author: Alexander C. Steiner
 package org.sombrero.view
 
-import _root_.net.liftweb.util._
+import _root_.net.liftweb.util.Helpers
 import _root_.net.liftweb.common._
 import org.sombrero.snippet._
 import _root_.net.liftweb.http._
@@ -69,4 +69,3 @@ class WidgetLoc extends Loc[WidgetAccess] {
   override def text = "Widgets"
   
 }
-

@@ -36,7 +36,7 @@ class DeviceFinder extends ProcessListener with CometActor{
     
   override def lowPriority : PartialFunction[Any, Unit] = {
   case dev : String => {
-      devs = devs(dev) += 1
+      devs = devs.updated(dev, devs(dev) + 1)
       doUpdate
     }
     case Clear => {
