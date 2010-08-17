@@ -94,7 +94,13 @@ abstract class CometWidget extends CometActor {
           case _ => {}
     	})
     }
-    
+    case KNXWriteMessage(id, value) => {
+      Log.info(parent.filter(_.data.id.is == id))
+      parent.filter(_.data.id.is == id).foreach(_ match {
+        case p: StateWidget => {Log.info(p); partialUpdate(p.setValue(value)) }
+        case _ => {}
+      })
+    }
     case FavAddMessage(id) => {
       Log.info("buh")
       if(! parent.exists(w => w.data.id.is == id && w.wp == FavChild && model.Fav.isFav(w.data))) {

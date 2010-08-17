@@ -8,5 +8,6 @@ case class TestMessage(override val id : Long, val text : String) extends Sombre
 case class TitleMessage(override val id : Long, val s: String) extends SombreroMessage(id)
 case class DBMessage(override val id : Long) extends SombreroMessage(id)
 case class KNXMessage(override val id : Long, val newVal : Array[Byte]) extends SombreroMessage(id)
+case class KNXWriteMessage(override val id : Long, val newVal : String) extends SombreroMessage(id)
 case class FavAddMessage(override val id : Long) extends SombreroMessage(id)
 case class FavRemMessage(override val id : Long) extends SombreroMessage(id)
