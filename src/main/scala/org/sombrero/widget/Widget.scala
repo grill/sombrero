@@ -58,24 +58,25 @@ case object FavChild extends WidgetPlace
 //main area
 case object FavParent extends WidgetPlace
 
-abstract class StateWidget[DataPointValueType <: DPValue[PrimitiveType], PrimitiveType](data: model.Widget, widgetType: String, wp: WidgetPlace)
-  extends CommandWidget[DataPointValueType, PrimitiveType](data, widgetType, wp) /* with TStateDevice[PrimitiveType]*/{
+abstract class StateWidget(data: model.Widget, widgetType: String, wp: WidgetPlace)
+  extends CommandWidget(data, widgetType, wp) /* with TStateDevice[PrimitiveType]*/{
 
  /**
   * This method turns a byte value into an Javascript command, that updates
   * the status of a device widget
   */
-  def setValue(value: PrimitiveType) = call("update_value", translate(value)).cmd
+  def setValue(value: Array[Byte]) = call("update_value", translate(value)).cmd
+  def setValue(value: String) = call("update_value", translate(value)).cmd
 
  /**
   * EIB/KNX device value -> JQuery UI value
   */
-  def translate(value: PrimitiveType): String
+  def translate(value: Array[Byte]): String
 }
 
-abstract class CommandWidget[DataPointValueType <: DPValue[PrimitiveType], PrimitiveType](data: model.Widget, widgetType: String, wp: WidgetPlace)
+abstract class CommandWidget(data: model.Widget, widgetType: String, wp: WidgetPlace)
   extends Widget(data, widgetType, wp) /* with TCommandDevice[DataPointValueType, PrimitiveType]*/ {
-  val knx: Device[DataPointValueType, PrimitiveType]
+  val knx: SimpleDevice
 
   properties ~= ("change", "function(){" + SHtml.ajaxCall(getOption("value"), update _)._2 + "}")
 
@@ -87,14 +88,14 @@ abstract class CommandWidget[DataPointValueType <: DPValue[PrimitiveType], Primi
   */
   def update(value: String): JsCmd = {
     Log.info("Value: " + value + "; Recvied from: " + id)
-    knx send translate(value)
+    knx write translate(value)
     Noop
   }
 
  /**
   * JQuery UI value -> EIB/KNX value
   */
-  def translate(value: String): DataPointValueType
+  def translate(value: String): String
 }
 
 abstract class Widget(val data: model.Widget, widgetType: String, var wp: WidgetPlace) {

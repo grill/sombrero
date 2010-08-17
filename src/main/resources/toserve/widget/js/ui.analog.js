@@ -6,10 +6,10 @@
  */
 
 (function($) {
-	
+
 $.widget("ui.analog", {
-	_init: function (){
-		var slide_rect = this._getData('slideRect');
+  _init: function (){
+    var slide_rect = this._getData('slideRect');
 		var inRange = false;
 		var height = this._getData('height');
 		var width = this._getData('width');
