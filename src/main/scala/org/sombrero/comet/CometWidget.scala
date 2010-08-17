@@ -90,14 +90,14 @@ abstract class CometWidget extends CometActor {
     case KNXMessage(id, value) => {
     	Log.info(parent.filter(_.data.id.is == id))
     	parent.filter(_.data.id.is == id).foreach(_ match {
-    	  case p: StateWidget => {Log.info(p); partialUpdate(p.setValue(value)) }
+    	  case p: StateWidget[_] => {Log.info(p); partialUpdate(p.setValue(value)) }
           case _ => {}
     	})
     }
     case KNXWriteMessage(id, value) => {
       Log.info(parent.filter(_.data.id.is == id))
       parent.filter(_.data.id.is == id).foreach(_ match {
-        case p: StateWidget => {Log.info(p); partialUpdate(p.setValue(value)) }
+        case p: StateWidget[_] => {Log.info(p); partialUpdate(p.setValue(value)) }
         case _ => {}
       })
     }
