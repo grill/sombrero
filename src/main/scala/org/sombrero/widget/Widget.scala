@@ -65,18 +65,18 @@ abstract class StateWidget(data: model.Widget, widgetType: String, wp: WidgetPla
   * This method turns a byte value into an Javascript command, that updates
   * the status of a device widget
   */
-  def setValue(value: Array[Byte]) = call("update_value", translate(knx.dpt.translate(value))).cmd
-  def setValue(value: String) = call("update_value", translate(value)).cmd
+  def setValue(value: Array[Byte]) = call("update_value", knx2jquery(knx.dpt.translate(value))).cmd
+  def setValue(value: String) = call("update_value", knx2jquery(value)).cmd
 
  /**
   * EIB/KNX device value -> JQuery UI value
   */
-  def translate(value: String): String
+  def knx2jquery(value: String): String
 }
 
 abstract class CommandWidget(data: model.Widget, widgetType: String, wp: WidgetPlace)
   extends Widget(data, widgetType, wp) /* with TCommandDevice[DataPointValueType, PrimitiveType]*/ {
-  val knx: SimpleDevice
+  val knx: SimpleDevice[_, _]
 
   properties ~= ("change", "function(){" + SHtml.ajaxCall(getOption("value"), update _)._2 + "}")
 
@@ -88,14 +88,14 @@ abstract class CommandWidget(data: model.Widget, widgetType: String, wp: WidgetP
   */
   def update(value: String): JsCmd = {
     Log.info("Value: " + value + "; Recvied from: " + id)
-    knx write translate(value)
+    knx write jquery2knx(value)
     Noop
   }
 
  /**
   * JQuery UI value -> EIB/KNX value
   */
-  def translate(value: String): String
+  def jquery2knx(value: String): String
 }
 
 abstract class Widget(val data: model.Widget, widgetType: String, var wp: WidgetPlace) {

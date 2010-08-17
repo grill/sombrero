@@ -30,6 +30,8 @@ import tuwien.auto.calimero.link._
 
 import org.scalimero.device.preconf
 import org.scalimero.device._
+import org.scalimero.device.dtype.Boolean._
+import org.scalimero.device.dtype.translatortype._
  
 /**
  * Generates a Unary Widget
@@ -39,9 +41,9 @@ class Unary (data: org.sombrero.model.Widget, wp: WidgetPlace) extends
   CommandWidget(data, "unary", wp){
   val knx = new SimpleDevice(data.knx.groupAddress.is, BOOLEAN, TRIGGER)
   knx.readRequest()
-  override val helpUrl = "/helptext/switch"
+  override lazy val helpUrl = "/helptext/switch"
 
-  def translate(value: String): String = value
+  def jquery2knx(value: String): String = value
 }
 
 //Generates a Switch widget

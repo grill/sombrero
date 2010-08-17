@@ -27,6 +27,8 @@ import org.sombrero.widget._
 
 import org.scalimero.device.preconf
 import org.scalimero.device._
+import org.scalimero.device.dtype.Num8BitUnsigned._
+import org.scalimero.device.dtype.translatortype._
 
 /**
  * Generates a Dimmer widget
@@ -34,9 +36,9 @@ import org.scalimero.device._
  */
 class Dimmer(data: org.sombrero.model.Widget, wp: WidgetPlace) extends
   StateWidget(data, "analog", wp){
-  override val knx = SimpleDevice(data.knx().groupAddress.is, NUM8BIT_UNSIGNED, SCALING)
+  override val knx = new SimpleDevice(data.knx().groupAddress.is, NUM8BIT_UNSIGNED, SCALING)
   knx.readRequest()
-  override val helpUrl = "/helptext/dimmer"
+  override lazy val helpUrl = "/helptext/dimmer"
 
   properties ~= ("frontImg",  "/images/dim0drag.png") ~
     ("backgroundImg", "/images/dim0.png") ~
@@ -44,6 +46,6 @@ class Dimmer(data: org.sombrero.model.Widget, wp: WidgetPlace) extends
     ("opacity", "/images/dim0light.png") /* ~
     ("value", try{knx.read}catch{case e=>0})*/
 
-   def translate(value: String): String = value
-   def translate(value: String): String = knx.dpt.translate(if((value.toFloat * 100) < 0) 0 else (value.toFloat * 100).toInt)
+   def knx2jquery(value: String): String = value
+   def jquery2knx(value: String): String = knx.dpt.translate((if((value.toFloat * 100) < 0) 0 else (value.toFloat * 100).toInt))
 }

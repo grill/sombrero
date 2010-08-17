@@ -24,6 +24,8 @@ import tuwien.auto.calimero.exception._
 
 import org.scalimero.device.preconf
 import org.scalimero.device._
+import org.scalimero.device.dtype.Boolean._
+import org.scalimero.device.dtype.translatortype._
 
 /**
  * Generates a Lamp widget
@@ -33,10 +35,10 @@ class Lamp (data: org.sombrero.model.Widget, wp: WidgetPlace) extends
   StateWidget(data, "binary", wp){
   override val knx = new SimpleDevice(data.knx().groupAddress.is, BOOLEAN, SWITCH)
   knx.readRequest()
-  override val helpUrl = "/helptext/lamp"
+  override lazy val helpUrl = "/helptext/lamp"
 
 //  properties ~= ("value", try{knx.read}catch{case e=>false})
 
-  def translate(value: String): String = value
-  def translate(value: String): String = knx.dpt.translate(! value.toBoolean)
+  def knx2jquery(value: String): String = value
+  def jquery2knx(value: String): String = knx.dpt.translate(! value.toBoolean)
 }

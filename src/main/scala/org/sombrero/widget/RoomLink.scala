@@ -2,16 +2,13 @@ package org.sombrero.widget
 
 import _root_.net.liftweb.http._
 import S._
-import _root_.net.liftweb.util._
 import _root_.net.liftweb.common._
-import Helpers._
 import _root_.scala.xml._
 import _root_.net.liftweb.http.js.{JE,JsCmd,JsCmds}
 import JsCmds._
 import JE.{JsRaw,Str}
 import _root_.net.liftweb.http.SHtml._
 import _root_.scala.util.Random
-import _root_.net.liftweb.util.Log
 import java.net._
 import net.liftweb.http.js._
 import net.liftweb.json.JsonDSL._
@@ -36,7 +33,7 @@ class RoomLink(data: org.sombrero.model.Widget, wp : WidgetPlace) extends widget
   else
     properties ~= ("img", "/images/roomlink.png")
 
-   override val helpUrl = "/helptext/roomlink"
+   override lazy val helpUrl = "/helptext/roomlink"
 
    def change(): JsCmd = {
      Log.info("From " + id + " change recieved")

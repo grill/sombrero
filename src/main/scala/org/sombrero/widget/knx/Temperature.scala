@@ -27,6 +27,8 @@ import tuwien.auto.calimero.dptxlator._
 
 import org.scalimero.device.preconf
 import org.scalimero.device._
+import org.scalimero.device.dtype.Num2ByteFloat._
+import org.scalimero.device.dtype.translatortype._
 
 /**
  * Generates a Temperature widget
@@ -38,10 +40,10 @@ class Temperature (data: org.sombrero.model.Widget, wp: WidgetPlace) extends
    val min:Float = 15
    val max:Float = 30
    
-  override val helpUrl = "/helptext/temperature"
+  override lazy val helpUrl = "/helptext/temperature"
   properties ~= ("clip_front", true) ~
     ("value", try{knx.read}catch{case e=>0})
 
-  def translate(value: String): String = knx.dpt.translate(((knx.dpt.translate(value)-min)/(max-min))*100)
-  def translate(value: String): String = knx.dpt.translate(if((value.toFloat * 100) < 0) min else (min+((max-min) * value.toFloat)).toFloat)
+  def knx2jquery(value: String): String = knx.dpt.translate(((knx.dpt.translate(value)-min)/(max-min))*100)
+  def jquery2knx(value: String): String = knx.dpt.translate(if((value.toFloat * 100) < 0) min else (min+((max-min) * value.toFloat)).toFloat)
 }
