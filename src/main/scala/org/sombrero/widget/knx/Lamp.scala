@@ -30,13 +30,13 @@ import org.scalimero.device._
  * @author Gabriel Grill
  */
 class Lamp (data: org.sombrero.model.Widget, wp: WidgetPlace) extends
-  StateWidget[preconf.Lamp.DataPointValueType, preconf.Lamp.PrimitiveType](data, "binary", wp){
-  override val knx = preconf.Lamp(data.knx().groupAddress.is)
-
+  StateWidget(data, "binary", wp){
+  override val knx = new SimpleDevice(data.knx().groupAddress.is, BOOLEAN, SWITCH)
+  knx.readRequest()
   override val helpUrl = "/helptext/lamp"
 
-  properties ~= ("value", try{knx.read}catch{case e=>false})
+//  properties ~= ("value", try{knx.read}catch{case e=>false})
 
-  def translate(value: Boolean): String = value.toString
-  def translate(value: String): Boolean = ! value.toBoolean
+  def translate(value: Array[Byte]): String = knx.dpt.translate(value)
+  def translate(value: String): String = knx.dpt.translate(! value.toBoolean)
 }

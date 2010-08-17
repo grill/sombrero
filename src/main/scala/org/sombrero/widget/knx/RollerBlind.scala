@@ -37,16 +37,17 @@ import org.scalimero.device._
  * @author Gabriel Grill
  */
 class RollerBlind (data: org.sombrero.model.Widget, wp: WidgetPlace) extends
-  StateWidget[preconf.RollerBlind.DataPointValueType, preconf.RollerBlind.PrimitiveType](data, "analog", wp){
-  val knx = preconf.RollerBlind(data.knx().groupAddress.is)
+  StateWidget(data, "analog", wp){
+  val knx = new SimpleDevice(data.knx().groupAddress.is, NUM8BIT_UNSIGNED, SCALING)
+  knx.readRequest()
   override val helpUrl = "/helptext/rollerblind"
 
   properties ~= ("frontImg" -> "/images/rollo0zu.png") ~
     ("backgroundImg", "/images/rollo0.png") ~
     ("slideRect", JArray(List(19, 19, 122, 122))) ~
-    ("reverse", true) ~
-    ("value", try{knx.read}catch{case e=>0})
+    ("reverse", true) /*~
+    ("value", try{knx.read}catch{case e=>0})*/
 
-   def translate(value: Int): String = value.toString
-   def translate(value: String): Int = if((value.toFloat * 100) < 0) 0 else (value.toFloat * 100).toInt
+   def translate(value: Array[Byte]): String = knx.dpt.translate(value)
+   def translate(value: String): String = knx.dpt.translate(if((value.toFloat * 100) < 0) 0 else (value.toFloat * 100).toInt)
 }

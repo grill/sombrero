@@ -33,8 +33,8 @@ import org.scalimero.device._
  * @author Gabriel Grill
  */
 class Temperature (data: org.sombrero.model.Widget, wp: WidgetPlace) extends
-  StateWidget[preconf.Temperature.DataPointValueType, preconf.Temperature.PrimitiveType](data, "analog", wp){
-  val knx = preconf.Temperature(data.knx().groupAddress.is)
+  StateWidget(data, "analog", wp){
+  val knx = new SimpleDevice(data.knx().groupAddress.is, NUM2OCTET_FLOAT, TEMPERATURE)
    val min:Float = 15
    val max:Float = 30
    
@@ -42,6 +42,6 @@ class Temperature (data: org.sombrero.model.Widget, wp: WidgetPlace) extends
   properties ~= ("clip_front", true) ~
     ("value", try{knx.read}catch{case e=>0})
 
-  def translate(value: Float): String = (((value-min)/(max-min))*100).toString
-  def translate(value: String): Float = if((value.toFloat * 100) < 0) min else (min+((max-min) * value.toFloat)).toFloat
+  def translate(value: Array[Byte]): String = ((knx.dpt.translate(value)-min)/(max-min))*100
+  def translate(value: String): String = knx.dpt.translate(if((value.toFloat * 100) < 0) min else (min+((max-min) * value.toFloat)).toFloat)
 }

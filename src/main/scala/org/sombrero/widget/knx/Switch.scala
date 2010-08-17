@@ -36,11 +36,12 @@ import org.scalimero.device._
  * @author Gabriel Grill
  */
 class Unary (data: org.sombrero.model.Widget, wp: WidgetPlace) extends
-  CommandWidget[preconf.Switch.DataPointValueType, preconf.Switch.PrimitiveType](data, "unary", wp){
-  val knx = preconf.Switch(data.knx.groupAddress.is)
+  CommandWidget(data, "unary", wp){
+  val knx = new SimpleDevice(data.knx.groupAddress.is, BOOLEAN, TRIGGER)
+  knx.readRequest()
   override val helpUrl = "/helptext/switch"
 
-  def translate(value: String): Boolean = value.toBoolean
+  def translate(value: String): String = knx.dpt.translate(value)
 }
 
 //Generates a Switch widget
