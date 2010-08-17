@@ -44,6 +44,6 @@ class Dimmer(data: org.sombrero.model.Widget, wp: WidgetPlace) extends
     ("opacity", "/images/dim0light.png") /* ~
     ("value", try{knx.read}catch{case e=>0})*/
 
-   def translate(value: Array[Byte]): String = knx.dpt.translate(value)
+   def translate(value: String): String = value
    def translate(value: String): String = knx.dpt.translate(if((value.toFloat * 100) < 0) 0 else (value.toFloat * 100).toInt)
 }

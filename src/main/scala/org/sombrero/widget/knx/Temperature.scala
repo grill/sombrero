@@ -42,6 +42,6 @@ class Temperature (data: org.sombrero.model.Widget, wp: WidgetPlace) extends
   properties ~= ("clip_front", true) ~
     ("value", try{knx.read}catch{case e=>0})
 
-  def translate(value: Array[Byte]): String = ((knx.dpt.translate(value)-min)/(max-min))*100
+  def translate(value: String): String = knx.dpt.translate(((knx.dpt.translate(value)-min)/(max-min))*100)
   def translate(value: String): String = knx.dpt.translate(if((value.toFloat * 100) < 0) min else (min+((max-min) * value.toFloat)).toFloat)
 }
