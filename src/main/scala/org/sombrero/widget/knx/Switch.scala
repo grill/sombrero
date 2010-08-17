@@ -41,7 +41,7 @@ class Unary (data: org.sombrero.model.Widget, wp: WidgetPlace) extends
   knx.readRequest()
   override val helpUrl = "/helptext/switch"
 
-  def translate(value: String): String = knx.dpt.translate(value)
+  def translate(value: String): String = value
 }
 
 //Generates a Switch widget

@@ -37,6 +37,6 @@ class Lamp (data: org.sombrero.model.Widget, wp: WidgetPlace) extends
 
 //  properties ~= ("value", try{knx.read}catch{case e=>false})
 
-  def translate(value: Array[Byte]): String = knx.dpt.translate(value)
+  def translate(value: String): String = value
   def translate(value: String): String = knx.dpt.translate(! value.toBoolean)
 }

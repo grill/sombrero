@@ -65,13 +65,13 @@ abstract class StateWidget(data: model.Widget, widgetType: String, wp: WidgetPla
   * This method turns a byte value into an Javascript command, that updates
   * the status of a device widget
   */
-  def setValue(value: Array[Byte]) = call("update_value", translate(value)).cmd
+  def setValue(value: Array[Byte]) = call("update_value", translate(knx.dpt.translate(value))).cmd
   def setValue(value: String) = call("update_value", translate(value)).cmd
 
  /**
   * EIB/KNX device value -> JQuery UI value
   */
-  def translate(value: Array[Byte]): String
+  def translate(value: String): String
 }
 
 abstract class CommandWidget(data: model.Widget, widgetType: String, wp: WidgetPlace)
