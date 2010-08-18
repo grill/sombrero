@@ -17,16 +17,16 @@ $.widget("ui.simplewidget", {
     heightOffset:       33,
     offset:             2,            
     stop:               "", //code is evaluated after dragging has stopped
-    isHover             true,              
+    isHover:            true,              
     
     //This array determines the amount and the ability of
     //the items in the widget toolbar
     //1.: icon class; 2.: code that's evaluated after click on the respective icon
     //3.: URL that will be opened in a dialog after click
-    toolbox:         [ ["ui-icon-help",   "", ""]
-                       ["ui-icon-wrench", "", ""]
-                       ["ui-icon-trash",  "", ""]  
-                       ["ui-icon-minus",  "", ""] ]
+    toolbox:         [ ["ui-icon-help",   "", ""],
+                       ["ui-icon-wrench", "", ""],
+                       ["ui-icon-trash",  "", ""],  
+                       ["ui-icon-minus",  "", ""] ],
     enterToolbox:         "",
     leaveToolbox:        "",
     
@@ -47,20 +47,20 @@ $.widget("ui.simplewidget", {
   },
   _create: function (){
     var that = this;
-    this.hoff = this._getOption('heightOffset');
-    this.off = this._getOption('offset');
+    this.hoff = this.options.heightOffset;
+    this.off = this.options.offset;
 
     this.element
     .css({
       position: "absolute",
       border: "1px solid black",
-      height: (this._getOption('height')+this.hoff+this.off) + "px",
-      width: (this._getOption('width')+this.off) + "px"
-      top: this._getOption('top') + "px",
+      height: (this.options.height+this.hoff+this.off) + "px",
+      width: (this.options.width+this.off) + "px",
+      top: this.options.top + "px",
       left: this._getOptoin('left') + "px"
     })
 		    	
-		if(this._getOption('isHover')){
+		if(this.options.isHover){
 		  this.element
 	    .attr("class", "ui-state-default ui-corner-all")
 	    .hover(function(){ that.mouse_on(); },
@@ -83,10 +83,10 @@ $.widget("ui.simplewidget", {
 		this.element.titlebar({
 		  top: 5,
     	left: 4,
-    	width: this._getOption('width')-8,
+    	width: this.options.width-8,
     	height: this.hoff,
-    	text:	this._getOption('text'),
-    	isActive: this._getOption('isFavorite'),
+    	text:	this.options.text,
+    	isActive: this.options.isFavorite,
     	active: function(){
 				eval(that._getOption('active'));
 			},
@@ -154,9 +154,9 @@ $.widget("ui.simplewidget", {
 	    	this.element.toolbox({
 	    		img: imgs,
 	    		onClick: toolboxFun,
-	    		pheight: this._getOption('height')+this.hoff+this.off,
-	    		pwidth: this._getOption('width'),
-	    		adminSidebarTag: this._getOption('adminSidebarTag'),
+	    		pheight: this.options.height+this.hoff+this.off,
+	    		pwidth: this.options.width,
+	    		adminSidebarTag: this.options.adminSidebarTag,
 	    		url: urls
 	    	});
 	},
@@ -169,17 +169,17 @@ $.widget("ui.simplewidget", {
 			snap: true,
 			snapMode: "both",
 			snapTolerance: "10",
-			cancel: this._getOption('cancel'),
+			cancel: this.options.cancel,
 			stop: function(event, ui){
 				eval(that._getOption('stop'));
 				that._setOption('isDragged', true);
 			},
 			collide: "block",
-			containment: this._getOption('containment')
+			containment: this.options.containment
 		});
 	},
 	reactivate: function(){
-		if(this._getOption('isAdminMode') != null)
+		if(this.options.isAdminMode != null)
 			this.toolbox();
 		this.draggable();
 	}

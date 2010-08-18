@@ -1,6 +1,7 @@
+import fi.jawsy.sbtplugins.jrebel.JRebelWebPlugin
 import sbt._
 
-class ProjectNameProject(info: ProjectInfo) extends DefaultWebProject(info)
+class SombreroProject(info: ProjectInfo) extends DefaultWebProject(info) with JRebelWebPlugin
 {
 
   override def libraryDependencies = Set(
@@ -14,6 +15,8 @@ class ProjectNameProject(info: ProjectInfo) extends DefaultWebProject(info)
     "com.h2database" % "h2" % "1.2.138",
     "org.scalatest" % "scalatest" % "1.2"
   ) ++ super.libraryDependencies
+  
+  override def scanDirectories = Nil
   
   // required because Ivy doesn't pull repositories from poms
   val smackRepo = "m2-repository-smack" at "http://maven.reucon.com/public"

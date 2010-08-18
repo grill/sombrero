@@ -1,5 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" xmlns:lift="http://liftweb.net/">
+<lift:CssJsImports />
 <head>
 	<style type="text/css">
 		tr > td:first-child {
@@ -13,9 +14,43 @@
 		}
 		#col2_content h3{color:#ffffff}
 	</style>
+	
+          <script type="text/javascript">
+            $(document.body).ready(function(){
+              $("#col2_content").sidebar({
+                height: 300,
+                pheight: 800,
+                width: 400,
+                top: 40,
+                ptop: 30,
+                position: "right",
+                injectWidth: 40
+              });
+              $("#AdminSideBar").sidebar({
+                height: 350,
+                pheight: 800,
+                width: 400,
+                top: 360,
+                ptop: 30,
+                position: "right",
+                injectWidth: 40
+              });
+              $("input:file").uniform();
+              $("button, input:submit").addClass("ui-state-default ui-corner-all")
+              .hover(
+                  function(){ 
+                    $(this).addClass("ui-state-hover"); 
+                  },
+                  function(){ 
+                    $(this).removeClass("ui-state-hover"); 
+                  }
+              )
+              .attr("style", "outline: 0;margin:0 4px 0 0;padding: .4em 1em;text-decoration:none !important;" + 
+                    "cursor:pointer;position: relative;text-align: center;zoom: 1;");
+            });
+          </script>
 </head> 
 <body>
-  <lift:CssJsImports />
   <div class="page_margins">
     <div id="border-top">
       <div id="edge-tl"></div>

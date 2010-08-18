@@ -21,7 +21,7 @@ class TreeView{
       //to learn about the meaning of the properties see toserve/widget/js/ui.ipod.js 
       JavaScriptHelper.initWidget("TreeView", "navigator", 
         ("top", 40) ~ ("left", 5) ~ 
-        ("initPath", JArray(getPath(Room.current)))
+        ("initPath", getPath(Room.current))
       ))++ <div id="TreeView" class="hidden">
         <ul>
           <lift:RoomList >
@@ -34,10 +34,10 @@ class TreeView{
 
     //if a room has no children -> the parent room and his predecessor (and so on..) will be added recursively to the path
     //if a room has children -> the current room and his predecessor (and so on..) will be added recursively to the path
-    def getPath(room: Box[model.Room]): List[String] = {
-      def getHigherOrderRooms(room: Box[model.Room]): List[String] = room match {
-        case Full[r] => ("." + r.id.is) :: getHigherOrderRooms(r.parent.obj)
-        case Empty => Nil
+    def getPath(room: Box[model.Room]): JArray = {
+      def getHigherOrderRooms(room: Box[model.Room]): List[JValue] = room match {
+        case Full(r) => ("." + r.id.is) :: getHigherOrderRooms(r.parent.obj)
+        case _ => Nil
       }
       
       //if a room has no children -> the parent room 
@@ -45,6 +45,6 @@ class TreeView{
       (if(room.map(_.children.isEmpty) openOr false) room.map(_.parent.obj) openOr Empty else room).map(
         //adds the room returned from the previous statement to the path and calls the recursive function rek
         //to do this to all parents until the root parent is reached
-        (r: model.Room) => ("." + r.id.is) :: getHigherOrderRooms(r.parent.obj)) openOr Nil
+        (r: model.Room) => JArray(("." + r.id.is) :: getHigherOrderRooms(r.parent.obj))) openOr JArray(List())
     }
 }

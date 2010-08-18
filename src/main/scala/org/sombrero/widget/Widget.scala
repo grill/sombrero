@@ -141,7 +141,7 @@ abstract class Widget(val data: model.Widget, widgetType: String, var wp: Widget
       ("isAdminMode", true) ~
       ("adminSidebarTag", "#" + ToolBox.id) ~
       ("toolbox", JArray(List(
-          List("ui-icon-help", "", helpUrl, ),
+          List("ui-icon-help", "", helpUrl),
           List("ui-icon-wrench", "","/widget/" + data.id.is),
           List("ui-icon-trash", JavaScriptHelper.callback(delWidget), ""),
           List("ui-icon-plus", "", ""))))

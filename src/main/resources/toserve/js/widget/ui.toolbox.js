@@ -26,8 +26,8 @@ $.widget("ui.toolbox", {
                  "Configure Widget" ]
   },
 	_create: function (){
-		var names = this._getOption('img');
-		var callbacks = this._getOption('onClick');
+		var names = this.options.img;
+		var callbacks = this.options.onClick;
 		var that = this;
 		var height = (21*names.length)+1;
 
@@ -36,8 +36,8 @@ $.widget("ui.toolbox", {
 			position: 	'absolute',
 			width:	  	'22px',
 			height:		height,
-			top:		this._getOption('pheight')-height-3 + 'px', //-3 fuer vorher
-			left:		this._getOption('pwidth')-24  + 'px',//+ 5 fuer drausen
+			top:		this.options.pheight-height-3 + 'px', //-3 fuer vorher
+			left:		this.options.pwidth-24  + 'px',//+ 5 fuer drausen
 			"z-index":	1000
 		})
 		.attr("class", "ui-widget-header ui-corner-all")

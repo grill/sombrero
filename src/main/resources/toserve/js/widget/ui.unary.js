@@ -10,7 +10,7 @@
 $.widget("ui.unary", {
   options: {
     version: "2.0",
-    img: "../../images/Toggle.png",
+    img: "/classpath/images/Toggle.png",
     change:     function(){},
     //-----------------------------------------------------
     //The following Options are inherited from simplewidget
@@ -22,15 +22,15 @@ $.widget("ui.unary", {
     heightOffset:       33,
     offset:             2,            
     stop:               "", //code is evaluated after dragging has stopped
-    isHover             true,              
+    isHover:            true,              
     //This array determines the amount and the ability of
     //the items in the widget toolbar
     //1.: icon class; 2.: code that's evaluated after click on the respective icon
     //3.: URL that will be opened in a dialog after click
-    toolbox: [ ["ui-icon-help",   "", ""]
-               ["ui-icon-wrench", "", ""]
-               ["ui-icon-trash",  "", ""]  
-               ["ui-icon-minus",  "", ""] ]
+    toolbox: [ ["ui-icon-help",   "", ""],
+               ["ui-icon-wrench", "", ""],
+               ["ui-icon-trash",  "", ""],  
+               ["ui-icon-minus",  "", ""] ],
     enterToolbox:         "",
     leaveToolbox:        "",
     text:               "",
@@ -61,12 +61,12 @@ $.widget("ui.unary", {
 		$("<img></img>")
 		.css({
 			position: 	"absolute",
-			height: 	(this._getOption('height')) + "px",
-			width:		(this._getOption('width'))  + "px",
+			height: 	(this.options.height) + "px",
+			width:		(this.options.width)  + "px",
 			top: 		this.element.protowidget('option', 'heightOffset')+1 + "px",
 			left: 		"0px"})
 		.attr("id", "img")
-		.attr("src", this._getOption('img'))
+		.attr("src", this.options.img)
 		
 		.click(function (){
 			if(!that.element.protowidget('option', 'isDragged')){

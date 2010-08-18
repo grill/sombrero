@@ -10,8 +10,8 @@
 $.widget("ui.analog", {
   options: {
     version: "2.0",
-    backgroundImg: "../../images/temperatur0bg.png",
-    frontImg: "../../images/temperatur0fg.png",
+    backgroundImg: "/classpath/images/temperatur0bg.png",
+    frontImg: "/classpath/images/temperatur0fg.png",
     slideRect: [9, 59, 122, 42],  //top left height width
     clipFront: false,
     reverse: false,   //direction from up to down -> true
@@ -28,15 +28,15 @@ $.widget("ui.analog", {
     heightOffset:       33,
     offset:             2,            
     stop:               "", //code is evaluated after dragging has stopped
-    isHover             true,              
+    isHover:            true,              
     //This array determines the amount and the ability of
     //the items in the widget toolbar
     //1.: icon class; 2.: code that's evaluated after click on the respective icon
     //3.: URL that will be opened in a dialog after click
-    toolbox:         [ ["ui-icon-help",   "", ""]
-                   ["ui-icon-wrench", "", ""]
-                   ["ui-icon-trash",  "", ""]  
-                   ["ui-icon-minus",  "", ""] ]
+    toolbox:         [ ["ui-icon-help",   "", ""],
+                   ["ui-icon-wrench", "", ""],
+                   ["ui-icon-trash",  "", ""],  
+                   ["ui-icon-minus",  "", ""] ],
     enterToolbox:         "",
     leaveToolbox:        "",
     text:               "",
@@ -53,12 +53,12 @@ $.widget("ui.analog", {
     copy:               ""
   },
   _create: function (){
-    var slideRect = this._getOption('slideRect');
+    var slideRect = this.options.slideRect;
 		var inRange = false;
-		var height = this._getOption('height');
-		var width = this._getOption('width');
-		var top = this._getOption('top');
-		var left = this._getOption('left');
+		var height = this.options.height;
+		var width = this.options.width;
+		var top = this.options.top;
+		var left = this.options.left;
 		var that = this;
 		var hoff = 33;
 		var off = 2;
@@ -79,7 +79,7 @@ $.widget("ui.analog", {
 			left: 		"0px"})
 		.css("z-index", "2")
 		.attr("id", "cut")
-		.html('<img src="' + this._getOption('backgroundImg') + '" />')
+		.html('<img src="' + this.options.backgroundImg + '" />')
 		.appendTo(this.element);
 		
 		this.frontimg = $("<div></div>")
@@ -90,11 +90,11 @@ $.widget("ui.analog", {
 			top: 		hoff + "px",
 			left: 		"0px"})
 		.css("z-index", "3")
-		.css("background-image", "url(" + this._getOption('frontImg') + ")")
+		.css("background-image", "url(" + this.options.frontImg + ")")
 		.attr('id', "frontImg")		
 		.appendTo(this.element);
 		
-		if(this._getOption('opacity') != ""){
+		if(this.options.opacity != ""){
 			this.optimg = $("<div></div>")
 			.css({
 				position: 	"absolute",
@@ -104,7 +104,7 @@ $.widget("ui.analog", {
 				left: 		"0px",
 				opacity: 	"1"})
 			.css("z-index", "4")
-			.css("background-image", "url(" + this._getOption('opacity') + ")")		
+			.css("background-image", "url(" + this.options.opacity + ")")		
 			.appendTo(this.element);
 		}
 		
@@ -148,35 +148,35 @@ $.widget("ui.analog", {
 			}
 		});
 		
-		this.update_value(this._getOption('value'));
+		this.update_value(this.options.value);
 		/*
 		this.element.titlebar({
 			top: 5,
 			left: 4,
-			width: this._getOption('width')-8,
+			width: this.options.width-8,
 			height: hoff,
-			text:	this._getOption('text')
+			text:	this.options.text
     	});
     	*/
 		this.element.disableSelection();
 	},
 	update_value: function(y){
 		//updates the UI
-		var slideRect = this._getOption('slideRect');
-		var height = this._getOption('height');
-		var width = this._getOption('width');
+		var slideRect = this.options.slideRect;
+		var height = this.options.height;
+		var width = this.options.width;
 		
-		if(this._getOption('clipFront'))
-			if(this._getOption('reverse'))
+		if(this.options.clipFront)
+			if(this.options.reverse)
 				this.backimg.css("clip", "rect(0px, " + width + "px, " + y + "px, 0px)");
 			else
 				this.backimg.css("clip", "rect(" + y + "px, " + width + "px, " + height + "px, 0px)");
 		else
-			if(this._getOption('reverse'))
+			if(this.options.reverse)
 				this.frontimg.css("clip", "rect(0px, " + width + "px, " + y + "px, 0px)");
 			else
 				this.frontimg.css("clip", "rect(" + y + "px, " + width + "px, " + height + "px, 0px)");
-		if(this._getOption('opacity') != ""){
+		if(this.options.opacity != ""){
 			this.optimg.css("opacity", ((y-slideRect[0])/slideRect[2]-1)*-1);
 		}
 		this._setOption('value', y);

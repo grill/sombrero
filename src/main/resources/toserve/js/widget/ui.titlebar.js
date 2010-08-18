@@ -17,7 +17,7 @@ $.widget("ui.titlebar", {
     "active_?":  false,
     active:      function(){},
     inactive:    function(){},
-    img:         "../../images/FavStar.PNG"
+    img:         "/classpath/images/FavStar.PNG"
   },
 	_create: function (){
 		var that = this;
@@ -28,10 +28,10 @@ $.widget("ui.titlebar", {
 		.css({
 			position: 	"absolute",
 			border: 	"1px solid black",
-			height: 	this._getOption('height') + "px",
-			width:		this._getOption('width') 	+ "px",
-			top: 		  this._getOption('top') 	+ "px",
-			left: 		this._getOption('left') 	+ "px"})
+			height: 	this.options.height + "px",
+			width:		this.options.width 	+ "px",
+			top: 		  this.options.top 	+ "px",
+			left: 		this.options.left 	+ "px"})
 		.appendTo(this.element);
 			
     	
@@ -42,11 +42,11 @@ $.widget("ui.titlebar", {
 			left: 		"5px"})
 		.css("z-index", "2")
 		.attr("id", "text")
-		.html(this._getOption('text'))
+		.html(this.options.text)
 		.appendTo(container);
-		this.img = $('<img src="' + this._getOption('img') +
+		this.img = $('<img src="' + this.options.img +
 		    '" class=" ui-corner-all" style="position:absolute;top:2px;left:' +
-		    ((this._getOption('left')+this._getOption('width'))-35) + 'px" />')
+		    ((this.options.left+this.options.width)-35) + 'px" />')
 		.click(function(){
 			/*if(that._getOption('active_?')){
 				$(this)

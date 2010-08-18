@@ -24,14 +24,14 @@ $.widget("ui.widgetcontainer", {
 		this.loff = 20;
 		this.wlen = 0;
 		var that = this;
-		this.width = this._getOption('width') + 2*this.loff;
-		this.height = this._getOption('height') + 2*this.toff+2;
+		this.width = this.options.width + 2*this.loff;
+		this.height = this.options.height + 2*this.toff+2;
 		var woff = 81;
 		var hoff = 80;
 		var index = 0;
 		var max;
 	
-		if(this._getOption('vertical')){
+		if(this.options.vertical){
 			woff = 0;
 		}else{
 			hoff = 0;
@@ -39,8 +39,8 @@ $.widget("ui.widgetcontainer", {
 		
 		var kids = this.element.children();
 		
-		if(!this._getOption('vertical')){
-			this.createButton("/images/arrowleft.png")
+		if(!this.options.vertical){
+			this.createButton("/classpath/images/arrowleft.png")
 			.css({
 				height: 	this.height-2 + "px",
 				top: 		"0px",
@@ -52,7 +52,7 @@ $.widget("ui.widgetcontainer", {
 				}
 			});
 		}else{			
-			this.createButton("/images/arrowup.png")
+			this.createButton("/classpath/images/arrowup.png")
 			.css({
 				width: 	this.width-2 + "px",
 				height: hoff/2 + "px",
@@ -72,7 +72,7 @@ $.widget("ui.widgetcontainer", {
 			top: 		hoff/2 + "px",
 			left: 		woff/2 + "px",
 			overflow:	"hidden",
-			height: 	this._getOption('height') + "px"
+			height: 	this.options.height + "px"
 			//border: 	"1px solid black"
 			})
 			.addClass("ui-corner-all")
@@ -82,7 +82,7 @@ $.widget("ui.widgetcontainer", {
 		this.favbar = $("<div></div>")
 		.css({
 			position: 	"absolute",
-			height: 	this._getOption('height') + "px",
+			height: 	this.options.height + "px",
 			top: 		"0px",
 			left: 		"0px"})
 		.appendTo(container);
@@ -93,10 +93,10 @@ $.widget("ui.widgetcontainer", {
 				that.deactivate_and_append($(this));
 			});
 		
-		if(this._getOption('vertical')){
-			this.height = ((this._getOption('amountWidgets')*(this._getOption('height')+this.toff))+this.toff);
+		if(this.options.vertical){
+			this.height = ((this.options.amountWidgets*(this.options.height+this.toff))+this.toff);
 		}else{
-			this.width = ((this._getOption('amountWidgets')*(this._getOption('width')+this.loff))+this.loff);
+			this.width = ((this.options.amountWidgets*(this.options.width+this.loff))+this.loff);
 		}
 		container.css({
 			width: this.width-2 + "px",
@@ -108,19 +108,19 @@ $.widget("ui.widgetcontainer", {
 			position: 	"absolute",
 			height: 	this.height+hoff 			+ "px",	//offset von 1
 			width:		this.width+woff+1			+ "px",		//offset von 2
-			top: 		this._getOption('top') 	+ "px",
-			left: 		this._getOption('left') 	+ "px"
+			top: 		this.options.top 	+ "px",
+			left: 		this.options.left 	+ "px"
 			//border: 	"1px solid black"
 			});
 		
-		if(!this._getOption('vertical')){
-			var sbutton = this.createButton("/images/arrowright.png")
+		if(!this.options.vertical){
+			var sbutton = this.createButton("/classpath/images/arrowright.png")
 			.css({
 				height: 	this.height-2 + "px",
 				top: 		"0px",
 				left: 		this.width+39 	+ "px"})
 			.click(function(){
-				if(index < that.wlen - that.prototype.options.amountWidgets){
+				if(index < that.wlen - that.options.amountWidgets){
 					index++;
 					that.favbar.animate({left: '-=' + (that._getOption('width')+that.loff)}, 500, function(){});
 				}
@@ -144,14 +144,14 @@ $.widget("ui.widgetcontainer", {
 			adopt();
 			$(window).wresize(adopt);
 		}else{
-			this.createButton("/images/arrowdown.png")
+			this.createButton("/classpath/images/arrowdown.png")
 			.css({
 				width: 	this.width-2 + "px",
 				top: 	(this.height + hoff/2-1)+ "px",
 				height: hoff/2-1,
 				left:	"0px"})
 			.click(function(){
-				if(index < that.wlen - that.prototype.options.amountWidgets){
+				if(index < that.wlen - that.options.amountWidgets){
 					index++;
 					that.favbar.animate({top: '-=' + (that._getOption('height')+that.toff)}, 500, function(){});
 				}
@@ -161,7 +161,7 @@ $.widget("ui.widgetcontainer", {
 	deactivate_and_append: function(e){
 		this.append(e);
 		e.draggable("destroy");
-		if(!this._getOption('isAdminMode'))
+		if(!this.options.isAdminMode)
 			e.toolbox('destroy');
 	},
 	append: function(e) {		
@@ -173,12 +173,12 @@ $.widget("ui.widgetcontainer", {
 		var left = this.loff;
 		
 		if(this.wlen == 0){
-			if(this._getOption('vertical'))
+			if(this.options.vertical)
 				top -= 2;
 			else
 				left -= 2;
 		} else {
-			if(this._getOption('vertical'))
+			if(this.options.vertical)
 				top += e.prev().position().top + e.prev().height();
 			else
 				left += e.prev().position().left + e.prev().width();
@@ -194,7 +194,7 @@ $.widget("ui.widgetcontainer", {
 		e.remove ();
 	},
 	move: function(e) {
-		var vertical = this._getOption('vertical');
+		var vertical = this.options.vertical;
 		if(vertical)
 			var dec = e.height()+this.toff;
 		else
@@ -213,7 +213,7 @@ $.widget("ui.widgetcontainer", {
 		this.wlen -= 1;
 	},
 	createButton: function(img){
-		if(this._getOption('vertical'))
+		if(this.options.vertical)
 			var margin = {'margin-left':  ((this.width-1)/2)-30 + "px"};
 		else
 			var margin = {'margin-top':  ((this.height-1)/2)-30 + "px"};

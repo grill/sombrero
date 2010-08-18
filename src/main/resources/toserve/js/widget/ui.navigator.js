@@ -45,8 +45,8 @@ $.widget("ui.navigator", {
   },
 	_create: function (){
 		var that = this;
-		var container = $('<div id="ein" style="top:' + this._getOption('top') + 'px;left:' + this._getOption('left') + 'px;" class="fg-menu-container" >' + this.element.html() + '</div>');
-		container.css({ width: this.prototype.options.width }).appendTo(this._getOption('parent')).find('ul:first').not('.fg-menu-breadcrumb').addClass('fg-menu');
+		var container = $('<div id="ein" style="top:' + this.options.top + 'px;left:' + this.options.left + 'px;" class="fg-menu-container" >' + this.element.html() + '</div>');
+		container.css({ width: this.options.width }).appendTo(this.options.parent).find('ul:first').not('.fg-menu-breadcrumb').addClass('fg-menu');
 		container.find('ul, li a').addClass('ui-corner-all');
 
 		// aria roles & attributes
@@ -59,18 +59,18 @@ $.widget("ui.navigator", {
 		if (container.find('ul').size() > 1) {
 			var topList = container.find('.fg-menu');	
 			var breadcrumb = $('<ul class="fg-menu-breadcrumb ui-widget-header ui-corner-all ui-helper-clearfix"></ul>');
-			var crumbDefaultHeader = $('<li class="fg-menu-breadcrumb-text">'+this.prototype.options.crumbDefaultText+'</li>');
-			var firstCrumbText = (this.prototype.options.backLink) ? this.prototype.options.backLinkText : this.prototype.options.topLinkText;
-			var firstCrumbClass = (this.prototype.options.backLink) ? 'fg-menu-prev-list' : 'fg-menu-all-lists';
-			var firstCrumbLinkClass = (this.prototype.options.backLink) ? 'ui-state-default ui-corner-all' : '';
-			var firstCrumbIcon = (this.prototype.options.backLink) ? '<span class="ui-icon ui-icon-triangle-1-w"></span>' : '';
+			var crumbDefaultHeader = $('<li class="fg-menu-breadcrumb-text">'+this.options.crumbDefaultText+'</li>');
+			var firstCrumbText = (this.options.backLink) ? this.options.backLinkText : this.options.topLinkText;
+			var firstCrumbClass = (this.options.backLink) ? 'fg-menu-prev-list' : 'fg-menu-all-lists';
+			var firstCrumbLinkClass = (this.options.backLink) ? 'ui-state-default ui-corner-all' : '';
+			var firstCrumbIcon = (this.options.backLink) ? '<span class="ui-icon ui-icon-triangle-1-w"></span>' : '';
 			var firstCrumb = $('<li class="'+firstCrumbClass+'"><a href="#" class="'+firstCrumbLinkClass+'">'+firstCrumbIcon+firstCrumbText+'</a></li>');
 			var depth = 0;
 			var blen = 30;
 			var isAnimatingBack = false;
 			
 			container.addClass('fg-menu-ipod');
-			if (this.prototype.options.backLink) { breadcrumb.addClass('fg-menu-footer').appendTo(container).hide(); }
+			if (this.options.backLink) { breadcrumb.addClass('fg-menu-footer').appendTo(container).hide(); }
 			else { breadcrumb.addClass('fg-menu-header').prependTo(container); };
 			breadcrumb.append(crumbDefaultHeader);
 			$('<ul class="fg-menu-breadcrumb ui-helper-clearfix"></ul>').addClass('fg-menu-header').prependTo(container);
@@ -78,10 +78,10 @@ $.widget("ui.navigator", {
 			$('<ul class="fg-menu-breadcrumb ui-helper-clearfix"></ul>').addClass('fg-menu-header').prependTo(container);
 			
 			var checkMenuHeight = function(el){
-				if (container.height() > that.prototype.options.maxHeight) { container.addClass('fg-menu-scroll') };	
-				container.css({ height: that.prototype.options.maxHeight });
-				if (el.height() > that.prototype.options.maxHeight) { el.addClass('fg-menu-scroll')};	
-				el.css({ height: that.prototype.options.maxHeight-blen });
+				if (container.height() > that.options.maxHeight) { container.addClass('fg-menu-scroll') };	
+				container.css({ height: that.options.maxHeight });
+				if (el.height() > that.options.maxHeight) { el.addClass('fg-menu-scroll')};	
+				el.css({ height: that.options.maxHeight-blen });
 			};
 			
 			var resetChildMenu = function(el){ el.removeClass('fg-menu-scroll').removeClass('fg-menu-current').height('auto'); };
@@ -101,7 +101,7 @@ $.widget("ui.navigator", {
 					$(this)
 						.addClass('fg-menu-indicator')
 						.each(function(){
-							$(this).html('<span>' + $(this).text() + '</span><span style="z-index:200" class="fg-border ui-icon ' + that.prototype.options.nextMenuLink + '"><span>df</span></span>');
+							$(this).html('<span>' + $(this).text() + '</span><span style="z-index:200" class="fg-border ui-icon ' + that.options.nextMenuLink + '"><span>df</span></span>');
 							$(this).attr('style', 'z-index:1');
 						});
 				}
@@ -114,29 +114,29 @@ $.widget("ui.navigator", {
 				};
 			});
 		}
-		if (this.prototype.options.linkHover) {
+		if (this.options.linkHover) {
 			var allLinks = container.find('.fg-menu li a');
 			allLinks.hover(
 				function(){
 					var menuitem = $(this);
-					$('.'+that.prototype.options.linkHover).removeClass(that.prototype.options.linkHover).blur().parent().removeAttr('id');
-					$(this).addClass(that.prototype.options.linkHover).parent().attr('id','active-menuitem');
+					$('.'+that.options.linkHover).removeClass(that.options.linkHover).blur().parent().removeAttr('id');
+					$(this).addClass(that.options.linkHover).parent().attr('id','active-menuitem');
 					//$('#foc').focus();//.focus()
 				},
 				function(){
-					$(this).removeClass(that.prototype.options.linkHover).blur().parent().removeAttr('id');
+					$(this).removeClass(that.options.linkHover).blur().parent().removeAttr('id');
 				}
 			);			
 			var allLinks = container.find('.fg-menu li a span.fg-border');
 			allLinks.hover(
 					function(){
 						var menuitem = $(this).children();
-						//$('.'+that.prototype.options.linkHover).removeClass(that.prototype.options.linkHover).blur().parent().removeAttr('id');
+						//$('.'+that.options.linkHover).removeClass(that.options.linkHover).blur().parent().removeAttr('id');
 						
 						//alert(menuitem.html());
 						
 						menuitem
-						//.addClass(that.prototype.options.linkHover)
+						//.addClass(that.options.linkHover)
 						.addClass('ui-corner-all')
 						.attr('style', 'width:14px;height:14px;border: 1px solid black;z-index:100');
 						$(this).parent().attr('id','active-menuitem');
@@ -148,7 +148,7 @@ $.widget("ui.navigator", {
 						menuitem
 						.removeClass('ui-corner-all')
 						.attr('style', 'z-index:100')
-						$(this).removeClass(that.prototype.options.linkHover).blur().parent().removeAttr('id');
+						$(this).removeClass(that.options.linkHover).blur().parent().removeAttr('id');
 					}
 				)
 				.click(function(){
@@ -164,7 +164,7 @@ $.widget("ui.navigator", {
 		    		// show next menu
 		    		resetChildMenu(parentUl);
 		    		checkMenuHeight(nextList);
-					topList.animate({ left: nextLeftVal }, that.prototype.options.crossSpeed);						
+					topList.animate({ left: nextLeftVal }, that.options.crossSpeed);						
 		    		nextList.show().addClass('fg-menu-current').attr('aria-expanded', 'true');    
 		    		
 		    		var setPrevMenu = function(backlink){
@@ -179,7 +179,7 @@ $.widget("ui.navigator", {
 		    		};		
 		
 					// initialize "back" link
-					if (that.prototype.options.backLink) {
+					if (that.options.backLink) {
 						if (footer.find('a').size() == 0) {
 							footer.show();
 							$('<a href="#"><span class="ui-icon ui-icon-triangle-1-w"></span> <span>Back</span></a>')
@@ -190,7 +190,7 @@ $.widget("ui.navigator", {
 										depth = depth - 1;
 										var b = $(this);
 										var prevLeftVal = parseFloat(topList.css('left')) + container.width();		    						    		
-										topList.animate({ left: prevLeftVal },  that.prototype.options.crossSpeed, function(){
+										topList.animate({ left: prevLeftVal },  that.options.crossSpeed, function(){
 											setPrevMenu(b);
 											isAnimatingBack = false;
 											//alert("hi");
@@ -220,7 +220,7 @@ $.widget("ui.navigator", {
 								}
 								else {
 									var newLeftVal = - ($('.fg-menu-current').parents('ul').size() - 1) * 180;
-									topList.animate({ left: newLeftVal }, this.prototype.options.crossSpeed, function(){
+									topList.animate({ left: newLeftVal }, this.options.crossSpeed, function(){
 										setPrevMenu();
 									});
 								
@@ -230,20 +230,20 @@ $.widget("ui.navigator", {
 								};
 								return false;
 							});
-						newCrumb.prev().append(' <span class="ui-icon '+this.prototype.options.nextCrumbLink+'"></span>');
+						newCrumb.prev().append(' <span class="ui-icon '+this.options.nextCrumbLink+'"></span>');
 		    		};			
 		    		return false;
 				});
 		};
 		
-		if (this.prototype.options.linkHoverSecondary) {
+		if (this.options.linkHoverSecondary) {
 			container.find('.fg-menu li').hover(
 				function(){
-					$(this).siblings('li').removeClass(that.prototype.options.linkHoverSecondary);
-					if (that.prototype.options.flyOutOnState) { $(this).siblings('li').find('a').removeClass(that.prototype.options.flyOutOnState); }
-					$(this).addClass(that.prototype.options.linkHoverSecondary);
+					$(this).siblings('li').removeClass(that.options.linkHoverSecondary);
+					if (that.options.flyOutOnState) { $(this).siblings('li').find('a').removeClass(that.options.flyOutOnState); }
+					$(this).addClass(that.options.linkHoverSecondary);
 				},
-				function(){ $(this).removeClass(that.prototype.options.linkHoverSecondary); }
+				function(){ $(this).removeClass(that.options.linkHoverSecondary); }
 			);
 		};
 		
@@ -260,7 +260,7 @@ $.widget("ui.navigator", {
     		// show next menu   		
     		resetChildMenu(parentUl);
     		checkMenuHeight(nextList);
-			//topList.animate({ left: nextLeftVal }, that.prototype.options.crossSpeed);		
+			//topList.animate({ left: nextLeftVal }, that.options.crossSpeed);		
     		topList.css('left', nextLeftVal);				
     		nextList.show().addClass('fg-menu-current').attr('aria-expanded', 'true');    
     		
@@ -276,7 +276,7 @@ $.widget("ui.navigator", {
     		};		
 
 			// initialize "back" link
-			if (that.prototype.options.backLink) {
+			if (that.options.backLink) {
 				if (footer.find('a').size() == 0) {
 					footer.show();
 					$('<a href="#"><span class="ui-icon ui-icon-triangle-1-w"></span> <span>Back</span></a>')
@@ -287,7 +287,7 @@ $.widget("ui.navigator", {
 								depth = depth - 1;
 								var b = $(this);
 								var prevLeftVal = parseFloat(topList.css('left')) + container.width();		    						    		
-								topList.animate({ left: prevLeftVal },  that.prototype.options.crossSpeed, function(){
+								topList.animate({ left: prevLeftVal },  that.options.crossSpeed, function(){
 									setPrevMenu(b);
 									isAnimatingBack = false;
 								});
@@ -316,7 +316,7 @@ $.widget("ui.navigator", {
 						}
 						else {
 							var newLeftVal = - ($('.fg-menu-current').parents('ul').size() - 1) * 180;
-							topList.animate({ left: newLeftVal }, this.prototype.options.crossSpeed, function(){
+							topList.animate({ left: newLeftVal }, this.options.crossSpeed, function(){
 								setPrevMenu();
 							});
 						
@@ -326,11 +326,11 @@ $.widget("ui.navigator", {
 						};
 						return false;
 					});
-				newCrumb.prev().append(' <span class="ui-icon '+this.prototype.options.nextCrumbLink+'"></span>');
+				newCrumb.prev().append(' <span class="ui-icon '+this.options.nextCrumbLink+'"></span>');
     		};
 		};
 		
-		$.each(this.prototype.options.initPath, function(idx, val){
+		$.each(this.options.initPath, function(idx, val){
 			nextMenu($(val + '.fg-menu-indicator'));
 		});
 	},
@@ -339,7 +339,7 @@ $.widget("ui.navigator", {
 	},
 	resetDrilldownMenu: function(){
 		$('.fg-menu-current').removeClass('fg-menu-current');
-		topList.animate({ left: 0 }, this.prototype.options.crossSpeed, function(){
+		topList.animate({ left: 0 }, this.options.crossSpeed, function(){
 			$(this).find('ul').each(function(){
 				$(this).hide();
 				resetChildMenu($(this));				
