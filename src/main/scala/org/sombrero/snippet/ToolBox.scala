@@ -24,10 +24,10 @@ class ToolBox {
   def render(xhtml: NodeSeq): NodeSeq = {
     if(Room.current != Empty){
       <div id={ToolBox.id}> {getWidgets} </div> ++ JavaScriptHelper.onLoad(
-        JavaScriptHelper.initWidget(ToolBox.id, "favorites",
-          ("left", "50") ~ ("top", "20") ~ ("amount_widgets", "3") ~
-          ("width", "195") ~ ("height", "195") ~
-          ("vertical", "true") ~ ("admin_mode", "true")
+        JavaScriptHelper.initWidget(ToolBox.id, "widgetcontainer",
+          ("left", 50) ~ ("top", 20) ~ ("amountWidgets", 3) ~
+          ("width", 195) ~ ("height", 195) ~
+          ("vertical", true) ~ ("isAdminMode", true)
       ))
   }else{
       Nil

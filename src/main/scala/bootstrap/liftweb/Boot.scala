@@ -38,11 +38,10 @@ class Boot {
 
     //Add new Resources
     ResourceServer.allow {
-      case "framework_js" :: _ => true
-      case "layout_css" :: _ => true
+      case "js" :: _ => true
+      case "css" :: _ => true
       case "plugin" :: _ => true
-      case "widget" :: _ => true
-      case "widgettheme_css" :: _ => true
+      case "images" :: _ => true
     }
     val loggedIn = If(() => User.loggedIn_?,
       () => RedirectResponse("/login"))

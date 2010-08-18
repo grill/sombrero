@@ -21,8 +21,8 @@ class Favorites {
     <div id={Fav.htmlid}> {getWidgets} </div> ++ JavaScriptHelper.onLoad(
       //creates widget with the properties in the list
       //to learn about the meaning of the properties see toserve/widget/js/ui.favorite.js 
-      JavaScriptHelper.initWidget(Fav.htmlid, "favorites", 
-        ("left", 250) ~ ("top", 50) ~ ("amount_widgets", 5) ~
+      JavaScriptHelper.initWidget(Fav.htmlid, "widgetcontainer", 
+        ("left", 250) ~ ("top", 50) ~ ("amountWidgets", 5) ~
         ("width", 162) ~ ("height", 195)
     ))
   }

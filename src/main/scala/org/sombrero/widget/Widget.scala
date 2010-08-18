@@ -115,24 +115,21 @@ abstract class Widget(val data: model.Widget, widgetType: String, var wp: Widget
     ("text", data.name.is) ~
     ("stop", SHtml.ajaxCall(getTopJsExp, setTop _)._2 + ";" +
       SHtml.ajaxCall(getLeftJsExp, setLeft _)._2 + ";") ~
-    ("favorites", "#" + Fav.htmlid) ~ ("active", JavaScriptHelper.callback(newFavorite)) ~
+    ("favoriteTag", "#" + Fav.htmlid) ~ ("active", JavaScriptHelper.callback(newFavorite)) ~
     ("inactive", JavaScriptHelper.callback(delFavorite)) ~
-    ("in_toolbox", JavaScriptHelper.callback(newToolboxitem)) ~
-    ("out_toolbox", JavaScriptHelper.callback(delToolboxitem(Room.current)))
+    ("enterToolbox", JavaScriptHelper.callback(newToolboxitem)) ~
+    ("leaveToolbox", JavaScriptHelper.callback(delToolboxitem(Room.current)))
 
   wp match {
     case  AdminSideBar  =>
       if(Fav.isFav(data)) properties ~= ("copy", "#FavCh_" + id)
-      properties ~=
-      ("admin_img", JArray(List("ui-icon-help", "ui-icon-wrench",
-        "ui-icon-trash", "ui-icon-plus"))) ~
-      ("parentTag", "#" + Container.htmlid)
+      ("containment", "#" + Container.htmlid)
     case  FavChild    =>
       id = "FavCh_" + id
-      properties ~= ("parentTag", "#" +  Fav.htmlid)
+      properties ~= ("containment", "#" +  Fav.htmlid)
     case  FavParent   =>
       if(Fav.isFav(data)) properties ~= ("copy", "#FavCh_" + id)
-      properties ~= ("parentTag", "#" + Container.htmlid)
+      properties ~= ("containment", "#" + Container.htmlid)
     case _ =>
   }
   if(Fav.isFav(data)){
@@ -140,9 +137,14 @@ abstract class Widget(val data: model.Widget, widgetType: String, var wp: Widget
       ("is_active", "true")
   }
   if (User.superUser_?) 
-    properties ~= ("admin", "#" + ToolBox.id) ~
-      ("admin_url", JArray(List(helpUrl, "/widget/" + data.id.is))) ~
-      ("admin_onClick", JArray(List("", "", JavaScriptHelper.callback(delWidget), "")))
+    properties ~= 
+      ("isAdminMode", true) ~
+      ("adminSidebarTag", "#" + ToolBox.id) ~
+      ("toolbox", JArray(List(
+          List("ui-icon-help", "", helpUrl, ),
+          List("ui-icon-wrench", "","/widget/" + data.id.is),
+          List("ui-icon-trash", JavaScriptHelper.callback(delWidget), ""),
+          List("ui-icon-plus", "", ""))))
 
   def render(): NodeSeq = JavaScriptHelper.createWidget(id, widgetType, properties)
 
@@ -178,8 +180,8 @@ abstract class Widget(val data: model.Widget, widgetType: String, var wp: Widget
     Noop
   }
 
-  def setTitle(s:String) = callProto("update_title", s).cmd
-  def callProto(option: String, value:String) = JavaScriptHelper.call(id, "protowidget", option, value)
+  def setTitle(s:String) = JavaScriptHelper.call(id, "titlebar","update_title", s).cmd
+  def callSimpleWidget(option: String, value:String) = JavaScriptHelper.call(id, "simplewidget", option, value)
   def call(option: String, value:String) = JavaScriptHelper.call(id, widgetType, option, value)
   def setOption(option: String, value:String) = JavaScriptHelper.setOption(id, widgetType, option, value)
   def getOption(option: String) = JavaScriptHelper.getOption(id, widgetType, option)
