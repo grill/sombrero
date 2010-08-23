@@ -74,7 +74,7 @@ object JavaScriptHelper {
     JsRaw("$('#" + id + "')." + widgetType + "('option', '" + option + "', " + value + "); " +
     "$('#" + id + "')." + widgetType + "('updateStatus')")
   //generates a Ajax callback
-  def callback(method: () => JsCmd) = "function(){" + SHtml.ajaxInvoke(method)._2 + ";}"
+  def callback(method: () => JsCmd) = SHtml.ajaxInvoke(method)._2.toString.replaceAll("&quot;", "'")
   
  /**
   * @param id the id-attribute of the link with the href of the iframe

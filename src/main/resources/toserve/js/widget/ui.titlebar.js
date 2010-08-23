@@ -14,7 +14,7 @@ $.widget("ui.titlebar", {
     left:        20,
     height:      300,
     text:        "",
-    "active_?":  false,
+    isActive:  false,
     active:      function(){},
     inactive:    function(){},
     img:         "/classpath/images/FavStar.PNG"
@@ -48,22 +48,21 @@ $.widget("ui.titlebar", {
 		    '" class=" ui-corner-all" style="position:absolute;top:2px;left:' +
 		    ((this.options.left+this.options.width)-35) + 'px" />')
 		.click(function(){
-			/*if(that._getOption('active_?')){
+			if(that.options.isActive){
 				$(this)
 				.removeClass("ui-state-default");
-				that._setOption('active_?', false);
-				that._getOption('inactive')();
+				that.options.isActive = false;
+				that.options.inactive();
 			} else {
 				$(this)
 				.addClass("ui-state-default");
-				that._setOption('active_?', true);
-				that._getOption('active')();
-			}*/
-		  that.setFav(that._getOption('active_?'));
+				that.options.isActive = true;
+				that.options.active();
+			}
 		})
 		.appendTo(container);
 		
-    	if(this._getOption('active_?'))
+    	if(this.options.isActive)
     		this.img.addClass("ui-state-default");
 	},
 	click: function(){
@@ -73,11 +72,11 @@ $.widget("ui.titlebar", {
 		if(b){
 			this.img
 			.addClass("ui-state-default");
-			that._setOption('active_?', true);
+			that.options.isActive = true;
 		}else{
 			this.img
 			.removeClass("ui-state-default");
-			this._setOption('active_?', false);
+			this.options.isActive = false;
 		}
 	},
 	update_title: function(s) {

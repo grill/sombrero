@@ -184,8 +184,8 @@ $.widget("ui.widgetcontainer", {
 				left += e.prev().position().left + e.prev().width();
 		}
 		e.css({
-			top: top,
-			left: left
+			"top": top,
+			"left": left
 		});
 		this.wlen += 1;
 	},
@@ -235,8 +235,5 @@ $.widget("ui.widgetcontainer", {
 			button.removeClass("ui-state-active");
 		});
 		return button;
-	},
-	destroy: function() {
-		//$.ui.favorites.prototype.destroy.call(this);
 	}
 }); })(jQuery);

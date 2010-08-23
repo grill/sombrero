@@ -41,7 +41,7 @@ import org.scalimero.device.dtype.translatortype._
 class RollerBlind (data: org.sombrero.model.Widget, wp: WidgetPlace) extends
   StateWidget(data, "analog", wp){
   val knx = new SimpleDevice(data.knx().groupAddress.is, NUM8BIT_UNSIGNED, SCALING)
-  knx.readRequest()
+  try{knx.readRequest()}catch{case e=>}
   override lazy val helpUrl = "/helptext/rollerblind"
 
   properties ~= ("frontImg" -> "/images/rollo0zu.png") ~

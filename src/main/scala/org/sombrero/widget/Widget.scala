@@ -134,7 +134,7 @@ abstract class Widget(val data: model.Widget, widgetType: String, var wp: Widget
   }
   if(Fav.isFav(data)){
     properties ~= ("parentObj", "#" + widgetType + "_" + data.id.is) ~
-      ("is_active", "true")
+      ("isFavorite", true)
   }
   if (User.superUser_?) 
     properties ~= 
@@ -144,7 +144,7 @@ abstract class Widget(val data: model.Widget, widgetType: String, var wp: Widget
           List("ui-icon-help", "", helpUrl),
           List("ui-icon-wrench", "","/widget/" + data.id.is),
           List("ui-icon-trash", JavaScriptHelper.callback(delWidget), ""),
-          List("ui-icon-plus", "", ""))))
+          List( if(wp == AdminSideBar) "ui-icon-plus" else "ui-icon-minus", "", ""))))
 
   def render(): NodeSeq = JavaScriptHelper.createWidget(id, widgetType, properties)
 
@@ -209,12 +209,12 @@ abstract class Widget(val data: model.Widget, widgetType: String, var wp: Widget
     //JavaScriptHelper.call(widgetType + "_" + data.id.is, "titlebar", "setFav", "true") &
     JsRaw("$('<div id=\"" + id + "\"></div>').appendTo($(\"#" + Container.htmlid + "\"));").cmd &
     JsRaw(JavaScriptHelper.initWidget(id, widgetType, properties)).cmd &
-    JavaScriptHelper.call(Fav.htmlid, "favorites", "deactivate_and_append", "$(\"#" + id + "\")")
+    JavaScriptHelper.call(Fav.htmlid, "widgetcontainer", "deactivate_and_append", "$(\"#" + id + "\")")
   }
 
   //this function removes a widget from the favorits widget
   def removeFavCmd(): JsCmd = {
-    JavaScriptHelper.call(id, "titlebar", "setFav", "false") &
-    JavaScriptHelper.call(Fav.htmlid, "favorites", "remove", "$(\"#" +"FavCh_" + widgetType + "_" + data.id.is + "\")")
+    JavaScriptHelper.call(widgetType + "_" + data.id.is, "titlebar", "setFav", "false") &
+    JavaScriptHelper.call(Fav.htmlid, "widgetcontainer", "remove", "$(\"#" +"FavCh_" + widgetType + "_" + data.id.is + "\")")
   }
 }

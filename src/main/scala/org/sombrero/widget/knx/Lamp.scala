@@ -34,7 +34,7 @@ import org.scalimero.device.dtype.translatortype._
 class Lamp (data: org.sombrero.model.Widget, wp: WidgetPlace) extends
   StateWidget(data, "binary", wp){
   override val knx = new SimpleDevice(data.knx().groupAddress.is, BOOLEAN, SWITCH)
-  knx.readRequest()
+  try{knx.readRequest()}catch{case e=>}
   override lazy val helpUrl = "/helptext/lamp"
 
 //  properties ~= ("value", try{knx.read}catch{case e=>false})

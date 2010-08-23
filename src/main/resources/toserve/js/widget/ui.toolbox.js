@@ -20,7 +20,7 @@ $.widget("ui.toolbox", {
                       function(){},   //the associated icon of the admin widget
                       function(){},
                       function(){}],
-    url:          [ "",       //these strings should contain URL's pointing
+    helpUrl:          [ "",       //these strings should contain URL's pointing
                     "" ],       //to the respective dialog content
     title:      ["Help",      //titles for the dialogs
                  "Configure Widget" ]
@@ -44,11 +44,13 @@ $.widget("ui.toolbox", {
 		.appendTo(this.element);
 
 		$.each(names, function(idx, value){
-			var button = $('<button style="margin-top:1px;margin-left:1px;width:20px;height:20px" ' +
-					'class ="' + value + ' ui-icon ui-button ui-state-default ui-corner-all"/>')
+      var iconTag = $('<div class="' + value + ' ui-icon "></div>');
+			var button = $('<div style="margin-top:0px;margin-left:1px;width:18px;height:17px" ' +
+					'class =" ui-button ui-state-default ui-corner-all"></div>')
+      .append(iconTag)
 			.click(function(){
 				if(idx == 3)
-					callbacks[idx](button);
+					callbacks[idx](iconTag);
 				else
 					callbacks[idx]();
 			})
@@ -72,7 +74,7 @@ $.widget("ui.toolbox", {
 			});
 			if(idx < 2){
 				$("<a></a>")
-				.attr("href", that._getOption('url')[idx])
+				.attr("href", that.options.helpUrl[idx])
 		    	.append(button)
 		    	.appendTo(that.container)
 		    	.fancybox({
@@ -82,7 +84,7 @@ $.widget("ui.toolbox", {
 		        'transitionIn'		: 'none',
 		    		'transitionOut'		: 'none',
 		    		'type'				: 'iframe',
-		    		'title'				: that._getOption('title')[idx]
+		    		'title'				: that.options.title[idx]
 		    	});//wrap
 			}else {
 				button.appendTo(that.container);
@@ -95,7 +97,6 @@ $.widget("ui.toolbox", {
 		it.hide("drop", {}, 0, function(){
 			it.remove();
 		});
-		$.widget.prototype.destroy.apply(this, arguments);
 	},
 	reactivate: function(){
 		var it = this.container;

@@ -25,13 +25,13 @@ $.widget("ui.simplewidget", {
     //3.: URL that will be opened in a dialog after click
     toolbox:         [ ["ui-icon-help",   "", ""],
                        ["ui-icon-wrench", "", ""],
-                       ["ui-icon-trash",  "", ""],  
+                       ["ui-icon-trash",  "", ""],
                        ["ui-icon-minus",  "", ""] ],
     enterToolbox:         "",
     leaveToolbox:        "",
-    
+
     text:               "",
-    
+
     createCopy:         function(){},
     isDragged:          false,
     isAdminMode:        false,  //true -> admin mode - false -> normal mode
@@ -57,7 +57,7 @@ $.widget("ui.simplewidget", {
       height: (this.options.height+this.hoff+this.off) + "px",
       width: (this.options.width+this.off) + "px",
       top: this.options.top + "px",
-      left: this._getOptoin('left') + "px"
+      left: this.options.left + "px"
     })
 		    	
 		if(this.options.isHover){
@@ -88,22 +88,22 @@ $.widget("ui.simplewidget", {
     	text:	this.options.text,
     	isActive: this.options.isFavorite,
     	active: function(){
-				eval(that._getOption('active'));
+				eval(that.options.active);
 			},
 			inactive: function(){
-			  eval(that._getOption('inactive'));
+			  eval(that.options.inactive);
 			}
 		});
 	},
 	toolbox: function(){
 		var that = this;
-		var adm = that._getOption('adminMode');
+		var adm = $(that.options.adminSidebarTag);
     var top = this.element.css("top");
     var left = this.element.css("left");
 		
 		var toolboxFun = [
-		  function(){ eval(that._getOption('toolbox')[0][1]); },
-			function(){ eval(that._getOption('toolbox')[1][1]); },		//the associated icon of the admin widget
+		  function(){ eval(that.options.toolbox[0][1]); },
+			function(){ eval(that.options.toolbox[1][1]); },		//the associated icon of the admin widget
 			function(){
 				$('<div>Do you want to delete this widget?</div>').dialog({
 					modal: true,
@@ -111,10 +111,10 @@ $.widget("ui.simplewidget", {
 					width: 400,
 					buttons: { 
 						"OK": function() {
-							eval(that._getOption('toolbox')[2][1]);
+							eval(that.options.toolbox[2][1]);
 							that.element.remove();
-							if(that._getOption('copy') != "")
-								$(that._getOption("favoriteTag")).favorites('remove', $(that._getOption('copy')));
+							if(that.options.copy != "")
+								$(that.options.favoriteTag).widgetcontainer('remove', $(that.options.copy));
 							$(this).dialog("close"); 
 						},
 						"Cancel": function(){
@@ -123,18 +123,18 @@ $.widget("ui.simplewidget", {
 				}});
 			},
 			function(el){
-				eval(that._getOption('toolbox')[3][1]);
+				eval(that.options.toolbox[3][1]);
 				if(el.hasClass('ui-icon-minus')){
-					adm.favorites('append', that.element);
+					adm.widgetcontainer('append', that.element);
 					el.removeClass('ui-icon-minus')
 					  .addClass('ui-icon-plus');
-					eval(that._getOption("enterToolbox"));
+					eval(that.options.enterToolbox);
 			    top = that.element.css("top");
 			    left = that.element.css("left");
 				}else{
-					adm.favorites('move', that.element);
+					adm.widgetcontainer('move', that.element);
 					that.element
-					.appendTo($(that._getOption('containment')))
+					.appendTo($(that.options.containment))
 					.css({
 						top:  top + "px",
 						left: left + "px"
@@ -142,22 +142,21 @@ $.widget("ui.simplewidget", {
 					that.draggable();
 					el.removeClass('ui-icon-plus')
 					  .addClass('ui-icon-minus');
-					eval(that._getOption("leaveToolbox"));
+					eval(that.options.leaveToolbox);
 				}
 			}
 		];
 		
-		var imgs = $.map(that._getOption("toolbox"), function(el, idx){ el[0]; });
-		var urls = $.map(that._getOption("toolbox"), function(el, idx){ el[2]; });
+		var imgs = $.map(that.options.toolbox, function(el, idx){ return el[0]; });
+		var helpUrls = $.map(that.options.toolbox, function(el, idx){ return el[2]; });
 		
-		if(this._getData('admin_mode'))
+		if(this.options.isAdminMode)
 	    	this.element.toolbox({
 	    		img: imgs,
 	    		onClick: toolboxFun,
 	    		pheight: this.options.height+this.hoff+this.off,
 	    		pwidth: this.options.width,
-	    		adminSidebarTag: this.options.adminSidebarTag,
-	    		url: urls
+	    		helpUrl: helpUrls
 	    	});
 	},
 	draggable: function(){
@@ -171,8 +170,8 @@ $.widget("ui.simplewidget", {
 			snapTolerance: "10",
 			cancel: this.options.cancel,
 			stop: function(event, ui){
-				eval(that._getOption('stop'));
-				that._setOption('isDragged', true);
+				eval(that.options.stop);
+				that.options.isDragged = true;
 			},
 			collide: "block",
 			containment: this.options.containment

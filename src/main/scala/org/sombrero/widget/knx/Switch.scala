@@ -40,7 +40,7 @@ import org.scalimero.device.dtype.translatortype._
 class Unary (data: org.sombrero.model.Widget, wp: WidgetPlace) extends
   CommandWidget(data, "unary", wp){
   val knx = new SimpleDevice(data.knx.groupAddress.is, BOOLEAN, TRIGGER)
-  knx.readRequest()
+  try{knx.readRequest()}catch{case e=>}
   override lazy val helpUrl = "/helptext/switch"
 
   def jquery2knx(value: String): String = value

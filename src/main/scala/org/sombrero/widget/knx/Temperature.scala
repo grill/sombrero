@@ -39,10 +39,10 @@ class Temperature (data: org.sombrero.model.Widget, wp: WidgetPlace) extends
   val knx = new SimpleDevice(data.knx().groupAddress.is, NUM2OCTET_FLOAT, TEMPERATURE)
    val min:Float = 15
    val max:Float = 30
+  try{knx.readRequest()}catch{case e=>}
    
   override lazy val helpUrl = "/helptext/temperature"
-  properties ~= ("clip_front", true) ~
-    ("value", try{knx.read}catch{case e=>0})
+  properties ~= ("clip_front", true)
 
   def knx2jquery(value: String): String = knx.dpt.translate(((knx.dpt.translate(value)-min)/(max-min))*100)
   def jquery2knx(value: String): String = knx.dpt.translate(if((value.toFloat * 100) < 0) min else (min+((max-min) * value.toFloat)).toFloat)
