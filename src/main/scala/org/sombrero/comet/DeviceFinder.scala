@@ -17,33 +17,31 @@ import scala.xml._
 import scala.concurrent.ops._
 import org.sombrero.snippet.Widgetadd
 import org.sombrero.util.JavaScriptHelper
+import org.scalimero.connection._
 
 case object Clear
 
 //find devices by listening on the KNX network
-class DeviceFinder extends ProcessListener with CometActor{
+class DeviceFinder extends CometActor{
   override def defaultPrefix = Full("df")
   
   var devs : Map[String, Int] = Map[String,Int]() withDefaultValue 0
-
-  override def groupWrite(e : ProcessEvent) : Unit =
-    this ! e.getDestination.toString
-  
-  override def detached(e : DetachEvent) : Unit = {}
   
   def render = bind("entries" -> <table id="dftable" />,
     "button" -> ajaxButton("Start Device Finder", () => {this ! Clear; Noop}))
     
   override def lowPriority : PartialFunction[Any, Unit] = {
-  case dev : String => {
+    case dev : String => {
       devs = devs.updated(dev, devs(dev) + 1)
       doUpdate
     }
     case Clear => {
       devs = Map[String,Int]() withDefaultValue 0
-      Connection.knxComm.addProcessListener(this)
+      Network.default.subscribe(this)
       doUpdate
     }
+    case pe : ProcessEvent => this ! pe.getDestination.toString
+    case we : WriteEvent => this ! we.destination.toString
   }
   
   def doUpdate = partialUpdate(SetHtml("dftable",

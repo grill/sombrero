@@ -20,6 +20,7 @@ import tuwien.auto.calimero.link.medium._
  * This class contains a variaty of utility functions for connection management
  * @author Gabriel Grill
  */
+@deprecated("Invalidated by SCalimero")
 object Connection {
   var link: KNXNetworkLinkIP = null
   var knxComm: ProcessCommunicator = null

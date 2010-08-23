@@ -20,6 +20,7 @@ import java.net._
 import net.liftweb.http.js._
 import org.sombrero.util._
 import bootstrap._
+import org.sombrero.comet.SombreroNetwork
   
 
 /**
@@ -30,13 +31,16 @@ class Connection {
 	def render(xhtml:NodeSeq) = {
 		def create(): JsCmd = {
 		  //creates a connection
-		  KNXRouter.getIP.map(ip => util.Connection.createConnection(ip))
+		  //KNXRouter.getIP.map(ip => util.Connection.createConnection(ip))
+		  KNXRouter.getIP.map(ip => SombreroNetwork(ip).open)
 		  JsRaw(";").cmd
 		}
   
 		def destroy():JsCmd = {
 		  //destroys a connection
-		  if(org.sombrero.util.Connection.isConnected) org.sombrero.util.Connection.destroyConnection
+		  //if(org.sombrero.util.Connection.isConnected) org.sombrero.util.Connection.destroyConnection
+		  if(SombreroNetwork.open_?)
+		    SombreroNetwork.close
 		  JsRaw(";").cmd
 		}
 	    //replaces all create and destroy tags within xhtml with their respecive ajaxButtons
@@ -48,7 +52,8 @@ class Connection {
 	//if sombrero is connected -> no text will be rendered
     //if sombrero isn't connected -> xhtml will be shown
 	def has(xhtml:NodeSeq) = {
-	  if(org.sombrero.util.Connection.isConnected)
+	  //if(org.sombrero.util.Connection.isConnected)
+	  if(SombreroNetwork.open_?)
 	    Text("")
     else
       xhtml
