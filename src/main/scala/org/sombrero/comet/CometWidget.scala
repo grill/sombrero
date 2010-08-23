@@ -26,6 +26,22 @@ object CometWidget {
   def render(u : model.User) = <lift:comet type="FavCometWidget" name={u.id.is.toString} />
   def renderAdmin() = <lift:comet type="AdminCometWidget" name="acw" />
   def renderNinja() = <lift:comet type="NinjaCometWidget" name={model.User.currentUser.open_!.id.is.toString + ":" + model.Room.current.open_!.id.toString} />
+  def renderSingle(id : String) = <lift:comet type="AdminCometWidget" name={id} />
+}
+
+class SingleCometWidget extends CometWidget {
+  override def render = {
+    Log.info(toString + ": render")
+    Text("")
+  }
+  def getWidgets(id : String) = {
+    model.Widget.findAll(By(model.Widget.id, id.toLong)).
+    map(w => WidgetList.map(w.wclass.is).widget(w))
+  }
+  override def lowPriority : PartialFunction[Any, Unit] = {
+    case FavAddMessage(_) => {}
+    case FavRemMessage(_) => {}
+  }
 }
 
 //the implementation in use, it is stealthy (renders nothing) and updates everything
