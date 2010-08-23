@@ -7,7 +7,9 @@ import tuwien.auto.calimero.link.medium._
 object SombreroNetwork {
   
   def apply(router : String, medium : KNXMediumSettings = Network.defaultMedium) = {
-    Network.default = new SombreroNetwork(router, medium)
+    close
+    Network.default.router = router
+    Network.default.medium = medium
     Network.default
   }
   

@@ -39,8 +39,7 @@ class Connection {
 		def destroy():JsCmd = {
 		  //destroys a connection
 		  //if(org.sombrero.util.Connection.isConnected) org.sombrero.util.Connection.destroyConnection
-		  if(SombreroNetwork.open_?)
-		    SombreroNetwork.close
+		  SombreroNetwork.close
 		  JsRaw(";").cmd
 		}
 	    //replaces all create and destroy tags within xhtml with their respecive ajaxButtons
