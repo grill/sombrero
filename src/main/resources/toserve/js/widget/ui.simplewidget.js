@@ -51,6 +51,11 @@ $.widget("ui.simplewidget", {
     this.hoff = this.options.heightOffset;
     this.off = this.options.offset;
 
+    if(this.options.widgetViewMode){
+      this.options.left = 0;
+      this.options.top = 0;
+    }
+
     this.element
     .css({
       position: "absolute",

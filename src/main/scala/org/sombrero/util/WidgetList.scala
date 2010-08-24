@@ -16,6 +16,7 @@ object WidgetList {
     def widget(w : model.Widget) = factory(w, FavParent)
     def favwidget(w : model.Widget) = factory(w, FavChild)
     def admwidget(w : model.Widget) = factory(w, AdminSideBar)
+    def singlewidget(w : model.Widget) = factory(w, WidgetViewMode)
   }
   
   //would have been done as a package object member in Scala 2.8

@@ -54,7 +54,7 @@ class WidgetViewLoc extends Loc[WidgetAccess] {
   //the snippet
   def widgetView(w : Widget) = (ignore : NodeSeq) => {
     CometWidget.renderSingle(w.id.toString).toList :::
-    WidgetList.map(w.wclass.is).widget(w).render.toList : NodeSeq
+    WidgetList.map(w.wclass.is).singlewidget(w).render.toList : NodeSeq
   } 
    
   override def snippets = {
