@@ -43,7 +43,8 @@ $.widget("ui.simplewidget", {
     active:             "",
     inactive:           "",
     cancel:             "",
-    copy:               ""
+    copy:               "",
+    widgetViewMode:     false
   },
   _create: function (){
     var that = this;
@@ -67,8 +68,10 @@ $.widget("ui.simplewidget", {
 	      function(){ that.mouse_off(); });
 		}
 		
-		this.toolbox();
-		this.draggable();
+    if(!this.options.widgetViewMode){
+      this.toolbox();
+      this.draggable();
+    }
 		this.titlebar();
 	},
 	mouse_on: function(){
@@ -92,7 +95,8 @@ $.widget("ui.simplewidget", {
 			},
 			inactive: function(){
 			  eval(that.options.inactive);
-			}
+			},
+      widgetViewMode: that.options.widgetViewMode
 		});
 	},
 	toolbox: function(){

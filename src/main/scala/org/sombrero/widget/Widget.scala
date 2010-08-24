@@ -57,6 +57,8 @@ case object AdminSideBar extends WidgetPlace
 case object FavChild extends WidgetPlace
 //main area
 case object FavParent extends WidgetPlace
+//widgetview mode
+case object WidgetViewMode extends WidgetPlace
 
 abstract class StateWidget(data: model.Widget, widgetType: String, wp: WidgetPlace)
   extends CommandWidget(data, widgetType, wp) /* with TStateDevice[PrimitiveType]*/{
@@ -130,6 +132,8 @@ abstract class Widget(val data: model.Widget, widgetType: String, var wp: Widget
     case  FavParent   =>
       if(Fav.isFav(data)) properties ~= ("copy", "#FavCh_" + id)
       properties ~= ("containment", "#" + Container.htmlid)
+    case WidgetViewMode =>
+      properties ~= ("widgetViewMode", true)
     case _ =>
   }
   if(Fav.isFav(data)){
