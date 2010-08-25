@@ -25,10 +25,10 @@ import org.sombrero.model._
 import org.sombrero.snippet._
 import org.sombrero.widget._
 
-import org.scalimero.device.preconf
-import org.scalimero.device._
-import org.scalimero.device.dtype.Num8BitUnsigned._
-import org.scalimero.device.dtype.translatortype._
+import tuwien.auto.scalimero.device.preconf
+import tuwien.auto.scalimero.device._
+import tuwien.auto.scalimero.device.dtype.Num8BitUnsigned._
+import tuwien.auto.scalimero.device.dtype.translatortype._
 
 /**
  * Generates a Dimmer widget

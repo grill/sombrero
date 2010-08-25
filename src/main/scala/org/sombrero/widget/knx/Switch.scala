@@ -28,10 +28,10 @@ import tuwien.auto.calimero.dptxlator._
 import tuwien.auto.calimero.exception.KNXException._
 import tuwien.auto.calimero.link._
 
-import org.scalimero.device.preconf
-import org.scalimero.device._
-import org.scalimero.device.dtype.Boolean._
-import org.scalimero.device.dtype.translatortype._
+import tuwien.auto.scalimero.device.preconf
+import tuwien.auto.scalimero.device._
+import tuwien.auto.scalimero.device.dtype.Boolean._
+import tuwien.auto.scalimero.device.dtype.translatortype._
  
 /**
  * Generates a Unary Widget

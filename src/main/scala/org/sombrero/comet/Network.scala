@@ -1,6 +1,6 @@
 package org.sombrero.comet
 
-import org.scalimero.connection.Network
+import tuwien.auto.scalimero.connection.Network
 import net.liftweb.actor.LiftActor
 import tuwien.auto.calimero.link.medium._
 

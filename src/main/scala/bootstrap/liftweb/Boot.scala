@@ -17,7 +17,7 @@ import org.sombrero.comet._
 import org.sombrero.view._
 import org.sombrero._
 
-import org.scalimero.connection.Network
+import tuwien.auto.scalimero.connection.Network
 
 
 /**

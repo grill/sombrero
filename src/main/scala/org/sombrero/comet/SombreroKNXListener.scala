@@ -8,7 +8,7 @@ import org.sombrero.model.KNXGroup
 import org.sombrero.model.KNXWidget
 import org.sombrero.util.Connection
 import net.liftweb.mapper._
-import org.scalimero.connection._
+import tuwien.auto.scalimero.connection._
 import scala.actors._
 
 //forwards KNX updates to Distributor

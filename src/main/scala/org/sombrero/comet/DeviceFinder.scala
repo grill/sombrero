@@ -17,7 +17,7 @@ import scala.xml._
 import scala.concurrent.ops._
 import org.sombrero.snippet.Widgetadd
 import org.sombrero.util.JavaScriptHelper
-import org.scalimero.connection._
+import tuwien.auto.scalimero.connection._
 
 case object Clear
 

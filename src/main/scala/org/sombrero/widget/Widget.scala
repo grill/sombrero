@@ -28,8 +28,8 @@ import tuwien.auto.calimero.datapoint._
 import tuwien.auto.calimero.dptxlator._
 import tuwien.auto.calimero.exception._
 
-import org.scalimero.device._
-import org.scalimero.device.dtype._
+import tuwien.auto.scalimero.device._
+import tuwien.auto.scalimero.device.dtype._
 
 
 /**

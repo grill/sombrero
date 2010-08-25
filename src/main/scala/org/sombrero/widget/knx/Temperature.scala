@@ -25,10 +25,10 @@ import org.sombrero.util.Log
   
 import tuwien.auto.calimero.dptxlator._
 
-import org.scalimero.device.preconf
-import org.scalimero.device._
-import org.scalimero.device.dtype.Num2ByteFloat._
-import org.scalimero.device.dtype.translatortype._
+import tuwien.auto.scalimero.device.preconf
+import tuwien.auto.scalimero.device._
+import tuwien.auto.scalimero.device.dtype.Num2ByteFloat._
+import tuwien.auto.scalimero.device.dtype.translatortype._
 
 /**
  * Generates a Temperature widget
