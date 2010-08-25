@@ -36,7 +36,7 @@ import org.scalimero.device.dtype.translatortype._
  */
 class Temperature (data: org.sombrero.model.Widget, wp: WidgetPlace) extends
   StateWidget(data, "analog", wp){
-  val knx = new SimpleDevice(data.knx().groupAddress.is, NUM2OCTET_FLOAT, TEMPERATURE)
+  val knx = new SimpleDevice(data.knx().groupAddress.is, TEMPERATURE)
    val min:Float = 15
    val max:Float = 30
   try{knx.readRequest()}catch{case e=>}

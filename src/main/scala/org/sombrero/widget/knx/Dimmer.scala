@@ -36,7 +36,7 @@ import org.scalimero.device.dtype.translatortype._
  */
 class Dimmer(data: org.sombrero.model.Widget, wp: WidgetPlace) extends
   StateWidget(data, "analog", wp){
-  override val knx = new SimpleDevice(data.knx().groupAddress.is, NUM8BIT_UNSIGNED, SCALING)
+  override val knx = new SimpleDevice(data.knx().groupAddress.is, SCALING)
   try{knx.readRequest()}catch{case e=>}
   override lazy val helpUrl = "/helptext/dimmer"
 
