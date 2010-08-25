@@ -13,7 +13,9 @@ class SombreroProject(info: ProjectInfo) extends DefaultWebProject(info) with JR
     "org.apache.derby" % "derby" % "10.2.2.0" % "runtime",
     "javax.servlet" % "servlet-api" % "2.5" % "provided",
     "com.h2database" % "h2" % "1.2.138",
-    "org.scalatest" % "scalatest" % "1.2"
+    "org.scalatest" % "scalatest" % "1.2",
+    "tuwien.auto" % "calimero" % "2.0a4" from "http://github.com/downloads/grill/SCalimero/calimero-2.0a4.jar",
+    "tuwien.auto" % "scalimero" % "1.0" from "http://github.com/downloads/grill/SCalimero/scalimero_2.8.0-1.0.jar"
   ) ++ super.libraryDependencies
   
   override def scanDirectories = Nil
