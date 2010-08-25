@@ -40,7 +40,7 @@ import org.scalimero.device.dtype.translatortype._
  */
 class RollerBlind (data: org.sombrero.model.Widget, wp: WidgetPlace) extends
   StateWidget(data, "analog", wp){
-  val knx = new SimpleDevice(data.knx().groupAddress.is, NUM8BIT_UNSIGNED, SCALING)
+  val knx = new SimpleDevice(data.knx().groupAddress.is, SCALING)
   try{knx.readRequest()}catch{case e=>}
   override lazy val helpUrl = "/helptext/rollerblind"
 
