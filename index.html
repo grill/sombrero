@@ -10,20 +10,24 @@
 	<style type="text/css">
 		body {
   		margin-top: 1.0em;
-  		background-color: #ffffff;
-		  font-family: "Helvetica,Arial,FreeSans";
-  		color: #000000;
+    font-family: 'Trebuchet MS', Verdana, Helvetica, Arial, sans-serif;
+    font-size: 75.00%; 
+    color: #444;  
     }
     #container {
       margin: 0 auto;
+      border: 2px solid #000000;
       width: 700px;
+      padding: 10px 10px;
     }
+    
+    
 		h1 { font-size: 3.8em; color: #000000; margin-bottom: 3px; }
 		h1 .small { font-size: 0.4em; }
 		h1 a { text-decoration: none }
 		h2 { font-size: 1.5em; color: #000000; }
-    h3 { text-align: center; color: #000000; }
-    a { color: #220eba; }
+    h3 { text-align: left; color: #000000; }
+    a { color: #000000; }
     .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
     .download { float: right; }
 		pre { background: #000; color: #fff; padding: 15px;}
@@ -45,30 +49,70 @@
         <img border="0" width="90" src="http://github.com/images/modules/download/tar.png"></a>
     </div>
 
-    <h1><a href="http://github.com/grill/sombrero">sombrero</a>
-      <span class="small">by <a href="http://github.com/grill">grill</a></span></h1>
+    <div><a href="http://github.com/grill/sombrero"><img src="dipllogo_small.png" style="border: none"/></a></div>
 
     <div class="description">
       Control your KNX/EIB based house with a webinterface
     </div>
+    The main goal behind Sombrero is the creation of an open source KNX
+management tool. Management in this sense is not the conﬁguration of
+KNX devices, but rather control of them in a structured and
+user-friendly way.
+<br />
+<br />
+To present users with a simple interface, it was decided to use a web
+service, accessible through a web browser, as a front-end. To further
+ease the adoption through end users, experiences with standard
+software, most notably heavy use of mouse clicks and drag & drop,
+should be applicable in the web interface. To avoid confusion of the end
+user by management control elements, user management and
+designated administrator users with extended control capabilities were
+added.
+<br />
+In order to speed up development, an agile and dynamic approach to
+project management was taken, and an adopted version of the Getting
+Real process model was used. To minimize implementation time and
+error-proneness, the programming language Scala, the JavaScript
+framework JQuery and the web framework Lift were used.
+    
+        <h2>Features:</h2>
+      <ol>
+        <li>Predefined Devices(Lamp, Dimmer, Roller Blind, ...)</li>
+        <li>User- and Devicemangement</li>
+        <li>Routerdiscovery</li>
+        <li>Desktop widgets</li>
+        <li>Supports Lift 2.1 M1 - 2.8.0 and JQuery UI 1.8.4 now!!</li>
+      </ol>
 
-    <h2>Authors</h2>
-<p>Gabriel Grill and Alexander Steiner
-<br/>
-<br/>      </p>
-<h2>Contact</h2>
-<p> gabriel.grill@aon.at
-<br/>alex_steiner@gmx.net      </p>
+    <h2>Install</h2>
+    <b>Dependencies:</b>
+    <p>User: Scala 2.8.0 with JRE and a java serverlet container of your choice (Jetty, Tomcat, Glassfish, ...)<br/>
+    Developer: Scala 2.8.0 with JRE and sbt</p>
+   <p>The installation in Windows can be done many ways. The ﬁrst one would be to down-
+load sombrero.war and deploy it into a serverlet container application server, like Tom-
+cat, Jetty or Glassﬁsch. 
+<br />
+Another possibility would be to download the root directory of
+sombrero and to navigate into it. After that the command sbt should be
+written into the shell to start sbt. After that type update and all librarys needed will be
+downloaded automatically. To start sombrero just write jetty-run and it should run smoothly. By the way this is the only
+possible solution to run the latest version of sombrero.
+Sombrero has been tested with ﬁrefox 3.6 and Java 1.6. So if you install these recom-
+mended applications there should be no problems concerning sombrero.
+    </p>
 
-
-    <h2>Download</h2>
+    <h2>Information</h2>
+      <b>License:</b> GNU GENERAL PUBLIC LICENSE - Version 2, June 1991<br/>
+      <b>Authors:</b> Alexander C. Steiner and Gabriel A. Grill<br/>
+      <b>Contact:</b> gabriel.grill@aon.at
+      <br/><br/>To learn more about Sombrero 1.0 read our <a href="http://github.com/downloads/grill/sombrero/Diplomarbeit.pdf">thesis</a>.
+      <h2>Download</h2>
     <p>
       You can download this project in either
       <a href="http://github.com/grill/sombrero/zipball/master">zip</a> or
       <a href="http://github.com/grill/sombrero/tarball/master">tar</a> formats.
-    </p>
-    <p>You can also clone the project with <a href="http://git-scm.com">Git</a>
-      by running:
+      To clone the project with <a href="http://git-scm.com">Git</a>
+      use:
       <pre>$ git clone git://github.com/grill/sombrero</pre>
     </p>
 
